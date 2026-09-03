@@ -11,14 +11,14 @@
     "href": "bio.html",
     "title": "About Me",
     "section": "",
-    "text": "Write a short biography here.\nInclude:"
+    "text": "I am a graduate student in Applied Economics and Data Science at the University of Pennsylvania. I received my bachelor’s degree in Economics from Vanderbilt University. My interests include econometrics, machine learning, and data analysis. I have experience using Python and R for data analysis and visualization, and I hope to pursue a career as a Data Analyst."
   },
   {
     "objectID": "bio.html#education",
     "href": "bio.html#education",
     "title": "About Me",
     "section": "Education",
-    "text": "Education\nMaster of Applied Economics and Data Science, University of Pennsylvania (expaceted 2027) Batelor of Science, University Name 2026"
+    "text": "Education\nMaster of Applied Economics and Data Science, University of Pennsylvania (expaceted 2027) Bachelor of Science in Economics, Vanderbilt University, 2026"
   },
   {
     "objectID": "bio.html#interests",
@@ -75,5 +75,12 @@
     "title": "About",
     "section": "",
     "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "bio.html#emmazhusas.upenn.edu",
+    "href": "bio.html#emmazhusas.upenn.edu",
+    "title": "About Me",
+    "section": "emmazhu@sas.upenn.edu",
+    "text": "emmazhu@sas.upenn.edu"
   }
 ]

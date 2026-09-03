@@ -2,18 +2,11 @@
 title: "About Me"
 ---
 
-Write a short biography here.
-
-Include:
-
--   Educational background
--   Professional interests
--   Technical skills
--   Career goals
+I am a graduate student in Applied Economics and Data Science at the University of Pennsylvania. I received my bachelor's degree in Economics from Vanderbilt University. My interests include econometrics, machine learning, and data analysis. I have experience using Python and R for data analysis and visualization, and I hope to pursue a career as a Data Analyst.
 
 ## Education
 
-Master of Applied Economics and Data Science, University of Pennsylvania (expaceted 2027) Batelor of Science, University Name 2026
+Master of Applied Economics and Data Science, University of Pennsylvania (expaceted 2027) Bachelor of Science in Economics, Vanderbilt University, 2026
 
 ## Interests
 
@@ -23,6 +16,6 @@ Master of Applied Economics and Data Science, University of Pennsylvania (expace
 
 ## Contact
 
-## student\@email.edu
+## emmazhu@sas.upenn.edu
 
 ------------------------------------------------------------------------
