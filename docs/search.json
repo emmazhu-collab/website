@@ -1,12 +1,5 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Student Name",
-    "section": "",
-    "text": "Student Name\nUniversity of Pennsylvaina\nWelcome to my personal website.\n\nQuick Links"
-  },
-  {
     "objectID": "bio.html",
     "href": "bio.html",
     "title": "About Me",
@@ -35,18 +28,18 @@
     "text": "Contact"
   },
   {
-    "objectID": "bio.html#studentemail.edu",
-    "href": "bio.html#studentemail.edu",
+    "objectID": "bio.html#emmazhusas.upenn.edu",
+    "href": "bio.html#emmazhusas.upenn.edu",
     "title": "About Me",
-    "section": "student@email.edu",
-    "text": "student@email.edu"
+    "section": "emmazhu@sas.upenn.edu",
+    "text": "emmazhu@sas.upenn.edu"
   },
   {
     "objectID": "blog/index.html",
     "href": "blog/index.html",
     "title": "Blog",
     "section": "",
-    "text": "My First Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nMy Second Blog Post\n\n\n\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\n\nNo matching items"
+    "text": "My First Blog Post\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nMy Second Blog Post\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "blog/posts/post1/Untitled.html",
@@ -70,17 +63,17 @@
     "text": "Resume PDF"
   },
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Xuanru Zhu(Emma)",
+    "section": "",
+    "text": "Xuanru Zhu(Emma)\nUniversity of Pennsylvaina\nWelcome to my personal website.\n\nQuick Links"
+  },
+  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
     "section": "",
     "text": "About this site\n\n1 + 1\n\n[1] 2"
-  },
-  {
-    "objectID": "bio.html#emmazhusas.upenn.edu",
-    "href": "bio.html#emmazhusas.upenn.edu",
-    "title": "About Me",
-    "section": "emmazhu@sas.upenn.edu",
-    "text": "emmazhu@sas.upenn.edu"
   }
 ]
