@@ -2,7 +2,7 @@
 title: "About Me"
 ---
 
-I am a graduate student in Applied Economics and Data Science at the University of Pennsylvania. I received my bachelor's degree in Economics from Vanderbilt University. My interests include econometrics, machine learning, and data analysis. I have experience using Python and R for data analysis and visualization, and I hope to pursue a career as a Data Analyst.
+I am a graduate student in Applied Economics and Data Science at the University of Pennsylvania. I received my bachelor's degree in Economics from Vanderbilt University. My interests include econometrics, machine learning, and data analysis. I have experience using Python and R for data analysis and visualization, and I hope to pursue a career in data analytics.
 
 ## Education
 
