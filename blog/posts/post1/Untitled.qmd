@@ -3,7 +3,7 @@ title: "Understanding the Prisoner's Dilemma"
 date: 2026-09-09
 categories:
   - personal
-  - data-science
+  - Economic
 ---
 We usually think that if everyone makes the best choice for themselves, the final result should also be good. However, this is not always true. The **Prisoner's Dilemma** shows how two people can make rational choices but still end up with a worse result for both.
 
