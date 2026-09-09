@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-06-16">
+<meta name="dcterms.date" content="2026-09-09">
 
-<title>My First Blog Post – Student Name</title>
+<title>Understanding the Prisoner’s Dilemma – Xuanru Zhu</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -72,35 +72,6 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="../../../styles.css">
 </head>
@@ -113,7 +84,7 @@ window.Quarto = {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../../index.html">
-    <span class="navbar-title">Student Name</span>
+    <span class="navbar-title">Xuanru Zhu</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -155,7 +126,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">My First Blog Post</h1>
+<h1 class="title">Understanding the Prisoner’s Dilemma</h1>
   <div class="quarto-categories">
     <div class="quarto-category">personal</div>
     <div class="quarto-category">data-science</div>
@@ -170,7 +141,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">June 16, 2026</p>
+      <p class="date">September 9, 2026</p>
     </div>
   </div>
   
@@ -182,8 +153,39 @@ window.Quarto = {
 </header>
 
 
-<p><img src="figure1.png" class="img-fluid" width="500"></p>
-<p>This is my first blog post. Example <span class="math inline">\(\LaTeX\)</span> equation: <span class="math inline">\(\frac{1}{2}\sum_{i=1}^nx_i\)</span></p>
+<p>We usually think that if everyone makes the best choice for themselves, the final result should also be good. However, this is not always true. The <strong>Prisoner’s Dilemma</strong> shows how two people can make rational choices but still end up with a worse result for both.</p>
+<p>Imagine that two suspects, A and B, are arrested and questioned separately. They cannot talk to each other. Each person has two choices: <strong>stay silent</strong> or <strong>confess</strong>.</p>
+<p>If both stay silent, they each spend one year in prison. If one confesses and the other stays silent, the person who confesses goes free, while the other person spends five years in prison. If both confess, they each spend three years in prison.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th>B Stays Silent</th>
+<th>B Confesses</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>A Stays Silent</strong></td>
+<td>A: 1 year, B: 1 year</td>
+<td>A: 5 years, B: 0 years</td>
+</tr>
+<tr class="even">
+<td><strong>A Confesses</strong></td>
+<td>A: 0 years, B: 5 years</td>
+<td>A: 3 years, B: 3 years</td>
+</tr>
+</tbody>
+</table>
+<p>Now think about the situation from A’s point of view. If B stays silent, A should confess because going free is better than spending one year in prison. If B confesses, A should still confess because three years in prison is better than five years.</p>
+<p>So, no matter what B does, confessing is the better choice for A. B will think in the same way. In the end, both of them confess and each spends three years in prison.</p>
+<p>But this creates a strange result. <strong>If both of them had stayed silent, they would have spent only one year in prison.</strong> They both made the best choice for themselves, but they ended up with a worse result.</p>
+<p>This is what makes the Prisoner’s Dilemma interesting. Neither person is making a bad decision. From each person’s point of view, confessing makes sense. The problem is that when both people make the same rational choice, the final result is worse for both of them.</p>
+<p>We can also see this idea in economics. Imagine two companies selling similar products. Both companies can keep their prices high or lower their prices. If both keep their prices high, they can both make good profits. However, each company has a reason to lower its price. If the other company keeps a high price, lowering the price may attract more customers. If the other company lowers its price, the company may also need to lower its price to avoid losing customers.</p>
+<p>As a result, both companies may lower their prices and start a <strong>price war</strong>. In the end, both companies may make less profit. Just like the two prisoners, each company is trying to make the best decision for itself, but the final result can be worse for everyone.</p>
+<p>The main lesson of the Prisoner’s Dilemma is simple: <strong>the best choice for each person is not always the best choice for the group.</strong> It also helps explain why cooperation can be difficult. Even when cooperation could make everyone better off, people may still have a reason to choose what is best for themselves.</p>
+<p><img src="figure1.png" class="img-fluid" width="700"></p>
+<p><em>Figure 1: The basic idea of the Prisoner’s Dilemma. Source: Investopedia.</em></p>
 <hr>
 
 
@@ -596,7 +598,7 @@ window.Quarto = {
 <p><img src="../../../images/UniversityofPennsylvania_FullLogo_RGB.png" class="img-fluid" width="100"></p>
 </div>   
     <div class="nav-footer-center">
-<p>© 2026 Student Name</p>
+<p>© 2026 Xuanru Zhu</p>
 </div>
     <div class="nav-footer-right">
       &nbsp;
