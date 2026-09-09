@@ -11,14 +11,16 @@ Imagine that two suspects, A and B, are arrested and questioned separately. They
 
 If both stay silent, they each spend one year in prison. If one confesses and the other stays silent, the person who confesses goes free, while the other person spends five years in prison. If both confess, they each spend three years in prison.
 
-\[
-\begin{array}{c|cc}
- & \text{B Stays Silent} & \text{B Confesses} \\
-\hline
-\text{A Stays Silent} & (1,1) & (5,0) \\
-\text{A Confesses} & (0,5) & (3,3)
-\end{array}
-\]
+\begin{table}[H]
+\centering
+\begin{tabular}{l c c} \hline \hline
+ & B Stays Silent & B Confesses \\ \hline
+A Stays Silent & (1,1) & (5,0) \\
+A Confesses & (0,5) & (3,3) \\ \hline
+\end{tabular}
+\caption{Prisoner's Dilemma}
+\label{tab:prisoner}
+\end{table}
 
 Now think about the situation from A's point of view. If B stays silent, A should confess because going free is better than spending one year in prison. If B confesses, A should still confess because three years in prison is better than five years.
 
