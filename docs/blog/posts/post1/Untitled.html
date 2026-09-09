@@ -72,6 +72,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../../styles.css">
 </head>
@@ -156,27 +185,14 @@ ul.task-list li input[type="checkbox"] {
 <p>We usually think that if everyone makes the best choice for themselves, the final result should also be good. However, this is not always true. The <strong>Prisoner’s Dilemma</strong> shows how two people can make rational choices but still end up with a worse result for both.</p>
 <p>Imagine that two suspects, A and B, are arrested and questioned separately. They cannot talk to each other. Each person has two choices: <strong>stay silent</strong> or <strong>confess</strong>.</p>
 <p>If both stay silent, they each spend one year in prison. If one confesses and the other stays silent, the person who confesses goes free, while the other person spends five years in prison. If both confess, they each spend three years in prison.</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: center;"><strong>B Stays Silent</strong></th>
-<th style="text-align: center;"><strong>B Confesses</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><strong>A Stays Silent</strong></td>
-<td style="text-align: center;">(1, 1)</td>
-<td style="text-align: center;">(5, 0)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><strong>A Confesses</strong></td>
-<td style="text-align: center;">(0, 5)</td>
-<td style="text-align: center;">(3, 3)</td>
-</tr>
-</tbody>
-</table>
+[
+<span class="math display">\[\begin{array}{c|cc}
+&amp; \text{B Stays Silent} &amp; \text{B Confesses} \\
+\hline
+\text{A Stays Silent} &amp; (1,1) &amp; (5,0) \\
+\text{A Confesses} &amp; (0,5) &amp; (3,3)
+\end{array}\]</span>
+<p>]</p>
 <p>Now think about the situation from A’s point of view. If B stays silent, A should confess because going free is better than spending one year in prison. If B confesses, A should still confess because three years in prison is better than five years.</p>
 <p>So, no matter what B does, confessing is the better choice for A. B will think in the same way. In the end, both of them confess and each spends three years in prison.</p>
 <p>But this creates a strange result. If both of them had stayed silent, they would have spent only one year in prison. They both made the best choice for themselves, but they ended up with a worse result.</p>
