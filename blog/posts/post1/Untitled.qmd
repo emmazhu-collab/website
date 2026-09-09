@@ -20,15 +20,15 @@ Now think about the situation from A's point of view. If B stays silent, A shoul
 
 So, no matter what B does, confessing is the better choice for A. B will think in the same way. In the end, both of them confess and each spends three years in prison.
 
-But this creates a strange result. **If both of them had stayed silent, they would have spent only one year in prison.** They both made the best choice for themselves, but they ended up with a worse result.
+But this creates a strange result. If both of them had stayed silent, they would have spent only one year in prison. They both made the best choice for themselves, but they ended up with a worse result.
 
 This is what makes the Prisoner's Dilemma interesting. Neither person is making a bad decision. From each person's point of view, confessing makes sense. The problem is that when both people make the same rational choice, the final result is worse for both of them.
 
 We can also see this idea in economics. Imagine two companies selling similar products. Both companies can keep their prices high or lower their prices. If both keep their prices high, they can both make good profits. However, each company has a reason to lower its price. If the other company keeps a high price, lowering the price may attract more customers. If the other company lowers its price, the company may also need to lower its price to avoid losing customers.
 
-As a result, both companies may lower their prices and start a **price war**. In the end, both companies may make less profit. Just like the two prisoners, each company is trying to make the best decision for itself, but the final result can be worse for everyone.
+As a result, both companies may lower their prices and start a price war. In the end, both companies may make less profit. Just like the two prisoners, each company is trying to make the best decision for itself, but the final result can be worse for everyone.
 
-The main lesson of the Prisoner's Dilemma is simple: **the best choice for each person is not always the best choice for the group.** It also helps explain why cooperation can be difficult. Even when cooperation could make everyone better off, people may still have a reason to choose what is best for themselves.
+The main lesson of the Prisoner's Dilemma is simple: the best choice for each person is not always the best choice for the group. It also helps explain why cooperation can be difficult. Even when cooperation could make everyone better off, people may still have a reason to choose what is best for themselves.
 
 ![](figure1.png){width="700px"}
 
