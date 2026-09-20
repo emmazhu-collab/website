@@ -1,36 +1,34 @@
-# Xuanru Zhu's Quarto website
+# Xuanru Zhu's Website
+
+This repository contains my personal website and blog posts for AEDS 6400.
 
 ## Blog 2: University City Dining Days
 
-This post asks which meal and price group had the most restaurant choices in the 2026 Dining Days event.
+This post uses R and `rvest` to collect restaurant information from the [University City Dining Days website](https://www.universitycity.org/diningdays/). It compares the number of restaurant choices for lunch and dinner at $20, $30, and $40.
 
-### Files
+The analysis uses the 2026 restaurant list, first accessed on September 19, 2026. Each row is one restaurant at one meal and price. A restaurant can appear in more than one group.
 
-- `blog/posts/post2/index.qmd`: the blog text and R code.
-- `blog/posts/post2/data/processed/restaurant-options.csv`: the cleaned restaurant data.
-- `blog/posts/post2/results/choices-by-meal-price.csv`: the number of restaurants in each group.
-- `docs/`: the website files made by Quarto.
+## Where to find the files
 
-### Run the analysis
+| File or folder | Contents |
+| --- | --- |
+| `blog/posts/post2/index.qmd` | Blog 2 text and R code |
+| `blog/posts/post2/data/processed/restaurant-options.csv` | Cleaned restaurant data |
+| `blog/posts/post2/results/choices-by-meal-price.csv` | Restaurant counts by meal and price |
+| `docs/` | Generated webpages and figures |
+| `_quarto.yml` | Website settings |
 
-You need R, Quarto, and the R packages `rvest`, `tidyverse`, `knitr`, and `rmarkdown`.
+## How to run the code
 
-1. Open `studentname-website.Rproj` in RStudio.
-2. Open `blog/posts/post2/index.qmd`.
-3. Click **Render**.
+You need R, RStudio, and an internet connection.
 
-You can also run this command from the project folder:
+1. Download this repository and open `studentname-website.Rproj` in RStudio.
+2. Install any missing packages in the R Console:
 
-```sh
-quarto render blog/posts/post2/index.qmd
-```
+   ```r
+   install.packages(c("rvest", "tidyverse", "knitr", "rmarkdown"))
+   ```
 
-The code reads the webpage, collects the restaurant data, counts the choices, and saves two CSV files. You need an internet connection. File paths in the code start from the `post2` folder.
+3. Open `blog/posts/post2/index.qmd` and click **Render**.
 
-### Data source and limits
-
-Source: https://www.universitycity.org/diningdays/
-
-The page was first checked on September 19, 2026. It showed the 2026 restaurant list. These deals may no longer be available. If the page changes, check the six CSS selectors and the results again. Avoid running the download step too often. The code does not bypass access restrictions.
-
-Each row is one restaurant at one meal and price. A restaurant can appear for both lunch and dinner. Separate cafe deals are left out. The chart compares each price group, not all options below a maximum budget. Menu prices do not include tax or tips.
+This updates the two CSV files and the webpage in `docs/`. The code reads the live website, so changes to the website may affect the results.
