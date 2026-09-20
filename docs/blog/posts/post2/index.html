@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-06-16">
+<meta name="dcterms.date" content="2026-09-19">
 
-<title>My Second Blog Post – Student Name</title>
+<title>Which Dining Days Option Offers the Most Restaurant Choices? – Xuanru Zhu</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -23,6 +23,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -84,7 +119,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../../index.html">
-    <span class="navbar-title">Student Name</span>
+    <span class="navbar-title">Xuanru Zhu</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -126,10 +161,10 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">My Second Blog Post</h1>
+<h1 class="title">Which Dining Days Option Offers the Most Restaurant Choices?</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">opinion</div>
-    <div class="quarto-category">labor market</div>
+    <div class="quarto-category">web scraping</div>
+    <div class="quarto-category">restaurants</div>
   </div>
   </div>
 
@@ -141,7 +176,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">June 16, 2026</p>
+      <p class="date">September 19, 2026</p>
     </div>
   </div>
   
@@ -153,8 +188,224 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="this-is-my-second-blog-post." class="level2">
-<h2 class="anchored" data-anchor-id="this-is-my-second-blog-post.">This is my second blog post.</h2>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>When choosing a restaurant, people often think about the price and whether they want lunch or dinner. In this post, I ask: <strong>Which meal and price group had the most restaurant choices during University City Dining Days in 2026?</strong> I use R and <code>rvest</code> to compare lunch and dinner at $20, $30, and $40.</p>
+<p>The data come from the <a href="https://www.universitycity.org/diningdays/">official Dining Days page</a>, which I accessed on September 19, 2026. The page lists restaurants from the 2026 event and says the next event will be in July 2027. This post looks at the 2026 list. It does not mean these deals are available now.</p>
+</section>
+<section id="choose-the-webpage" class="level2">
+<h2 class="anchored" data-anchor-id="choose-the-webpage">1. Choose the webpage</h2>
+<p>University City District shares the restaurant list on a public webpage. I do not bypass logins, CAPTCHAs, or paywalls. The code downloads one page per run. I avoid running this step too often to limit requests to the website.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://www.universitycity.org/diningdays/"</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>url</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "https://www.universitycity.org/diningdays/"</code></pre>
+</div>
+</div>
+</section>
+<section id="read-the-webpage" class="level2">
+<h2 class="anchored" data-anchor-id="read-the-webpage">2. Read the webpage</h2>
+<p>I use <code>read_html()</code> to read the webpage. Then I check the page title to make sure it is the right page.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>page <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>page <span class="sc">|&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_element</span>(<span class="st">"title"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text2</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "University City Dining Days"</code></pre>
+</div>
+</div>
+</section>
+<section id="check-the-headings" class="level2">
+<h2 class="anchored" data-anchor-id="check-the-headings">3. Check the headings</h2>
+<p>The headings show dinner and lunch, each with three prices: $20, $30, and $40. The page also has a separate cafe deals section. I leave that section out because this post compares lunch and dinner.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>meal_headings <span class="ot">&lt;-</span> page <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_elements</span>(<span class="st">"h1.uagb-heading-text"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text2</span>()</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>price_headings <span class="ot">&lt;-</span> page <span class="sc">|&gt;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_elements</span>(<span class="st">"h2.uagb-heading-text"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text2</span>()</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>meal_headings</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "DINNER"          "LUNCH"           "NEW CAFE DEALS!"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>price_headings</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "$20" "$30" "$40" "$20" "$30" "$40"</code></pre>
+</div>
+</div>
+</section>
+<section id="find-restaurant-cards" class="level2">
+<h2 class="anchored" data-anchor-id="find-restaurant-cards">4. Find restaurant cards</h2>
+<p>On this webpage, each restaurant has a picture and a name. In the HTML, <code>figure</code> is the tag around this card, and <code>figcaption</code> is the tag around the name below the picture. I select the name link so I do not also collect the picture link. This uses the same method of selecting HTML tags as in class.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>restaurant_cards <span class="ot">&lt;-</span> page <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_elements</span>(<span class="st">"figure.wp-block-uagb-image__figure"</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>restaurant_cards <span class="sc">|&gt;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_element</span>(<span class="st">"figcaption a"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text2</span>() <span class="sc">|&gt;</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Haraz Coffee House"          "New Delhi Indian Restaurant"
+[3] "Pattaya Restaurant"          "The Post"                   
+[5] "Sangkee Noodle House"        "Thai Singha House"          </code></pre>
+</div>
+</div>
+</section>
+<section id="match-restaurants-with-meals-and-prices" class="level2">
+<h2 class="anchored" data-anchor-id="match-restaurants-with-meals-and-prices">5. Match restaurants with meals and prices</h2>
+<p>Each price group contains several rows of restaurant cards. I checked the HTML and chose the CSS classes for these rows. The six groups below are dinner at $20, $30, and $40, followed by lunch at $20, $30, and $40. A dot selects a class, and a comma selects more than one class. The class names come from the website. I chose the groups by checking the page; the code then gets the restaurant names from them.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>section_selectors <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">".uagb-block-a013eba9, .uagb-block-278fad71"</span>,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">".uagb-block-4a407aab, .uagb-block-85b34e24"</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">".uagb-block-d61ca5e5, .uagb-block-56971bc4, .uagb-block-9b2f9222, .uagb-block-b6c4b5ed"</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">".uagb-block-ff275771, .uagb-block-2bd8e149"</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">".uagb-block-8d01d505, .uagb-block-f4846327, .uagb-block-78266301"</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">".uagb-block-5f762f09"</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>section_meals <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rep</span>(meal_headings[<span class="dv">1</span>], <span class="dv">3</span>),</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rep</span>(meal_headings[<span class="dv">2</span>], <span class="dv">3</span>)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>restaurant_names <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>restaurant_urls <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>meals <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>prices <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>) {</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>  cards <span class="ot">&lt;-</span> page <span class="sc">|&gt;</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_elements</span>(section_selectors[i]) <span class="sc">|&gt;</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_elements</span>(<span class="st">"figure.wp-block-uagb-image__figure"</span>)</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>  links <span class="ot">&lt;-</span> cards <span class="sc">|&gt;</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_element</span>(<span class="st">"figcaption a"</span>)</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>  restaurant_names <span class="ot">&lt;-</span> <span class="fu">c</span>(restaurant_names, <span class="fu">html_text2</span>(links))</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>  restaurant_urls <span class="ot">&lt;-</span> <span class="fu">c</span>(restaurant_urls, <span class="fu">html_attr</span>(links, <span class="st">"href"</span>))</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>  meals <span class="ot">&lt;-</span> <span class="fu">c</span>(meals, <span class="fu">rep</span>(section_meals[i], <span class="fu">length</span>(cards)))</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>  prices <span class="ot">&lt;-</span> <span class="fu">c</span>(prices, <span class="fu">rep</span>(price_headings[i], <span class="fu">length</span>(cards)))</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>restaurants_raw <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>  <span class="at">restaurant =</span> restaurant_names,</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>  <span class="at">meal =</span> meals,</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>  <span class="at">price =</span> prices,</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>  <span class="at">url =</span> restaurant_urls</span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(restaurants_raw)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+  restaurant                  meal   price url                                  
+  &lt;chr&gt;                       &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;                                
+1 Haraz Coffee House          DINNER $20   https://www.universitycity.org/dinin…
+2 New Delhi Indian Restaurant DINNER $20   https://www.universitycity.org/dinin…
+3 Pattaya Restaurant          DINNER $20   https://www.universitycity.org/dinin…
+4 The Post                    DINNER $20   https://www.universitycity.org/dinin…
+5 Sangkee Noodle House        DINNER $20   https://www.universitycity.org/dinin…
+6 Thai Singha House           DINNER $20   https://www.universitycity.org/dinin…</code></pre>
+</div>
+</div>
+<p>The <code>for</code> loop does the same steps for all six groups. <code>rep()</code> repeats the meal and price labels for the restaurants in each group. Each row in the table is one restaurant at one meal and price. A restaurant can appear once for lunch and again for dinner.</p>
+</section>
+<section id="clean-and-check-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="clean-and-check-the-data">6. Clean and check the data</h2>
+<p>I use <code>str_squish()</code> to remove extra spaces, as in the class example. I also remove rows with empty restaurant names. Then I check whether the same restaurant appears more than once in the same meal and price group.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>restaurants <span class="ot">&lt;-</span> restaurants_raw <span class="sc">|&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">restaurant =</span> <span class="fu">str_squish</span>(restaurant),</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">meal =</span> <span class="fu">str_squish</span>(meal),</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">price =</span> <span class="fu">str_squish</span>(price)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(restaurant <span class="sc">!=</span> <span class="st">""</span>)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(restaurants_raw)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 44</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(restaurants)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 44</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>restaurants <span class="sc">|&gt;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(meal, price, url) <span class="sc">|&gt;</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n <span class="sc">&gt;</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 0 × 4
+# ℹ 4 variables: meal &lt;chr&gt;, price &lt;chr&gt;, url &lt;chr&gt;, n &lt;int&gt;</code></pre>
+</div>
+</div>
+<p>There are 44 options after cleaning. The duplicate check returns no rows, so no restaurant is repeated within the same group. I also compared the groups with the webpage. I keep restaurants that appear at different meals because those are different choices.</p>
+</section>
+<section id="compare-the-choices" class="level2">
+<h2 class="anchored" data-anchor-id="compare-the-choices">7. Compare the choices</h2>
+<p>I use <code>count()</code> to count the restaurants in each meal and price group. The table and bar chart show which groups have more choices.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>choices <span class="ot">&lt;-</span> restaurants <span class="sc">|&gt;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(meal, price, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>choices</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 3
+  meal   price     n
+  &lt;chr&gt;  &lt;chr&gt; &lt;int&gt;
+1 DINNER $40      13
+2 LUNCH  $30      10
+3 LUNCH  $20       8
+4 DINNER $20       6
+5 DINNER $30       6
+6 LUNCH  $40       1</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>choice_plot <span class="ot">&lt;-</span> choices <span class="sc">|&gt;</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">option =</span> <span class="fu">paste</span>(meal, price)) <span class="sc">|&gt;</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(option, n), <span class="at">y =</span> n)) <span class="sc">+</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#286789"</span>) <span class="sc">+</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Dinner at $40 offered the most choices"</span>,</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Restaurants in the 2026 Dining Days event"</span>,</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Number of restaurants"</span>,</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Source: University City District | 2026 participant list"</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>)</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>choice_plot</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/choices-chart-1.png" class="img-fluid figure-img" alt="Horizontal bars compare six Dining Days groups. Dinner at 40 dollars has 13 restaurants; lunch at 30 dollars has 10; lunch at 20 dollars has 8; dinner at 20 and 30 dollars each has 6; lunch at 40 dollars has 1." width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Dinner at $40 has the most choices, with 13 restaurants. Lunch at $30 comes next, with 10. At $20, lunch has 8 choices, while dinner has 6. Lunch at $40 has only 1 choice. This shows that a higher price does not always mean more restaurant choices.</p>
+</section>
+<section id="save-the-results" class="level2">
+<h2 class="anchored" data-anchor-id="save-the-results">8. Save the results</h2>
+<p>I save the cleaned restaurant data and the counts as CSV files so they are easy to check later.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(restaurants, <span class="st">"data/processed/restaurant-options.csv"</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(choices, <span class="st">"results/choices-by-meal-price.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="conclusion-and-limitations" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion-and-limitations">Conclusion and limitations</h2>
+<p>Based on the 2026 list, I would suggest $40 dinner to someone who wants the most choices within one meal and price group. For someone with a $20 menu budget who can choose either meal, lunch has more options. For lunch, the $30 group has more choices than the $40 group. Paying more does not always give someone more choices.</p>
+<p>This analysis only counts restaurants on the Dining Days list. It does not compare food quality, meal size, or available reservations. The prices do not include tax or tips. The results also do not represent all restaurants in University City. If the website changes, the CSS selectors and results need to be checked again. Before planning a future visit, check the new restaurant list, menus, and opening hours.</p>
 
 
 </section>
@@ -567,7 +818,7 @@ ul.task-list li input[type="checkbox"] {
 <p><img src="../../../images/UniversityofPennsylvania_FullLogo_RGB.png" class="img-fluid" width="100"></p>
 </div>   
     <div class="nav-footer-center">
-<p>© 2026 Student Name</p>
+<p>© 2026 Xuanru Zhu</p>
 </div>
     <div class="nav-footer-right">
       &nbsp;

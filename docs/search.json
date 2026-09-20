@@ -39,7 +39,7 @@
     "href": "blog/index.html",
     "title": "Blog",
     "section": "",
-    "text": "Understanding the Prisoner’s Dilemma\n\n\n\n\n\n\n\n\nSep 9, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nMy Second Blog Post\n\n\n\n\n\n\n\n\nJun 16, 2026\n\n\n\n\n\nNo matching items"
+    "text": "Which Dining Days Option Offers the Most Restaurant Choices?\n\n\n\n\n\n\n\n\nSep 19, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nUnderstanding the Prisoner’s Dilemma\n\n\n\n\n\n\n\n\nSep 9, 2026\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "blog/posts/post1/Untitled.html",
@@ -75,5 +75,103 @@
     "title": "About",
     "section": "",
     "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "blog/posts/post2/index.html",
+    "href": "blog/posts/post2/index.html",
+    "title": "Which Dining Days Option Offers the Most Restaurant Choices?",
+    "section": "",
+    "text": "When choosing a restaurant, people often think about the price and whether they want lunch or dinner. In this post, I ask: Which meal and price group had the most restaurant choices during University City Dining Days in 2026? I use R and rvest to compare lunch and dinner at $20, $30, and $40.\nThe data come from the official Dining Days page, which I accessed on September 19, 2026. The page lists restaurants from the 2026 event and says the next event will be in July 2027. This post looks at the 2026 list. It does not mean these deals are available now."
+  },
+  {
+    "objectID": "blog/posts/post2/index.html#introduction",
+    "href": "blog/posts/post2/index.html#introduction",
+    "title": "Which Dining Days Option Offers the Most Restaurant Choices?",
+    "section": "",
+    "text": "When choosing a restaurant, people often think about the price and whether they want lunch or dinner. In this post, I ask: Which meal and price group had the most restaurant choices during University City Dining Days in 2026? I use R and rvest to compare lunch and dinner at $20, $30, and $40.\nThe data come from the official Dining Days page, which I accessed on September 19, 2026. The page lists restaurants from the 2026 event and says the next event will be in July 2027. This post looks at the 2026 list. It does not mean these deals are available now."
+  },
+  {
+    "objectID": "blog/posts/post2/index.html#choose-the-webpage",
+    "href": "blog/posts/post2/index.html#choose-the-webpage",
+    "title": "Which Dining Days Option Offers the Most Restaurant Choices?",
+    "section": "1. Choose the webpage",
+    "text": "1. Choose the webpage\nUniversity City District shares the restaurant list on a public webpage. I do not bypass logins, CAPTCHAs, or paywalls. The code downloads one page per run. I avoid running this step too often to limit requests to the website.\n\nlibrary(rvest)\nlibrary(tidyverse)\n\nurl &lt;- \"https://www.universitycity.org/diningdays/\"\nurl\n\n[1] \"https://www.universitycity.org/diningdays/\""
+  },
+  {
+    "objectID": "blog/posts/post2/index.html#read-the-webpage",
+    "href": "blog/posts/post2/index.html#read-the-webpage",
+    "title": "Which Dining Days Option Offers the Most Restaurant Choices?",
+    "section": "2. Read the webpage",
+    "text": "2. Read the webpage\nI use read_html() to read the webpage. Then I check the page title to make sure it is the right page.\n\npage &lt;- read_html(url)\n\npage |&gt;\n  html_element(\"title\") |&gt;\n  html_text2()\n\n[1] \"University City Dining Days\""
+  },
+  {
+    "objectID": "blog/posts/post2/index.html#examine-the-headings",
+    "href": "blog/posts/post2/index.html#examine-the-headings",
+    "title": "Which Dining Days Option Offers the Most Restaurant Choices?",
+    "section": "3. Examine the headings",
+    "text": "3. Examine the headings\nThe headings identify dinner, lunch, and three price tiers. Cafe deals appear separately and do not belong in this meal comparison.\n\nmeal_headings &lt;- page |&gt;\n  html_elements(\"h1.uagb-heading-text\") |&gt;\n  html_text2()\n\nprice_headings &lt;- page |&gt;\n  html_elements(\"h2.uagb-heading-text\") |&gt;\n  html_text2()\n\nmeal_headings\n\n[1] \"DINNER\"          \"LUNCH\"           \"NEW CAFE DEALS!\"\n\nprice_headings\n\n[1] \"$20\" \"$30\" \"$40\" \"$20\" \"$30\" \"$40\""
+  },
+  {
+    "objectID": "blog/posts/post2/index.html#find-restaurant-cards",
+    "href": "blog/posts/post2/index.html#find-restaurant-cards",
+    "title": "Which Dining Days Option Offers the Most Restaurant Choices?",
+    "section": "4. Find restaurant cards",
+    "text": "4. Find restaurant cards\nOn this webpage, each restaurant has a picture and a name. In the HTML, figure is the tag around this card, and figcaption is the tag around the name below the picture. I select the name link so I do not also collect the picture link. This uses the same method of selecting HTML tags as in class.\n\nrestaurant_cards &lt;- page |&gt;\n  html_elements(\"figure.wp-block-uagb-image__figure\")\n\nrestaurant_cards |&gt;\n  html_element(\"figcaption a\") |&gt;\n  html_text2() |&gt;\n  head()\n\n[1] \"Haraz Coffee House\"          \"New Delhi Indian Restaurant\"\n[3] \"Pattaya Restaurant\"          \"The Post\"                   \n[5] \"Sangkee Noodle House\"        \"Thai Singha House\""
+  },
+  {
+    "objectID": "blog/posts/post2/index.html#connect-restaurants-to-meal-and-price",
+    "href": "blog/posts/post2/index.html#connect-restaurants-to-meal-and-price",
+    "title": "Which Dining Days Option Offers the Most Restaurant Choices?",
+    "section": "5. Connect restaurants to meal and price",
+    "text": "5. Connect restaurants to meal and price\nOn this page, each price group spans several row containers. I inspected the HTML and identified their CSS classes below, in heading order: dinner $20/$30/$40, then lunch $20/$30/$40. A dot selects a class; a comma combines selectors. These are webpage addresses, not manually entered restaurant data.\n\nsection_selectors &lt;- c(\n  \".uagb-block-a013eba9, .uagb-block-278fad71\",\n  \".uagb-block-4a407aab, .uagb-block-85b34e24\",\n  \".uagb-block-d61ca5e5, .uagb-block-56971bc4, .uagb-block-9b2f9222, .uagb-block-b6c4b5ed\",\n  \".uagb-block-ff275771, .uagb-block-2bd8e149\",\n  \".uagb-block-8d01d505, .uagb-block-f4846327, .uagb-block-78266301\",\n  \".uagb-block-5f762f09\"\n)\n\nsection_meals &lt;- c(\n  rep(meal_headings[1], 3),\n  rep(meal_headings[2], 3)\n)\n\nrestaurant_names &lt;- c()\nrestaurant_urls &lt;- c()\nmeals &lt;- c()\nprices &lt;- c()\n\nfor (i in 1:6) {\n  cards &lt;- page |&gt;\n    html_elements(section_selectors[i]) |&gt;\n    html_elements(\"figure.wp-block-uagb-image__figure\")\n\n  links &lt;- cards |&gt;\n    html_element(\"figcaption a\")\n\n  restaurant_names &lt;- c(restaurant_names, html_text2(links))\n  restaurant_urls &lt;- c(restaurant_urls, html_attr(links, \"href\"))\n  meals &lt;- c(meals, rep(section_meals[i], length(cards)))\n  prices &lt;- c(prices, rep(price_headings[i], length(cards)))\n}\n\nrestaurants_raw &lt;- tibble(\n  restaurant = restaurant_names,\n  meal = meals,\n  price = prices,\n  url = restaurant_urls\n)\n\nhead(restaurants_raw)\n\n# A tibble: 6 × 4\n  restaurant                  meal   price url                                  \n  &lt;chr&gt;                       &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;                                \n1 Haraz Coffee House          DINNER $20   https://www.universitycity.org/dinin…\n2 New Delhi Indian Restaurant DINNER $20   https://www.universitycity.org/dinin…\n3 Pattaya Restaurant          DINNER $20   https://www.universitycity.org/dinin…\n4 The Post                    DINNER $20   https://www.universitycity.org/dinin…\n5 Sangkee Noodle House        DINNER $20   https://www.universitycity.org/dinin…\n6 Thai Singha House           DINNER $20   https://www.universitycity.org/dinin…\n\n\nThe loop repeats the same extraction for six groups. rep() repeats each group’s heading for its cards. Each row represents one restaurant-meal-price option; the same restaurant can legitimately appear at both meals. The separate cafe containers are excluded."
+  },
+  {
+    "objectID": "blog/posts/post2/index.html#clean-and-check-the-data",
+    "href": "blog/posts/post2/index.html#clean-and-check-the-data",
+    "title": "Which Dining Days Option Offers the Most Restaurant Choices?",
+    "section": "6. Clean and check the data",
+    "text": "6. Clean and check the data\nI use str_squish() to remove extra spaces, as in the class example. I also remove rows with empty restaurant names. Then I check whether the same restaurant appears more than once in the same meal and price group.\n\nrestaurants &lt;- restaurants_raw |&gt;\n  mutate(\n    restaurant = str_squish(restaurant),\n    meal = str_squish(meal),\n    price = str_squish(price)\n  ) |&gt;\n  filter(restaurant != \"\")\n\nnrow(restaurants_raw)\n\n[1] 44\n\nnrow(restaurants)\n\n[1] 44\n\nrestaurants |&gt;\n  count(meal, price, url) |&gt;\n  filter(n &gt; 1)\n\n# A tibble: 0 × 4\n# ℹ 4 variables: meal &lt;chr&gt;, price &lt;chr&gt;, url &lt;chr&gt;, n &lt;int&gt;\n\n\nThere are 44 options after cleaning. The duplicate check returns no rows, so no restaurant is repeated within the same group. I also compared the groups with the webpage. I keep restaurants that appear at different meals because those are different choices."
+  },
+  {
+    "objectID": "blog/posts/post2/index.html#compare-the-choices",
+    "href": "blog/posts/post2/index.html#compare-the-choices",
+    "title": "Which Dining Days Option Offers the Most Restaurant Choices?",
+    "section": "7. Compare the choices",
+    "text": "7. Compare the choices\nI use count() to count the restaurants in each meal and price group. The table and bar chart show which groups have more choices.\n\nchoices &lt;- restaurants |&gt;\n  count(meal, price, sort = TRUE)\n\nchoices\n\n# A tibble: 6 × 3\n  meal   price     n\n  &lt;chr&gt;  &lt;chr&gt; &lt;int&gt;\n1 DINNER $40      13\n2 LUNCH  $30      10\n3 LUNCH  $20       8\n4 DINNER $20       6\n5 DINNER $30       6\n6 LUNCH  $40       1\n\nchoice_plot &lt;- choices |&gt;\n  mutate(option = paste(meal, price)) |&gt;\n  ggplot(aes(x = reorder(option, n), y = n)) +\n  geom_col(fill = \"#286789\") +\n  coord_flip() +\n  labs(\n    title = \"Dinner at $40 offered the most choices\",\n    subtitle = \"Restaurants in the 2026 Dining Days event\",\n    x = NULL,\n    y = \"Number of restaurants\",\n    caption = \"Source: University City District | 2026 participant list\"\n  ) +\n  theme_minimal(base_size = 13)\n\nchoice_plot\n\n\n\n\n\n\n\n\nDinner at $40 has the most choices, with 13 restaurants. Lunch at $30 comes next, with 10. At $20, lunch has 8 choices, while dinner has 6. Lunch at $40 has only 1 choice. This shows that a higher price does not always mean more restaurant choices."
+  },
+  {
+    "objectID": "blog/posts/post2/index.html#save-the-results",
+    "href": "blog/posts/post2/index.html#save-the-results",
+    "title": "Which Dining Days Option Offers the Most Restaurant Choices?",
+    "section": "8. Save the results",
+    "text": "8. Save the results\nI save the cleaned restaurant data and the counts as CSV files so they are easy to check later.\n\nwrite_csv(restaurants, \"data/processed/restaurant-options.csv\")\nwrite_csv(choices, \"results/choices-by-meal-price.csv\")"
+  },
+  {
+    "objectID": "blog/posts/post2/index.html#takeaway-and-limitations",
+    "href": "blog/posts/post2/index.html#takeaway-and-limitations",
+    "title": "Which Dining Days Option Offers the Most Restaurant Choices?",
+    "section": "Takeaway and limitations",
+    "text": "Takeaway and limitations\nFor this 2026 list, diners seeking the widest selection at an exact price tier would start with $40 dinner. With a $20 menu budget and flexible timing, lunch offers more choices. At lunch, paying $40 instead of $30 sharply narrows the list; a higher price is not evidence of better value.\nThese counts measure listed choices, not food quality, portion size, reservations, or all restaurants in University City. Tax and gratuities are excluded from menu prices. The class selectors and results must be rechecked if the website changes. For a future visit, use this comparison to plan a shortlist, then confirm the next event’s participants, menus, and hours before booking."
+  },
+  {
+    "objectID": "blog/posts/post2/index.html#check-the-headings",
+    "href": "blog/posts/post2/index.html#check-the-headings",
+    "title": "Which Dining Days Option Offers the Most Restaurant Choices?",
+    "section": "3. Check the headings",
+    "text": "3. Check the headings\nThe headings show dinner and lunch, each with three prices: $20, $30, and $40. The page also has a separate cafe deals section. I leave that section out because this post compares lunch and dinner.\n\nmeal_headings &lt;- page |&gt;\n  html_elements(\"h1.uagb-heading-text\") |&gt;\n  html_text2()\n\nprice_headings &lt;- page |&gt;\n  html_elements(\"h2.uagb-heading-text\") |&gt;\n  html_text2()\n\nmeal_headings\n\n[1] \"DINNER\"          \"LUNCH\"           \"NEW CAFE DEALS!\"\n\nprice_headings\n\n[1] \"$20\" \"$30\" \"$40\" \"$20\" \"$30\" \"$40\""
+  },
+  {
+    "objectID": "blog/posts/post2/index.html#match-restaurants-with-meals-and-prices",
+    "href": "blog/posts/post2/index.html#match-restaurants-with-meals-and-prices",
+    "title": "Which Dining Days Option Offers the Most Restaurant Choices?",
+    "section": "5. Match restaurants with meals and prices",
+    "text": "5. Match restaurants with meals and prices\nEach price group contains several rows of restaurant cards. I checked the HTML and chose the CSS classes for these rows. The six groups below are dinner at $20, $30, and $40, followed by lunch at $20, $30, and $40. A dot selects a class, and a comma selects more than one class. The class names come from the website. I chose the groups by checking the page; the code then gets the restaurant names from them.\n\nsection_selectors &lt;- c(\n  \".uagb-block-a013eba9, .uagb-block-278fad71\",\n  \".uagb-block-4a407aab, .uagb-block-85b34e24\",\n  \".uagb-block-d61ca5e5, .uagb-block-56971bc4, .uagb-block-9b2f9222, .uagb-block-b6c4b5ed\",\n  \".uagb-block-ff275771, .uagb-block-2bd8e149\",\n  \".uagb-block-8d01d505, .uagb-block-f4846327, .uagb-block-78266301\",\n  \".uagb-block-5f762f09\"\n)\n\nsection_meals &lt;- c(\n  rep(meal_headings[1], 3),\n  rep(meal_headings[2], 3)\n)\n\nrestaurant_names &lt;- c()\nrestaurant_urls &lt;- c()\nmeals &lt;- c()\nprices &lt;- c()\n\nfor (i in 1:6) {\n  cards &lt;- page |&gt;\n    html_elements(section_selectors[i]) |&gt;\n    html_elements(\"figure.wp-block-uagb-image__figure\")\n\n  links &lt;- cards |&gt;\n    html_element(\"figcaption a\")\n\n  restaurant_names &lt;- c(restaurant_names, html_text2(links))\n  restaurant_urls &lt;- c(restaurant_urls, html_attr(links, \"href\"))\n  meals &lt;- c(meals, rep(section_meals[i], length(cards)))\n  prices &lt;- c(prices, rep(price_headings[i], length(cards)))\n}\n\nrestaurants_raw &lt;- tibble(\n  restaurant = restaurant_names,\n  meal = meals,\n  price = prices,\n  url = restaurant_urls\n)\n\nhead(restaurants_raw)\n\n# A tibble: 6 × 4\n  restaurant                  meal   price url                                  \n  &lt;chr&gt;                       &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;                                \n1 Haraz Coffee House          DINNER $20   https://www.universitycity.org/dinin…\n2 New Delhi Indian Restaurant DINNER $20   https://www.universitycity.org/dinin…\n3 Pattaya Restaurant          DINNER $20   https://www.universitycity.org/dinin…\n4 The Post                    DINNER $20   https://www.universitycity.org/dinin…\n5 Sangkee Noodle House        DINNER $20   https://www.universitycity.org/dinin…\n6 Thai Singha House           DINNER $20   https://www.universitycity.org/dinin…\n\n\nThe for loop does the same steps for all six groups. rep() repeats the meal and price labels for the restaurants in each group. Each row in the table is one restaurant at one meal and price. A restaurant can appear once for lunch and again for dinner."
+  },
+  {
+    "objectID": "blog/posts/post2/index.html#conclusion-and-limitations",
+    "href": "blog/posts/post2/index.html#conclusion-and-limitations",
+    "title": "Which Dining Days Option Offers the Most Restaurant Choices?",
+    "section": "Conclusion and limitations",
+    "text": "Conclusion and limitations\nBased on the 2026 list, I would suggest $40 dinner to someone who wants the most choices within one meal and price group. For someone with a $20 menu budget who can choose either meal, lunch has more options. For lunch, the $30 group has more choices than the $40 group. Paying more does not always give someone more choices.\nThis analysis only counts restaurants on the Dining Days list. It does not compare food quality, meal size, or available reservations. The prices do not include tax or tips. The results also do not represent all restaurants in University City. If the website changes, the CSS selectors and results need to be checked again. Before planning a future visit, check the new restaurant list, menus, and opening hours."
   }
 ]
