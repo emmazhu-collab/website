@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Blog – Xuanru Zhu</title>
+<title>readme</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -23,260 +23,142 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-6033a600180109c3731f6a886c29932c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
-  "location": "navbar",
-  "copy-button": false,
-  "collapse-after": 3,
-  "panel-placement": "end",
-  "type": "overlay",
-  "limit": 50,
-  "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
-  ],
-  "show-item-context": false,
-  "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
-    "search-text-placeholder": "",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
-  }
-}</script>
-<script>
+<script src="README_files/libs/clipboard/clipboard.min.js"></script>
+<script src="README_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="README_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="README_files/libs/quarto-html/popper.min.js"></script>
+<script src="README_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="README_files/libs/quarto-html/anchor.min.js"></script>
+<link href="README_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="README_files/libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="README_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="README_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="README_files/libs/bootstrap/bootstrap-138a6193a3bd40baf1e627da441a4734.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="../styles.css">
 </head>
 
-<body class="nav-fixed fullcontent quarto-light">
+<body class="fullcontent quarto-light">
 
-<div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
-    <span class="navbar-title">Xuanru Zhu</span>
-    </a>
-  </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-  <span class="navbar-toggler-icon"></span>
-</button>
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
-<span class="menu-text">Home</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../bio.html"> 
-<span class="menu-text">About Me</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../resume.html"> 
-<span class="menu-text">Resume</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link active" href="../blog/index.html" aria-current="page"> 
-<span class="menu-text">Blog</span></a>
-  </li>  
-</ul>
-          </div> <!-- /navcollapse -->
-            <div class="quarto-navbar-tools">
-</div>
-      </div> <!-- /container-fluid -->
-    </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
-<!-- sidebar -->
-<!-- margin-sidebar -->
-    
-<!-- main -->
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Blog</h1>
-</div>
 
 
 
-<div class="quarto-title-meta">
+<section id="xuanru-zhus-website" class="level1">
+<h1>Xuanru Zhu’s Website</h1>
+<p>This repository contains my personal website and blog posts for AEDS 6400.</p>
+<section id="blog-2-university-city-dining-days" class="level2">
+<h2 class="anchored" data-anchor-id="blog-2-university-city-dining-days">Blog 2: University City Dining Days</h2>
+<p>This post uses R and <code>rvest</code> to collect restaurant information from the <a href="https://www.universitycity.org/diningdays/">University City Dining Days website</a>. It compares the number of restaurant choices for lunch and dinner at $20, $30, and $40.</p>
+<p>The analysis uses the 2026 restaurant list, first accessed on September 19, 2026. Each row is one restaurant at one meal and price. A restaurant can appear in more than one group.</p>
+</section>
+<section id="where-to-find-the-files" class="level2">
+<h2 class="anchored" data-anchor-id="where-to-find-the-files">Where to find the files</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>File or folder</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>blog/posts/post2/index.qmd</code></td>
+<td>Blog 2 text and R code</td>
+</tr>
+<tr class="even">
+<td><code>blog/posts/post2/data/processed/restaurant-options.csv</code></td>
+<td>Cleaned restaurant data</td>
+</tr>
+<tr class="odd">
+<td><code>blog/posts/post2/results/choices-by-meal-price.csv</code></td>
+<td>Restaurant counts by meal and price</td>
+</tr>
+<tr class="even">
+<td><code>docs/</code></td>
+<td>Generated webpages and figures</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="how-to-run-the-code" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-run-the-code">How to run the code</h2>
+<p>You need R, RStudio, and an internet connection.</p>
+<ol type="1">
+<li><p>Download this repository and open <code>studentname-website.Rproj</code> in RStudio.</p></li>
+<li><p>Install any missing packages in the R Console:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"rvest"</span>, <span class="st">"tidyverse"</span>, <span class="st">"knitr"</span>, <span class="st">"rmarkdown"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Open <code>blog/posts/post2/index.qmd</code> and click <strong>Render</strong>.</p></li>
+</ol>
+<p>This updates the two CSV files and the webpage in <code>docs/</code>. The code reads the live website, so changes to the website may affect the results.</p>
+</section>
+<section id="blog-3-education-and-unemployment" class="level2">
+<h2 class="anchored" data-anchor-id="blog-3-education-and-unemployment">Blog 3: Education and Unemployment</h2>
+<p>This post compares unemployment by education using IPUMS CPS Basic Monthly data for January 2020–2026. It uses the CPS person weight (WTFINL) and focuses on civilians ages 25–64 in the labor force.</p>
+<ul>
+<li><code>blog/posts/post3/index.qmd</code>: text and R code.</li>
+<li><code>blog/posts/post3/data/</code>: folder for the CPS data and XML data dictionary.</li>
+<li><code>blog/posts/post3/results/</code>: two summary tables and three figures saved by the code.</li>
+</ul>
+<section id="how-to-run-blog-3" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-run-blog-3">How to run Blog 3</h3>
+<ol type="1">
+<li>Sign in to <a href="https://cps.ipums.org/cps/">IPUMS CPS</a> and select January Basic Monthly samples for 2020–2026. Include YEAR, MONTH, AGE, EDUC, EMPSTAT, and WTFINL.</li>
+<li>Download the fixed-width data and DDI (XML) dictionary. Put them in <code>blog/posts/post3/data/</code> as <code>cps_00001.dat.gz</code> and <code>cps_00001.xml</code>. If your extract has a different name, change both paths in the first code chunk.</li>
+<li>Install <code>ipumsr</code> and <code>tidyverse</code> if needed. Open <code>blog/posts/post3/index.qmd</code> in RStudio and click <strong>Render</strong>.</li>
+</ol>
+<p>The raw CPS microdata are not included in this GitHub repository. To reproduce the analysis, users need to download their own IPUMS CPS extract. The summary tables and figures used in the post are saved in the <code>results/</code> folder.</p>
+</section>
+</section>
+</section>
 
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
-
-
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="ZGF0YSUyMHZpc3VhbGl6YXRpb24lMkN1bmVtcGxveW1lbnQlMkNlZHVjYXRpb24=" data-listing-date-sort="1790312400000" data-listing-file-modified-sort="1790387003794" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1244">
-<div class="thumbnail"><a href="../blog/posts/post3/index.html" class="no-external">
-
-<p class="card-img-top"><img loading='lazy' src="posts/post3/index_files/figure-html/unnamed-chunk-4-1.png" alt="Unemployment rates across four education groups in January 2026."  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/post3/index.html" class="no-external">Education and Unemployment in the United States</a>
-</h3>
-<div class="delink listing-description"><a href="../blog/posts/post3/index.html" class="no-external">
-Does more education go with lower unemployment? I wanted to look at this question because education is often related to the types of jobs people can get. At the same time…
-</a></div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/post3/index.html" class="no-external">
-<div class="listing-date">
-Sep 25, 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="d2ViJTIwc2NyYXBpbmclMkNyZXN0YXVyYW50cw==" data-listing-date-sort="1789794000000" data-listing-file-modified-sort="1789878088320" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1063">
-<div class="thumbnail"><a href="../blog/posts/post2/index.html" class="no-external">
-
-<p class="card-img-top"><img loading='lazy' src="posts/post2/index_files/figure-html/choices-chart-1.png" alt="Horizontal bars compare six Dining Days groups. Dinner at 40 dollars has 13 restaurants; lunch at 30 dollars has 10; lunch at 20 dollars has 8; dinner at 20 and 30 dollars each has 6; lunch at 40 dollars has 1."  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/post2/index.html" class="no-external">Which Dining Days Option Offers the Most Restaurant Choices?</a>
-</h3>
-<div class="delink listing-description"><a href="../blog/posts/post2/index.html" class="no-external">
-When choosing a restaurant, people often think about the price and whether they want lunch or dinner. In this post, I ask: <strong>Which meal and price group had the most restaurant…</strong><code></code>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/post2/index.html" class="no-external">
-<div class="listing-date">
-Sep 19, 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="cGVyc29uYWwlMkNFY29ub21pYw==" data-listing-date-sort="1788930000000" data-listing-file-modified-sort="1788980798479" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="484">
-<div class="thumbnail"><a href="../blog/posts/post1/Untitled.html" class="no-external">
-
-<p class="card-img-top"><img loading='lazy' src="posts/post1/figure1.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/post1/Untitled.html" class="no-external">Understanding the Prisoner’s Dilemma</a>
-</h3>
-<div class="delink listing-description"><a href="../blog/posts/post1/Untitled.html" class="no-external">
-We usually think that if everyone makes the best choice for themselves, the final result should also be good. However, this is not always true. The <strong>Prisoner’s Dilemma</strong> shows…
-</a></div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/post1/Untitled.html" class="no-external">
-<div class="listing-date">
-Sep 9, 2026
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main>
+<!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
@@ -678,19 +560,6 @@ Sep 9, 2026
   });
   </script>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
-    <div class="nav-footer-left">
-<p><img src="../images/UniversityofPennsylvania_FullLogo_RGB.png" class="img-fluid" width="100"></p>
-</div>   
-    <div class="nav-footer-center">
-<p>© 2026 Xuanru Zhu</p>
-</div>
-    <div class="nav-footer-right">
-      &nbsp;
-    </div>
-  </div>
-</footer>
 
 
 

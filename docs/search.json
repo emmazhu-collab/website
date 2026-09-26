@@ -39,7 +39,7 @@
     "href": "blog/index.html",
     "title": "Blog",
     "section": "",
-    "text": "Which Dining Days Option Offers the Most Restaurant Choices?\n\n\n\n\n\n\n\n\nSep 19, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nUnderstanding the Prisoner’s Dilemma\n\n\n\n\n\n\n\n\nSep 9, 2026\n\n\n\n\n\nNo matching items"
+    "text": "Education and Unemployment in the United States\n\n\n\n\n\n\n\n\nSep 25, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nWhich Dining Days Option Offers the Most Restaurant Choices?\n\n\n\n\n\n\n\n\nSep 19, 2026\n\n\n\n\n\n\n\n\n\n\n\n\nUnderstanding the Prisoner’s Dilemma\n\n\n\n\n\n\n\n\nSep 9, 2026\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "blog/posts/post1/Untitled.html",
@@ -173,5 +173,61 @@
     "title": "Which Dining Days Option Offers the Most Restaurant Choices?",
     "section": "Conclusion and limitations",
     "text": "Conclusion and limitations\nBased on the 2026 list, I would suggest $40 dinner to someone who wants the most choices within one meal and price group. For someone with a $20 menu budget who can choose either meal, lunch has more options. For lunch, the $30 group has more choices than the $40 group. Paying more does not always give someone more choices.\nThis analysis only counts restaurants on the Dining Days list. It does not compare food quality, meal size, or available reservations. The prices do not include tax or tips. The results also do not represent all restaurants in University City. If the website changes, the CSS selectors and results need to be checked again. Before planning a future visit, check the new restaurant list, menus, and opening hours."
+  },
+  {
+    "objectID": "blog/posts/post3/index.html",
+    "href": "blog/posts/post3/index.html",
+    "title": "Education and Unemployment in the United States",
+    "section": "",
+    "text": "Does more education go with lower unemployment? I wanted to look at this question because education is often related to the types of jobs people can get. At the same time, education is not the only thing that matters. People with different education levels may also have different jobs and work experience.\nIn this post, I use IPUMS CPS data to compare unemployment across four education groups. I first look at January 2026, then compare January samples from 2020 to 2026. Finally, I look at different age groups to see if the same pattern still appears."
+  },
+  {
+    "objectID": "blog/posts/post3/index.html#introduction",
+    "href": "blog/posts/post3/index.html#introduction",
+    "title": "Education and Unemployment in the United States",
+    "section": "",
+    "text": "Does more education go with lower unemployment? I wanted to look at this question because education is often related to the types of jobs people can get. At the same time, education is not the only thing that matters. People with different education levels may also have different jobs and work experience.\nIn this post, I use IPUMS CPS data to compare unemployment across four education groups. I first look at January 2026, then compare January samples from 2020 to 2026. Finally, I look at different age groups to see if the same pattern still appears."
+  },
+  {
+    "objectID": "blog/posts/post3/index.html#data-and-method",
+    "href": "blog/posts/post3/index.html#data-and-method",
+    "title": "Education and Unemployment in the United States",
+    "section": "Data and method",
+    "text": "Data and method\nThe data come from the IPUMS Current Population Survey. I use the Basic Monthly January sample from each year between 2020 and 2026. I focus on civilians ages 25–64 who are in the labor force. I chose this age range because many younger people are still in school, while some older people have already retired.\n\nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.2.1     ✔ readr     2.1.6\n✔ forcats   1.0.1     ✔ stringr   1.6.0\n✔ ggplot2   4.0.3     ✔ tibble    3.3.1\n✔ lubridate 1.9.4     ✔ tidyr     1.3.2\n✔ purrr     1.2.1     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\nlibrary(ipumsr)\n\nddi &lt;- read_ipums_ddi(\"data/cps_00001.xml\")\ncps &lt;- read_ipums_micro(ddi, data_file = \"data/cps_00001.dat.gz\")\n\nUse of data from IPUMS CPS is subject to conditions including that users should cite the data appropriately. Use command `ipums_conditions()` for more details.\n\ncps |&gt; count(YEAR, MONTH)\n\n# A tibble: 7 × 3\n   YEAR MONTH            n\n  &lt;dbl&gt; &lt;int+lbl&gt;    &lt;int&gt;\n1  2020 1 [January] 117239\n2  2021 1 [January] 110669\n3  2022 1 [January] 102656\n4  2023 1 [January]  99337\n5  2024 1 [January]  99135\n6  2025 1 [January]  97726\n7  2026 1 [January]  90297\n\n\nI use EMPSTAT to identify employed and unemployed people, and EDUC to group education. People who are not in the labor force are excluded. Some college includes an associate degree. The highest group includes bachelor’s and graduate degrees.\n\nworkers &lt;- cps |&gt;\n  filter(\n    YEAR &gt;= 2020, YEAR &lt;= 2026, MONTH == 1,\n    AGE &gt;= 25, AGE &lt;= 64, WTFINL &gt; 0,\n    EMPSTAT %in% c(10, 12, 20, 21, 22)\n  ) |&gt;\n  mutate(\n    education = case_when(\n      EDUC %in% c(2, 10, 20, 30, 40, 50, 60, 71) ~ \"Less than high school\",\n      EDUC == 73 ~ \"High school\",\n      EDUC %in% c(81, 91, 92) ~ \"Some college / associate\",\n      EDUC %in% c(111, 123, 124, 125) ~ \"Bachelor's or higher\"\n    ),\n    unemployed = EMPSTAT %in% c(20, 21, 22),\n    age_group = case_when(\n      AGE &lt; 35 ~ \"25-34\",\n      AGE &lt; 45 ~ \"35-44\",\n      AGE &lt; 55 ~ \"45-54\",\n      TRUE ~ \"55-64\"\n    )\n  ) |&gt;\n  filter(!is.na(education)) |&gt;\n  mutate(\n    education = factor(education, levels = c(\n      \"Less than high school\", \"High school\",\n      \"Some college / associate\", \"Bachelor's or higher\"\n    ))\n  )\n\nSince the CPS is a survey, each person in the sample can represent a different number of people in the U.S. population. I use the Basic Monthly person weight, WTFINL, when calculating unemployment rates. The unemployment rate here is the share of people in the labor force who are unemployed, expressed as a percentage.\n\nrates &lt;- workers |&gt;\n  group_by(YEAR, education) |&gt;\n  summarise(\n    sample_n = n(),\n    rate = 100 * weighted.mean(unemployed, WTFINL),\n    .groups = \"drop\"\n  )\n\nlatest &lt;- rates |&gt; filter(YEAR == 2026)\nlatest\n\n# A tibble: 4 × 4\n   YEAR education                sample_n  rate\n  &lt;dbl&gt; &lt;fct&gt;                       &lt;int&gt; &lt;dbl&gt;\n1  2026 Less than high school        1893  7.40\n2  2026 High school                  8806  5.44\n3  2026 Some college / associate     8637  3.92\n4  2026 Bachelor's or higher        15997  3.03"
+  },
+  {
+    "objectID": "blog/posts/post3/index.html#education-and-unemployment-in-january-2026",
+    "href": "blog/posts/post3/index.html#education-and-unemployment-in-january-2026",
+    "title": "Education and Unemployment in the United States",
+    "section": "1. Education and unemployment in January 2026",
+    "text": "1. Education and unemployment in January 2026\n\nplot1 &lt;- ggplot(latest, aes(x = rate, y = education)) +\n  geom_point(size = 3) +\n  scale_x_continuous(limits = c(0, 9), breaks = seq(0, 9, 3)) +\n  labs(\n    title = \"Unemployment is lower among more educated workers\",\n    subtitle = \"January 2026 | Civilian labor force, ages 25-64\",\n    x = \"Unemployment rate (%)\", y = NULL,\n    caption = \"Source: IPUMS CPS. Weighted using WTFINL.\"\n  ) +\n  theme_minimal(base_size = 12)\nplot1\n\n\n\n\n\n\n\n\nIn January 2026, the unemployment rate was 7.4% for people without a high school diploma, compared with 3% for people with a bachelor’s degree or higher. The difference was about 4.4 percentage points. The other two education groups were in between.\nSo in this sample, people with more education generally had lower unemployment. However, this is only a comparison between groups, so I cannot say that education itself caused the difference."
+  },
+  {
+    "objectID": "blog/posts/post3/index.html#does-the-gap-remain-over-time",
+    "href": "blog/posts/post3/index.html#does-the-gap-remain-over-time",
+    "title": "Education and Unemployment in the United States",
+    "section": "2. Does the gap remain over time?",
+    "text": "2. Does the gap remain over time?\n\nplot2 &lt;- ggplot(rates, aes(x = YEAR, y = rate, color = education)) +\n  geom_line(linewidth = 0.8) +\n  geom_point(size = 2) +\n  scale_x_continuous(breaks = 2020:2026) +\n  scale_y_continuous(limits = c(0, 12), breaks = seq(0, 12, 3)) +\n  labs(\n    title = \"The education gap appears in every January sample\",\n    subtitle = \"Civilian labor force, ages 25-64\",\n    x = NULL, y = \"Unemployment rate (%)\", color = \"Education\",\n    caption = \"Source: IPUMS CPS. Weighted using WTFINL. January only.\"\n  ) +\n  theme_minimal(base_size = 12) +\n  theme(legend.position = \"bottom\")\nplot2\n\n\n\n\n\n\n\n\nThe same general pattern appears over time. All four groups had higher unemployment in January 2021 than in January 2020, and rates fell again in 2022 and 2023. The bachelor’s-or-higher group had the lowest unemployment rate in every year shown.\nOne limitation is that I only use January data. These are not annual averages or seasonally adjusted rates. January 2020 was before the major labor market changes caused by the pandemic, so the graph does not show the changes later that year."
+  },
+  {
+    "objectID": "blog/posts/post3/index.html#is-the-pattern-similar-across-ages",
+    "href": "blog/posts/post3/index.html#is-the-pattern-similar-across-ages",
+    "title": "Education and Unemployment in the United States",
+    "section": "3. Is the pattern similar across ages?",
+    "text": "3. Is the pattern similar across ages?\n\nage_rates &lt;- workers |&gt;\n  filter(YEAR == 2026) |&gt;\n  group_by(age_group, education) |&gt;\n  summarise(\n    sample_n = n(),\n    rate = 100 * weighted.mean(unemployed, WTFINL),\n    .groups = \"drop\"\n  )\n\n\nplot3 &lt;- ggplot(age_rates, aes(x = rate, y = education)) +\n  geom_point(size = 3) +\n  facet_wrap(~ age_group, ncol = 2) +\n  scale_x_continuous(limits = c(0, 13), breaks = c(0, 4, 8, 12)) +\n  labs(\n    title = \"The education gap is largest among ages 25-34\",\n    subtitle = \"January 2026 | Civilian labor force\",\n    x = \"Unemployment rate (%)\", y = NULL,\n    caption = \"Source: IPUMS CPS. Weighted using WTFINL. Same scale in all panels.\"\n  ) +\n  theme_minimal(base_size = 12)\nplot3\n\n\n\n\n\n\n\n\nAmong ages 25–34, unemployment was about 11.9% for people without a high school diploma and 3.7% for those with a bachelor’s degree or higher. The gap was smaller in the older groups. The ranking was not exact everywhere: among ages 55–64, the some-college and bachelor’s-or-higher rates were very close."
+  },
+  {
+    "objectID": "blog/posts/post3/index.html#takeaway-and-limits",
+    "href": "blog/posts/post3/index.html#takeaway-and-limits",
+    "title": "Education and Employment in the United States",
+    "section": "Takeaway and limits",
+    "text": "Takeaway and limits\nHigher education was generally associated with lower unemployment across years and age groups. However, these comparisons do not separate education from differences in occupation, experience, or other factors. Small differences should also be read carefully because the CPS is a sample, especially within smaller age and education groups. These charts show estimates, not tests of statistical significance.\nThe main takeaway is that the education gap is persistent, but its size varies by age and year. Education is one useful part of understanding unemployment, rather than a guarantee of employment.\nData citation: Sarah Flood et al. (2025). IPUMS CPS: Version 13.0 [dataset]. Minneapolis, MN: IPUMS. doi:10.18128/D030.V13.0."
+  },
+  {
+    "objectID": "blog/posts/post3/index.html#takeaway",
+    "href": "blog/posts/post3/index.html#takeaway",
+    "title": "Education and Unemployment in the United States",
+    "section": "Takeaway",
+    "text": "Takeaway\nOverall, people with more education generally had lower unemployment in these CPS samples. This pattern appears across different years and most age groups, although the size of the gap changes.\nThis does not mean that education is the only reason for the difference. Occupation, work experience, age, and other factors may also matter. Since these results come from a sample, small differences may reflect sampling variation, especially in smaller groups. The graphs do not show tests of statistical significance.\nData citation: Sarah Flood et al. (2025). IPUMS CPS: Version 13.0 [dataset]. Minneapolis, MN: IPUMS. doi:10.18128/D030.V13.0."
   }
 ]
