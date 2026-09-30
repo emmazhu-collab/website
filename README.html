@@ -109,7 +109,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td><code>blog/posts/post2/index.qmd</code></td>
-<td>Blog 2 text and R code</td>
+<td>Blog 2 article</td>
 </tr>
 <tr class="even">
 <td><code>blog/posts/post2/data/processed/restaurant-options.csv</code></td>
@@ -141,9 +141,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="blog-3-education-and-unemployment">Blog 3: Education and Unemployment</h2>
 <p>This post compares unemployment by education using IPUMS CPS Basic Monthly data for January 2020–2026. It uses the CPS person weight (WTFINL) and focuses on civilians ages 25–64 in the labor force.</p>
 <ul>
-<li><code>blog/posts/post3/index.qmd</code>: text and R code.</li>
+<li><code>blog/posts/post3/index.qmd</code>: article.</li>
 <li><code>blog/posts/post3/data/</code>: folder for the CPS data and XML data dictionary.</li>
-<li><code>blog/posts/post3/results/</code>: two summary tables and three figures saved by the code.</li>
+<li><code>blog/posts/post3/results/</code>: two summary tables saved by the code.</li>
 </ul>
 <section id="how-to-run-blog-3" class="level3">
 <h3 class="anchored" data-anchor-id="how-to-run-blog-3">How to run Blog 3</h3>
@@ -154,6 +154,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 <p>The raw CPS microdata are not included in this GitHub repository. To reproduce the analysis, users need to download their own IPUMS CPS extract. The summary tables and figures used in the post are saved in the <code>results/</code> folder.</p>
 </section>
+</section>
+<section id="post-files" class="level2">
+<h2 class="anchored" data-anchor-id="post-files">Post files</h2>
+<p>Blog 2 and Blog 3 each have an <code>analysis.R</code> script, a <code>graph/</code> folder, an <code>index.qmd</code> article, and a local <code>README.md</code> with run instructions. The articles call their scripts when rendered; analysis code is not displayed on the webpages.</p>
 </section>
 </section>
 

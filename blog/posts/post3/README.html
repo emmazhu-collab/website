@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Blog – Xuanru Zhu</title>
+<title>readme</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -23,260 +23,164 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-6033a600180109c3731f6a886c29932c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
-  "location": "navbar",
-  "copy-button": false,
-  "collapse-after": 3,
-  "panel-placement": "end",
-  "type": "overlay",
-  "limit": 50,
-  "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
-  ],
-  "show-item-context": false,
-  "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
-    "search-text-placeholder": "",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
-  }
-}</script>
-<script>
+<script src="README_files/libs/clipboard/clipboard.min.js"></script>
+<script src="README_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="README_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="README_files/libs/quarto-html/popper.min.js"></script>
+<script src="README_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="README_files/libs/quarto-html/anchor.min.js"></script>
+<link href="README_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="README_files/libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="README_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="README_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="README_files/libs/bootstrap/bootstrap-138a6193a3bd40baf1e627da441a4734.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="../styles.css">
 </head>
 
-<body class="nav-fixed fullcontent quarto-light">
+<body class="fullcontent quarto-light">
 
-<div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
-    <span class="navbar-title">Xuanru Zhu</span>
-    </a>
-  </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-  <span class="navbar-toggler-icon"></span>
-</button>
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
-<span class="menu-text">Home</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../bio.html"> 
-<span class="menu-text">About Me</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../resume.html"> 
-<span class="menu-text">Resume</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link active" href="../blog/index.html" aria-current="page"> 
-<span class="menu-text">Blog</span></a>
-  </li>  
-</ul>
-          </div> <!-- /navcollapse -->
-            <div class="quarto-navbar-tools">
-</div>
-      </div> <!-- /container-fluid -->
-    </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
-<!-- sidebar -->
-<!-- margin-sidebar -->
-    
-<!-- main -->
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Blog</h1>
-</div>
 
 
 
-<div class="quarto-title-meta">
+<section id="blog-3-education-and-unemployment" class="level1">
+<h1>Blog 3: Education and Unemployment</h1>
+<section id="question" class="level2">
+<h2 class="anchored" data-anchor-id="question">Question</h2>
+<p>How does unemployment differ by education in the United States? The post compares education groups in January 2026, follows the same groups from January 2020 to January 2026, and compares four age groups in January 2026.</p>
+</section>
+<section id="data-and-method" class="level2">
+<h2 class="anchored" data-anchor-id="data-and-method">Data and method</h2>
+<p>The source is <a href="https://cps.ipums.org/cps/">IPUMS CPS</a>, Version 13.0. I use the Basic Monthly January samples for 2020–2026. The analysis includes civilians ages 25–64 who are employed or unemployed. People outside the labor force are excluded.</p>
+<p>Education is grouped into less than high school, high school, some college or an associate degree, and a bachelor’s degree or higher. Employment status comes from <code>EMPSTAT</code>, and education comes from <code>EDUC</code>. Unemployed people include those on temporary layoff.</p>
+<p>The script uses the person weight <code>WTFINL</code>. Within each group, the unemployment rate is <code>100 * weighted.mean(unemployed, WTFINL)</code>. This gives the weighted percentage of the labor force who are unemployed. The figures describe January, not annual averages or seasonally adjusted rates.</p>
+</section>
+<section id="files" class="level2">
+<h2 class="anchored" data-anchor-id="files">Files</h2>
+<p>All paths below start from this post folder.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>index.qmd</code></td>
+<td>Article text and links to the figures</td>
+</tr>
+<tr class="even">
+<td><code>analysis.R</code></td>
+<td>Data preparation, weighted rates, and plotting</td>
+</tr>
+<tr class="odd">
+<td><code>data/cps_00001.dat.gz</code></td>
+<td>Raw CPS data, downloaded separately</td>
+</tr>
+<tr class="even">
+<td><code>data/cps_00001.xml</code></td>
+<td>Matching data dictionary used to read the data</td>
+</tr>
+<tr class="odd">
+<td><code>results/rates-by-year.csv</code></td>
+<td>Rates and sample counts by year and education</td>
+</tr>
+<tr class="even">
+<td><code>results/rates-by-age.csv</code></td>
+<td>Rates and sample counts by age and education in 2026</td>
+</tr>
+<tr class="odd">
+<td><code>graph/education-2026.png</code></td>
+<td>Education comparison for January 2026</td>
+</tr>
+<tr class="even">
+<td><code>graph/education-trend.png</code></td>
+<td>January comparison over time</td>
+</tr>
+<tr class="odd">
+<td><code>graph/education-by-age.png</code></td>
+<td>Education comparison within age groups</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="get-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="get-the-data">Get the data</h2>
+<ol type="1">
+<li>Sign in to IPUMS CPS and select the January Basic Monthly samples for each year from 2020 through 2026. Do not select ASEC samples.</li>
+<li>Include <code>YEAR</code>, <code>MONTH</code>, <code>AGE</code>, <code>EDUC</code>, <code>EMPSTAT</code>, and <code>WTFINL</code>.</li>
+<li>Download the fixed-width data (<code>.dat.gz</code>) and its DDI dictionary (<code>.xml</code>). Put both in this post’s <code>data/</code> folder.</li>
+<li>The script expects <code>cps_00001.dat.gz</code> and <code>cps_00001.xml</code>. If your extract has a different name, update the two file paths in <code>analysis.R</code>. Use the dictionary that belongs to your downloaded extract.</li>
+</ol>
+<p>Raw CPS microdata are excluded from Git. Other readers need to download their own extract under the <a href="https://cps.ipums.org/cps/terms.shtml">IPUMS terms</a>.</p>
+</section>
+<section id="how-to-run" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-run">How to run</h2>
+<ol type="1">
+<li><p>Open <code>studentname-website.Rproj</code> from the main repository folder in RStudio.</p></li>
+<li><p>Install any missing packages in the R Console:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"ipumsr"</span>, <span class="st">"tidyverse"</span>, <span class="st">"knitr"</span>, <span class="st">"rmarkdown"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Open <code>blog/posts/post3/index.qmd</code> and click <strong>Render</strong>.</p></li>
+</ol>
+<p>Render runs <code>analysis.R</code>, updates the two summary tables and three figures, and creates the article webpage. The website output is in <code>docs/blog/posts/post3/</code> from the main repository folder. Code is kept in the separate script and is not shown on the webpage. Once the data and packages are installed, the analysis reads local files and does not download data again.</p>
+<p>To run only the analysis, open <code>analysis.R</code>, choose <strong>Session → Set Working Directory → To Source File Location</strong>, and run <code>source("analysis.R")</code> in the R Console.</p>
+</section>
+<section id="reading-the-results" class="level2">
+<h2 class="anchored" data-anchor-id="reading-the-results">Reading the results</h2>
+<p><code>sample_n</code> is the number of survey observations in each group, not a population total. <code>rate</code> is the weighted unemployment percentage. The figures show differences between groups; they do not prove that education causes lower unemployment. Small groups have less precise estimates, and the analysis does not test statistical significance.</p>
+<p>Data citation: Sarah Flood et al.&nbsp;(2025). <em>IPUMS CPS: Version 13.0</em> [dataset]. Minneapolis, MN: IPUMS. <a href="https://doi.org/10.18128/D030.V13.0">doi:10.18128/D030.V13.0</a>.</p>
+</section>
+</section>
 
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
-
-
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="ZGF0YSUyMHZpc3VhbGl6YXRpb24lMkN1bmVtcGxveW1lbnQlMkNlZHVjYXRpb24=" data-listing-date-sort="1790308800000" data-listing-file-modified-sort="1790792754348" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="695">
-<div class="thumbnail"><a href="../blog/posts/post3/index.html" class="no-external">
-
-<p class="card-img-top"><img loading='lazy' src="posts/post3/graph/education-2026.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/post3/index.html" class="no-external">Education and Unemployment in the United States</a>
-</h3>
-<div class="delink listing-description"><a href="../blog/posts/post3/index.html" class="no-external">
-A degree takes years of work, and often a lot of money. One reason to keep going is the hope of having more job options afterward. But when we look at people who are working…
-</a></div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/post3/index.html" class="no-external">
-<div class="listing-date">
-Sep 25, 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="d2ViJTIwc2NyYXBpbmclMkNyZXN0YXVyYW50cw==" data-listing-date-sort="1789790400000" data-listing-file-modified-sort="1790792327599" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="530">
-<div class="thumbnail"><a href="../blog/posts/post2/index.html" class="no-external">
-
-<p class="card-img-top"><img loading='lazy' src="posts/post2/graph/restaurant-choices.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/post2/index.html" class="no-external">Which Dining Days Option Offers the Most Restaurant Choices?</a>
-</h3>
-<div class="delink listing-description"><a href="../blog/posts/post2/index.html" class="no-external">
-You and your friends agree to eat out. Then comes the harder part: choosing a place everyone likes at a price everyone can afford. Would spending more give you more options?…
-</a></div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/post2/index.html" class="no-external">
-<div class="listing-date">
-Sep 19, 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="cGVyc29uYWwlMkNFY29ub21pYw==" data-listing-date-sort="1788926400000" data-listing-file-modified-sort="1788980798479" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="484">
-<div class="thumbnail"><a href="../blog/posts/post1/Untitled.html" class="no-external">
-
-<p class="card-img-top"><img loading='lazy' src="posts/post1/figure1.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../blog/posts/post1/Untitled.html" class="no-external">Understanding the Prisoner’s Dilemma</a>
-</h3>
-<div class="delink listing-description"><a href="../blog/posts/post1/Untitled.html" class="no-external">
-We usually think that if everyone makes the best choice for themselves, the final result should also be good. However, this is not always true. The <strong>Prisoner’s Dilemma</strong> shows…
-</a></div>
-</div>
-<div class="metadata">
-<a href="../blog/posts/post1/Untitled.html" class="no-external">
-<div class="listing-date">
-Sep 9, 2026
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main>
+<!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
@@ -678,19 +582,6 @@ Sep 9, 2026
   });
   </script>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
-    <div class="nav-footer-left">
-<p><img src="../images/UniversityofPennsylvania_FullLogo_RGB.png" class="img-fluid" width="100"></p>
-</div>   
-    <div class="nav-footer-center">
-<p>© 2026 Xuanru Zhu</p>
-</div>
-    <div class="nav-footer-right">
-      &nbsp;
-    </div>
-  </div>
-</footer>
 
 
 

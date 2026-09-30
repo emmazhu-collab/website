@@ -24,41 +24,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -189,195 +154,40 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>Does more education go with lower unemployment? I wanted to look at this question because education is often related to the types of jobs people can get. At the same time, education is not the only thing that matters. People with different education levels may also have different jobs and work experience.</p>
-<p>In this post, I use IPUMS CPS data to compare unemployment across four education groups. I first look at January 2026, then compare January samples from 2020 to 2026. Finally, I look at different age groups to see if the same pattern still appears.</p>
-</section>
-<section id="data-and-method" class="level2">
-<h2 class="anchored" data-anchor-id="data-and-method">Data and method</h2>
+<p>A degree takes years of work, and often a lot of money. One reason to keep going is the hope of having more job options afterward. But when we look at people who are working or looking for work, how much does unemployment differ by education?</p>
+<p>I looked at four education groups in the U.S. The gap is easy to see in January 2026, but one month can only tell us so much. Looking back across several years, and then comparing people of similar ages, helps show whether that first impression holds up.</p>
 <p>The data come from the <a href="https://cps.ipums.org/cps/">IPUMS Current Population Survey</a>. I use the Basic Monthly January sample from each year between 2020 and 2026. I focus on civilians ages 25–64 who are in the labor force. I chose this age range because many younger people are still in school, while some older people have already retired.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.2.1     ✔ readr     2.1.6
-✔ forcats   1.0.1     ✔ stringr   1.6.0
-✔ ggplot2   4.0.3     ✔ tibble    3.3.1
-✔ lubridate 1.9.4     ✔ tidyr     1.3.2
-✔ purrr     1.2.1     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ipumsr)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>ddi <span class="ot">&lt;-</span> <span class="fu">read_ipums_ddi</span>(<span class="st">"data/cps_00001.xml"</span>)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>cps <span class="ot">&lt;-</span> <span class="fu">read_ipums_micro</span>(ddi, <span class="at">data_file =</span> <span class="st">"data/cps_00001.dat.gz"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Use of data from IPUMS CPS is subject to conditions including that users should cite the data appropriately. Use command `ipums_conditions()` for more details.</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>cps <span class="sc">|&gt;</span> <span class="fu">count</span>(YEAR, MONTH)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 7 × 3
-   YEAR MONTH            n
-  &lt;dbl&gt; &lt;int+lbl&gt;    &lt;int&gt;
-1  2020 1 [January] 117239
-2  2021 1 [January] 110669
-3  2022 1 [January] 102656
-4  2023 1 [January]  99337
-5  2024 1 [January]  99135
-6  2025 1 [January]  97726
-7  2026 1 [January]  90297</code></pre>
-</div>
-</div>
-<p>I use <a href="https://cps.ipums.org/cps-action/variables/EMPSTAT">EMPSTAT</a> to identify employed and unemployed people, and <a href="https://cps.ipums.org/cps-action/variables/EDUC">EDUC</a> to group education. People who are not in the labor force are excluded. Some college includes an associate degree. The highest group includes bachelor’s and graduate degrees.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>workers <span class="ot">&lt;-</span> cps <span class="sc">|&gt;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    YEAR <span class="sc">&gt;=</span> <span class="dv">2020</span>, YEAR <span class="sc">&lt;=</span> <span class="dv">2026</span>, MONTH <span class="sc">==</span> <span class="dv">1</span>,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    AGE <span class="sc">&gt;=</span> <span class="dv">25</span>, AGE <span class="sc">&lt;=</span> <span class="dv">64</span>, WTFINL <span class="sc">&gt;</span> <span class="dv">0</span>,</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    EMPSTAT <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">12</span>, <span class="dv">20</span>, <span class="dv">21</span>, <span class="dv">22</span>)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">education =</span> <span class="fu">case_when</span>(</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>      EDUC <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>, <span class="dv">50</span>, <span class="dv">60</span>, <span class="dv">71</span>) <span class="sc">~</span> <span class="st">"Less than high school"</span>,</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>      EDUC <span class="sc">==</span> <span class="dv">73</span> <span class="sc">~</span> <span class="st">"High school"</span>,</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>      EDUC <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">81</span>, <span class="dv">91</span>, <span class="dv">92</span>) <span class="sc">~</span> <span class="st">"Some college / associate"</span>,</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>      EDUC <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">111</span>, <span class="dv">123</span>, <span class="dv">124</span>, <span class="dv">125</span>) <span class="sc">~</span> <span class="st">"Bachelor's or higher"</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">unemployed =</span> EMPSTAT <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">20</span>, <span class="dv">21</span>, <span class="dv">22</span>),</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">age_group =</span> <span class="fu">case_when</span>(</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>      AGE <span class="sc">&lt;</span> <span class="dv">35</span> <span class="sc">~</span> <span class="st">"25-34"</span>,</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>      AGE <span class="sc">&lt;</span> <span class="dv">45</span> <span class="sc">~</span> <span class="st">"35-44"</span>,</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>      AGE <span class="sc">&lt;</span> <span class="dv">55</span> <span class="sc">~</span> <span class="st">"45-54"</span>,</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"55-64"</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(education)) <span class="sc">|&gt;</span></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">education =</span> <span class="fu">factor</span>(education, <span class="at">levels =</span> <span class="fu">c</span>(</span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Less than high school"</span>, <span class="st">"High school"</span>,</span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Some college / associate"</span>, <span class="st">"Bachelor's or higher"</span></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    ))</span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>Since the CPS is a survey, each person in the sample can represent a different number of people in the U.S. population. I use the Basic Monthly person weight, <a href="https://cps.ipums.org/cps-action/variables/WTFINL">WTFINL</a>, when calculating unemployment rates. The unemployment rate here is the share of people in the labor force who are unemployed, expressed as a percentage.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>rates <span class="ot">&lt;-</span> workers <span class="sc">|&gt;</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(YEAR, education) <span class="sc">|&gt;</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">sample_n =</span> <span class="fu">n</span>(),</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">rate =</span> <span class="dv">100</span> <span class="sc">*</span> <span class="fu">weighted.mean</span>(unemployed, WTFINL),</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>latest <span class="ot">&lt;-</span> rates <span class="sc">|&gt;</span> <span class="fu">filter</span>(YEAR <span class="sc">==</span> <span class="dv">2026</span>)</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>latest</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 4 × 4
-   YEAR education                sample_n  rate
-  &lt;dbl&gt; &lt;fct&gt;                       &lt;int&gt; &lt;dbl&gt;
-1  2026 Less than high school        1893  7.40
-2  2026 High school                  8806  5.44
-3  2026 Some college / associate     8637  3.92
-4  2026 Bachelor's or higher        15997  3.03</code></pre>
-</div>
-</div>
-</section>
-<section id="education-and-unemployment-in-january-2026" class="level2">
-<h2 class="anchored" data-anchor-id="education-and-unemployment-in-january-2026">1. Education and unemployment in January 2026</h2>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>plot1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(latest, <span class="fu">aes</span>(<span class="at">x =</span> rate, <span class="at">y =</span> education)) <span class="sc">+</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">9</span>), <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">9</span>, <span class="dv">3</span>)) <span class="sc">+</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Unemployment is lower among more educated workers"</span>,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"January 2026 | Civilian labor force, ages 25-64"</span>,</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Unemployment rate (%)"</span>, <span class="at">y =</span> <span class="cn">NULL</span>,</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Source: IPUMS CPS. Weighted using WTFINL."</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>)</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>plot1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div>
+<p>Being unemployed is different from simply not working. The CPS includes people without a job who are looking for work, as well as people on temporary layoff. People outside the labor force, such as retirees who are not seeking work, are excluded from the rate. The “some college” group includes associate degrees, and the highest education group includes bachelor’s and graduate degrees.</p>
+<p>The CPS surveys a sample of people, and each person represents a different number of people in the population. I use its Basic Monthly person weight, <a href="https://cps.ipums.org/cps-action/variables/WTFINL">WTFINL</a>, so the rates reflect that difference. Each rate is the weighted share of a group’s labor force who are unemployed.</p>
+<div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" alt="Unemployment rates across four education groups in January 2026." width="864"></p>
+<p><img src="graph/education-2026.png" class="img-fluid figure-img"></p>
+<figcaption>Unemployment by education in January 2026.</figcaption>
 </figure>
-</div>
-</div>
 </div>
 <p>In January 2026, the unemployment rate was 7.4% for people without a high school diploma, compared with 3% for people with a bachelor’s degree or higher. The difference was about 4.4 percentage points. The other two education groups were in between.</p>
-<p>So in this sample, people with more education generally had lower unemployment. However, this is only a comparison between groups, so I cannot say that education itself caused the difference.</p>
-</section>
-<section id="does-the-gap-remain-over-time" class="level2">
-<h2 class="anchored" data-anchor-id="does-the-gap-remain-over-time">2. Does the gap remain over time?</h2>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>plot2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(rates, <span class="fu">aes</span>(<span class="at">x =</span> YEAR, <span class="at">y =</span> rate, <span class="at">color =</span> education)) <span class="sc">+</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">2020</span><span class="sc">:</span><span class="dv">2026</span>) <span class="sc">+</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">12</span>), <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">12</span>, <span class="dv">3</span>)) <span class="sc">+</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"The education gap appears in every January sample"</span>,</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Civilian labor force, ages 25-64"</span>,</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Unemployment rate (%)"</span>, <span class="at">color =</span> <span class="st">"Education"</span>,</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Source: IPUMS CPS. Weighted using WTFINL. January only."</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>plot2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div>
+<p>That is a noticeable gap. Still, these groups may differ in more than their years at school. They may work in different jobs or have different levels of experience. The chart alone cannot tell us how much of the gap comes from education itself.</p>
+<p>Was January 2026 unusual? The next graph takes the comparison back to 2020.</p>
+<div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" alt="January unemployment rates for four education groups from 2020 to 2026." width="864"></p>
+<p><img src="graph/education-trend.png" class="img-fluid figure-img"></p>
+<figcaption>Unemployment by education over time.</figcaption>
 </figure>
 </div>
-</div>
-</div>
-<p>The same general pattern appears over time. All four groups had higher unemployment in January 2021 than in January 2020, and rates fell again in 2022 and 2023. The bachelor’s-or-higher group had the lowest unemployment rate in every year shown.</p>
-<p>One limitation is that I only use January data. These are not annual averages or seasonally adjusted rates. January 2020 was before the major labor market changes caused by the pandemic, so the graph does not show the changes later that year.</p>
-</section>
-<section id="is-the-pattern-similar-across-ages" class="level2">
-<h2 class="anchored" data-anchor-id="is-the-pattern-similar-across-ages">3. Is the pattern similar across ages?</h2>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>age_rates <span class="ot">&lt;-</span> workers <span class="sc">|&gt;</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(YEAR <span class="sc">==</span> <span class="dv">2026</span>) <span class="sc">|&gt;</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(age_group, education) <span class="sc">|&gt;</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">sample_n =</span> <span class="fu">n</span>(),</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">rate =</span> <span class="dv">100</span> <span class="sc">*</span> <span class="fu">weighted.mean</span>(unemployed, WTFINL),</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>plot3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(age_rates, <span class="fu">aes</span>(<span class="at">x =</span> rate, <span class="at">y =</span> education)) <span class="sc">+</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> age_group, <span class="at">ncol =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">13</span>), <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">12</span>)) <span class="sc">+</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"The education gap is largest among ages 25-34"</span>,</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"January 2026 | Civilian labor force"</span>,</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Unemployment rate (%)"</span>, <span class="at">y =</span> <span class="cn">NULL</span>,</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Source: IPUMS CPS. Weighted using WTFINL. Same scale in all panels."</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>)</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>plot3</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div>
+<p>The lines move up and down, but their order stays the same. All four groups had higher unemployment in January 2021 than in January 2020, and rates fell again in 2022 and 2023. The bachelor’s-or-higher group had the lowest unemployment rate in every year shown.</p>
+<p>There is a catch to this longer view: each point is still just January. These are not annual averages or seasonally adjusted rates. January 2020 was before the major labor market changes caused by the pandemic, so the graph does not show the changes later that year.</p>
+<p>Age adds another part of the story. Someone in their late twenties may still be finding a place in the job market, while someone in their fifties may have decades of experience. Splitting the latest sample into age groups gives us a closer comparison.</p>
+<div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" alt="Unemployment rates by education across four age groups in January 2026." width="864"></p>
+<p><img src="graph/education-by-age.png" class="img-fluid figure-img"></p>
+<figcaption>Unemployment by education and age.</figcaption>
 </figure>
-</div>
-</div>
 </div>
 <p>Among ages 25–34, unemployment was about 11.9% for people without a high school diploma and 3.7% for those with a bachelor’s degree or higher. The gap was smaller in the older groups. The ranking was not exact everywhere: among ages 55–64, the some-college and bachelor’s-or-higher rates were very close.</p>
-</section>
 <section id="takeaway" class="level2">
 <h2 class="anchored" data-anchor-id="takeaway">Takeaway</h2>
-<p>Overall, people with more education generally had lower unemployment in these CPS samples. This pattern appears across different years and most age groups, although the size of the gap changes.</p>
-<p>This does not mean that education is the only reason for the difference. Occupation, work experience, age, and other factors may also matter. Since these results come from a sample, small differences may reflect sampling variation, especially in smaller groups. The graphs do not show tests of statistical significance.</p>
+<p>More education went with lower unemployment in every January sample I compared. The difference was especially large among ages 25–34 in 2026. But even the group with a bachelor’s degree or higher had people looking for work: a degree did not make unemployment disappear.</p>
+<p>These numbers give a reason to take education seriously when thinking about job opportunities. They cannot promise what will happen to one person, or prove that another year of school will cause a particular change. Jobs and experience matter too. Small gaps also deserve caution: these are survey estimates, especially for the smaller groups, and I have not tested whether the differences are statistically significant.</p>
 <p>Data citation: Sarah Flood et al.&nbsp;(2025). <em>IPUMS CPS: Version 13.0</em> [dataset]. Minneapolis, MN: IPUMS. <a href="https://doi.org/10.18128/D030.V13.0">doi:10.18128/D030.V13.0</a>.</p>
 
 
