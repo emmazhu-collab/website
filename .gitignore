@@ -9,3 +9,6 @@
 
 # IPUMS microdata: download locally; do not redistribute.
 /blog/posts/post3/data/*.dat*
+
+# Local API credentials
+.Renviron

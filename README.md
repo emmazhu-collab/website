@@ -51,3 +51,9 @@ The raw CPS microdata are not included in this GitHub repository. To reproduce t
 ## Post files
 
 Blog 2 and Blog 3 each have an `analysis.R` script, a `graph/` folder, an `index.qmd` article, and a local `README.md` with run instructions. The articles call their scripts when rendered; analysis code is not displayed on the webpages.
+
+## Blog 4: U.S. Energy Prices
+
+This post compares gasoline and natural gas prices from January 2000 to August 2026, including an inflation-adjusted comparison. Data are collected from FRED with R.
+
+The article, separate R script, data, three figures, and run instructions are in [`blog/posts/post4/`](blog/posts/post4/README.md). Open `blog/posts/post4/index.qmd` and click **Render** to use the saved data. See the post README to download fresh data with your own FRED API key.
