@@ -1,5 +1,5 @@
 ---
-title: "Two Kinds of Gas, Two Different Price Stories"
+title: "Two Kinds of Gas: Different Prices, Different Risks"
 date: 2026-10-05
 categories:
   - energy
@@ -11,39 +11,39 @@ execute:
 
 ```{r}
 #| include: false
-source("analysis.R")
+source("code/analysis.R")
 ```
 
-Energy prices matter because people still need to travel, heat their homes, and pay their bills when prices rise. But “energy prices” covers many different products. If gasoline becomes more expensive, does natural gas usually become more expensive too?
+A higher price at the gas station is easy to notice. But does it mean natural gas is becoming more expensive too? Both fuels are often called “gas,” which makes it tempting to talk about them as one energy cost. They are different products, and treating one as a guide to the other could give the wrong picture.
 
-I wanted to compare these two fuels because they are both called “gas,” even though they are used differently and sold in different markets. Looking at only one could give us the wrong impression about energy prices as a whole. Businesses using these fuels may also face different cost changes.
+I wanted to separate two questions: which fuel became more expensive after inflation, and which had larger changes from month to month? The difference matters for planning costs. A price can be low compared with the past but still change sharply next month. A business that uses natural gas needs to understand its own price pattern, rather than assume that lower gasoline prices mean lower energy costs everywhere.
 
-I use U.S. regular gasoline and Henry Hub natural gas prices from January 2000 to August 2026. I compare each fuel over time, then adjust for inflation to put their changes on the same scale.
+I use U.S. regular gasoline and Henry Hub natural gas prices from January 2000 to August 2026. The data come from the Energy Information Administration through FRED: [gasoline](https://fred.stlouisfed.org/series/GASREGW) and [natural gas](https://fred.stlouisfed.org/series/DHHNGSP). R code downloaded monthly averages through the API. I matched the months and used the [Consumer Price Index](https://fred.stlouisfed.org/series/CPIAUCNS) to adjust for inflation. This lets me compare purchasing-power changes, rather than only look at two price lines.
 
-The data come from the U.S. Energy Information Administration through FRED: [regular gasoline](https://fred.stlouisfed.org/series/GASREGW) and [Henry Hub natural gas](https://fred.stlouisfed.org/series/DHHNGSP). I downloaded them with R using the FRED API. Gasoline is reported weekly and natural gas daily, so I requested monthly averages for both. This makes the timing easier to compare, though it hides short price spikes.
+![Monthly U.S. regular gasoline prices in dollars per gallon.](results/figures/gasoline.png)
 
-![Monthly U.S. regular gasoline prices in dollars per gallon, January 2000 through August 2026.](graph/gasoline.png)
+Gasoline's highest monthly dollar price was $`r sprintf("%.2f", gasoline_peak$value[1])` per gallon in `r format(gasoline_peak$date[1], "%B %Y")`. It ended at $`r sprintf("%.2f", last_month$gasoline)` in August 2026. For a driver buying the same number of gallons, a higher price means a larger payment. It does not tell us whether that payment takes a larger share of income, since income and fuel use are not in these data.
 
-For gasoline, the largest monthly price in this period was $`r sprintf("%.2f", gasoline_peak$value[1])` per gallon in `r format(gasoline_peak$date[1], "%B %Y")`. The line also shows a large rise and fall around 2008, and another low point in 2020. By August 2026, the price was $`r sprintf("%.2f", last_month$gasoline)` per gallon. This means the latest price was below the 2022 peak, but it was still much higher in dollars than at the start of the period. For someone buying the same number of gallons, that would mean a larger gasoline payment. It does not tell us whether gasoline took a larger share of their income, since this dataset does not include income or fuel use.
+![Monthly Henry Hub natural gas prices in dollars per million BTU.](results/figures/natural-gas.png)
 
-These prices are in each month’s dollars. Because a dollar in 2000 bought more than a dollar in 2026, I also need to adjust for inflation.
+Natural gas reached its highest monthly dollar price earlier: $`r sprintf("%.2f", gas_peak$value[1])` in `r format(gas_peak$date[1], "%B %Y")`. It also rose around 2008 and 2022, but neither increase reached that earlier record. Its August 2026 price was $`r sprintf("%.2f", last_month$natural_gas)` per million BTU. So the largest increases did not happen at the same time for both fuels.
 
-![Monthly Henry Hub natural gas spot prices in dollars per million BTU over the same period.](graph/natural-gas.png)
+The units matter. Gasoline is a retail pump price including taxes; Henry Hub is a wholesale benchmark. It is not a household heating bill, which also depends on delivery charges and usage. Comparing their dollar values directly would not tell us which fuel is cheaper to use.
 
-Natural gas did not reach its highest price at the same time as gasoline. Its highest monthly price was $`r sprintf("%.2f", gas_peak$value[1])` per million BTU in `r format(gas_peak$date[1], "%B %Y")`, well before gasoline's peak. It also rose sharply in 2008 and 2022, but those increases did not reach its earlier record. In August 2026, it was $`r sprintf("%.2f", last_month$natural_gas)` per million BTU. Unlike gasoline, its largest monthly price was near the beginning of the period. The later increases were large, but they did not become a lasting move to that earlier price level. So even before adjusting for inflation, the two fuels do not show the same long-term pattern.
+![Inflation-adjusted price indexes, with January 2000 equal to 100.](results/figures/real-price-comparison.png)
 
-There is an important difference between these prices. Gasoline is a retail pump price, including taxes. Henry Hub is a wholesale natural gas benchmark, not a household heating bill. Delivery charges and the amount of fuel used also affect what a household pays. Nor can we compare the two dollar values directly: one buys a gallon, while the other refers to a unit of energy.
+I put both prices in August 2026 dollars, then set each fuel's January 2000 real price to 100. An index of 150 means a price 50% above its own starting point after inflation. By August 2026, gasoline was about `r round(last_month$gasoline_index - 100)`% above its starting level, while natural gas was about `r round(100 - last_month$natural_gas_index)`% below. These are changes from a chosen month, not a comparison of energy costs per unit of heat.
 
-To compare their paths, I adjusted both series for inflation using the [Consumer Price Index](https://fred.stlouisfed.org/series/CPIAUCNS). I then set each adjusted price to 100 in January 2000. On this scale, 150 means a real price 50% above its own starting point. It does not mean one fuel costs more than the other for the same amount of energy.
+Inflation also changes the gasoline story. Its real-price peak came in `r format(real_peaks$date[real_peaks$fuel == "gasoline_real"][1], "%Y")`, even though its dollar-price peak came in 2022. A record pump price is not necessarily a record relative to other goods and services.
 
-![Inflation-adjusted gasoline and natural gas price indexes, with January 2000 equal to 100.](graph/real-price-comparison.png)
+![Distribution of monthly percentage changes in real gasoline and natural gas prices.](results/figures/monthly-swings.png)
 
-Putting both series on this scale helps answer the original question. Both prices rose around 2008 and 2022, but natural gas spent much of the later period below its starting level. By August 2026, gasoline's real price index was about `r round(last_month$gasoline_index)`, while natural gas was about `r round(last_month$natural_gas_index)`. This puts gasoline about `r round(last_month$gasoline_index - 100)`% above its January 2000 real price, and natural gas about `r round(100 - last_month$natural_gas_index)`% below its own. The difference shows why one fuel is not a reliable guide to the other over this whole period. These percentages depend on the starting month; they are not a measure of which fuel is cheaper to use.
+A lower long-term price did not make natural gas more stable. Across `r movement$months` matched monthly changes, its average change in either direction was `r sprintf("%.1f", volatility$average_absolute_change[volatility$fuel == "Natural gas"])`%, compared with `r sprintf("%.1f", volatility$average_absolute_change[volatility$fuel == "Gasoline"])`% for gasoline. I take absolute values before averaging, so rises and falls do not cancel. The boxes show the middle half of changes, with the line inside marking the median. The wider spread for natural gas shows why its lower ending price alone says little about short-term uncertainty.
 
-Inflation also changes the comparison within gasoline. Its 2008 high stands above its 2022 high in the adjusted graph, although 2022 had the highest dollar price. A record price at the pump therefore does not always mean a record price compared with the general cost of goods and services.
+The fuels moved in the same direction in only about `r round(movement$same_direction_percent)`% of those months. Their monthly-change correlation was `r sprintf("%.2f", movement$correlation)`, close to zero. Shared peaks in a few years therefore do not mean that their month-to-month changes generally matched.
 
-The lines are not seasonally adjusted. I left missing observations blank: natural gas in March 2004 and CPI in October 2025. These gaps also affect the adjusted comparison. The graphs show price patterns, but cannot tell us which changes came from supply, demand, weather, or policy.
+These results describe this sample, not a forecast or a causal relationship. The series are not seasonally adjusted, and monthly averages hide shorter spikes. Missing natural gas in March 2004 and CPI in October 2025 remain blank. For changes, I exclude a month if either fuel lacks the current or previous real price, using the same months for both fuels.
 
 ## Takeaway
 
-Gasoline and natural gas sometimes rose together, but they did not follow the same path over the full period. Gasoline ended above its January 2000 price after inflation, while natural gas ended below it. For me, the main lesson is to check the fuel, the type of price, and the time period before drawing a conclusion about energy costs.
+Gasoline ended higher after inflation, but natural gas had larger monthly swings. Those are different kinds of price pressure. I would look at both the long-term level and recent changes in the specific fuel being used. A falling price in one energy market is not enough to assume that costs in another will fall too.

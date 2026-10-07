@@ -57,6 +57,6 @@ Blog 2 uses `code/`, `data/`, and `results/` folders. Blog 3 keeps its `analysis
 
 ## Blog 4: U.S. Energy Prices
 
-This post compares gasoline and natural gas prices from January 2000 to August 2026, including an inflation-adjusted comparison. Data are collected from FRED with R.
+This post compares gasoline and natural gas prices from January 2000 to August 2026. Four figures show nominal prices, inflation-adjusted paths, and monthly price variability. Data were collected from FRED with R.
 
-The article, separate R script, data, three figures, and run instructions are in [`blog/posts/post4/`](blog/posts/post4/README.md). Open `blog/posts/post4/index.qmd` and click **Render** to use the saved data. See the post README to download fresh data with your own FRED API key.
+The article, `code/`, `data/`, `results/tables/`, `results/figures/`, and replication instructions are in [`blog/posts/post4/`](blog/posts/post4/README.md). Open `blog/posts/post4/index.qmd` and click **Render** to use the saved data. See the post README to download fresh data with your own FRED API key.
