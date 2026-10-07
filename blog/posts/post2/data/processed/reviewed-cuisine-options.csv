@@ -1,0 +1,16 @@
+restaurant,meal,price,url,cuisine,menu_evidence,price_note,checked_on,price_dollars
+New Delhi Indian Restaurant,DINNER,$20,https://www.universitycity.org/diningdays/new-delhi/,Indian,Samosas and paneer or chicken curries,Lunch and dinner at 20,2026-10-07,20
+Pattaya Restaurant,DINNER,$20,https://www.universitycity.org/diningdays/pattaya-restaurant/,Thai,Pad Thai and red curry,Lunch and dinner at 20,2026-10-07,20
+Sangkee Noodle House,DINNER,$20,https://www.universitycity.org/diningdays/sangkee/,Chinese,Dan dan noodles and twice-cooked pork,Lunch and dinner at 20,2026-10-07,20
+Thai Singha House,DINNER,$20,https://www.universitycity.org/diningdays/thaisingha/,Thai,Pad Thai at 20; seafood or duck options at 30,Lunch and dinner at both 20 and 30,2026-10-07,20
+Desi Chaat House,DINNER,$30,https://www.universitycity.org/diningdays/desi-chaat-house/,Indian,Chaat at lunch; rice with curry or biryani at dinner,Lunch 20; dinner 30; different dishes,2026-10-07,30
+Dim Sum House by Jane G’s,DINNER,$40,https://www.universitycity.org/diningdays/dimsum/,Chinese,Soup dumplings and Sichuan-style dishes,Lunch and dinner at 40,2026-10-07,40
+Han Dynasty University City,DINNER,$40,https://www.universitycity.org/diningdays/han-dynasty-university-city/,Chinese,Kung pao and dry-pot dishes,Dinner 40; some protein choices cost extra,2026-10-07,40
+Desi Chaat House,LUNCH,$20,https://www.universitycity.org/diningdays/desi-chaat-house/,Indian,Chaat at lunch; rice with curry or biryani at dinner,Lunch 20; dinner 30; different dishes,2026-10-07,20
+New Delhi Indian Restaurant,LUNCH,$20,https://www.universitycity.org/diningdays/new-delhi/,Indian,Samosas and paneer or chicken curries,Lunch and dinner at 20,2026-10-07,20
+Pattaya Restaurant,LUNCH,$20,https://www.universitycity.org/diningdays/pattaya-restaurant/,Thai,Pad Thai and red curry,Lunch and dinner at 20,2026-10-07,20
+Sangkee Noodle House,LUNCH,$20,https://www.universitycity.org/diningdays/sangkee/,Chinese,Dan dan noodles and twice-cooked pork,Lunch and dinner at 20,2026-10-07,20
+Thai Singha House,LUNCH,$20,https://www.universitycity.org/diningdays/thaisingha/,Thai,Pad Thai at 20; seafood or duck options at 30,Lunch and dinner at both 20 and 30,2026-10-07,20
+Thai Singha House,LUNCH,$30,https://www.universitycity.org/diningdays/thaisingha/,Thai,Pad Thai at 20; seafood or duck options at 30,Lunch and dinner at both 20 and 30,2026-10-07,30
+Thai Singha House,DINNER,$30,https://www.universitycity.org/diningdays/thaisingha/,Thai,Pad Thai at 20; seafood or duck options at 30,Lunch and dinner at both 20 and 30,2026-10-07,30
+Dim Sum House by Jane G’s,LUNCH,$40,https://www.universitycity.org/diningdays/dimsum/,Chinese,Soup dumplings and Sichuan-style dishes,Lunch and dinner at 40,2026-10-07,40
