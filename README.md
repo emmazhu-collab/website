@@ -60,3 +60,25 @@ Blog 2 uses `code/`, `data/`, and `results/` folders. Blog 3 keeps its `analysis
 This post compares gasoline and natural gas prices from January 2000 to August 2026. Four figures show nominal prices, inflation-adjusted paths, and monthly price variability. Data were collected from FRED with R.
 
 The article, `code/`, `data/`, `results/tables/`, `results/figures/`, and replication instructions are in [`blog/posts/post4/`](blog/posts/post4/README.md). Open `blog/posts/post4/index.qmd` and click **Render** to use the saved data. See the post README to download fresh data with your own FRED API key.
+
+
+## Blog 5: Texas County Household Income
+
+This post asks where higher and lower household incomes are located in Texas and what the state median hides. It uses 2020–2024 ACS five-year estimates and 2024 Census county boundaries. A map shows all 254 Texas counties. A second figure compares ten selected counties and their uncertainty. Income is measured in 2024 dollars.
+
+The Python code, original data, processed data, and generated results are kept in the separate [Blog 5 repository](https://github.com/emmazhu-collab/blog5). Its [README](https://github.com/emmazhu-collab/blog5/blob/main/README.md) gives the full setup and replication instructions.
+
+| File or folder in this website | Contents |
+| --- | --- |
+| `blog/posts/post5/index.qmd` | Blog 5 article |
+| `blog/posts/post5/graph/` | County map and selected-county figure |
+| `blog/posts/post5/data/county-estimates.csv` | County estimates used in the article |
+| `blog/posts/post5/data/summary.csv` | State median and county counts used in the article |
+
+### Replication instructions
+
+To recreate the analysis, open the separate Blog 5 project and follow its README. Install the packages in `requirements.txt`, then run `python code/analysis.py` in the Terminal. This reads the saved Census files and creates the processed data, tables, and two figures. No API key or internet connection is needed for this analysis step once the inputs and packages are available. If the original data are missing, run `python code/download.py` first with an internet connection.
+
+To update the article, copy the two PNG files from Blog 5's `results/figures/` to this website's `blog/posts/post5/graph/`. Copy `county-estimates.csv` and `summary.csv` from Blog 5's `results/tables/` to `blog/posts/post5/data/`.
+
+Then open `blog/posts/post5/index.qmd` in this website project and click **Render**. This reads the saved results and builds the webpage. It does not rerun the Python analysis. The article displays prose and figures, without showing code.
