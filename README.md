@@ -64,88 +64,52 @@ The article, `code/`, `data/`, `results/tables/`, `results/figures/`, and replic
 
 ## Blog 5: Texas County Household Income
 
-This post asks where higher and lower household incomes are located in Texas and what the state median hides. It uses 2020–2024 ACS five-year estimates and 2024 Census county boundaries. A map shows all 254 Texas counties. A second figure compares ten selected counties and their uncertainty. Income is measured in 2024 dollars.
+This post uses R and Census data to explore income differences across 254 Texas counties. It includes a Leaflet map, a saved tmap map, and a ggplot2 comparison of ten counties. The data are 2020–2024 ACS five-year estimates in 2024 dollars.
 
-The Python code, original data, processed data, and generated results are kept in the separate [Blog 5 repository](https://github.com/emmazhu-collab/blog5). Its [README](https://github.com/emmazhu-collab/blog5/blob/main/README.md) gives the full setup and replication instructions.
-
-| File or folder in this website | Contents |
-| --- | --- |
-| `blog/posts/post5/index.qmd` | Blog 5 article |
-| `blog/posts/post5/graph/` | County map and selected-county figure |
-| `blog/posts/post5/data/county-estimates.csv` | County estimates used in the article |
-| `blog/posts/post5/data/summary.csv` | State median and county counts used in the article |
+The [Blog 5 repository](https://github.com/emmazhu-collab/blog5) contains `code/analysis.R`, optional `code/download.R`, original data, processed data, and saved results. Its [README](https://github.com/emmazhu-collab/blog5/blob/main/README.md) documents sources, checks, and outputs.
 
 ### Replication instructions
 
-Download the complete [Blog 5 project](https://github.com/emmazhu-collab/blog5) with **Code > Download ZIP**, unzip it, and open `blog5.Rproj` in RStudio. Keep the code and data folders together. Copying only `analysis.py` is not enough.
+Download the complete Blog 5 repository with **Code > Download ZIP**, unzip it, and open `blog5.Rproj`. Keep the code and data folders together. Use the R Console (`>`), not the Python Console (`>>>`). If needed, select **Session > Restart R**.
 
-**First-time setup (macOS or Linux):** install Python 3.13 if needed. In RStudio, select **Terminal**, next to Console. Check that you are in the Blog 5 folder with `pwd` and `ls`; you should see `code`, `data`, and `requirements.txt`. Copy only the commands inside this box into Terminal and press Enter:
-
-```sh
-python3 -m venv .venv
-.venv/bin/python -m pip install -r requirements.txt
-```
-
-Wait for installation to finish. Skip setup if the project already has a working `.venv`. Choose one of the following run methods.
-
-**Option 1: Select all and Run in RStudio.** In the Blog 5 project, select **Session > Restart R**. Copy these lines into the **R Console**, where the prompt is `>`:
+Install missing packages once in the R Console:
 
 ```r
-library(reticulate)
-use_python(file.path(getwd(), ".venv", "bin", "python"), required = TRUE)
+install.packages(c("tidyverse", "sf", "tmap", "leaflet", "htmlwidgets", "tidycensus"))
 ```
 
-If needed, install `reticulate` once with `install.packages("reticulate")` in the R Console. Open `code/analysis.py`, select all with **Command+A**, and click **Run**. Start from the top. A `>>>` prompt means Python is active; do not paste R functions there. The updated script uses the project folder when run interactively.
+Copy only the command below, without backticks, into the R Console and press Enter:
 
-**Option 2: Run in Terminal.** From the Blog 5 folder, copy this command into **Terminal**:
-
-```sh
-.venv/bin/python code/analysis.py
+```r
+source("code/analysis.R")
 ```
 
-**Option 3: Run in JupyterLab.**
+You can also open `code/analysis.R`, select all with **Command+A**, and click **Run**. Start from the first line. The working directory must be the main Blog 5 folder. The code uses tmap 4; its layer structure follows the DataCamp examples, with current palette and legend syntax.
 
-Complete the first-time setup above first. Then, in **Terminal**, from the Blog 5 project folder, copy and run:
+This rebuilds the tables and maps from included inputs. It needs no Census key for normal reproduction. Static plots appear in Plots and the Leaflet map in Viewer. The saved files are in `results/tables/` and `results/figures/`. The interactive map uses saved county polygons and local support files, so no background tile key is needed.
 
-```sh
-.venv/bin/python -m pip install jupyterlab ipykernel
-.venv/bin/python -m ipykernel install --user --name blog5 --display-name "Python (Blog5)"
-.venv/bin/python -m jupyterlab
+To download fresh data, save your Census key locally as `CENSUS_API_KEY` in your user `.Renviron`, restart R, and run `source("code/download.R")` before the analysis. Do not put the key in code or Git.
+
+**Terminal alternative:** from the Blog 5 folder, run `Rscript code/analysis.R`.
+
+**Jupyter alternative:** use an R kernel and create the notebook in the Blog 5 folder. If necessary, install `IRkernel` in R and run `IRkernel::installspec(user = TRUE)`; this needs Jupyter installed and on the system path. In an R code cell, run:
+
+```r
+source("code/analysis.R")
+income_leaflet
 ```
 
-Install JupyterLab and register the kernel only once. On later visits, run only the last command from the project folder. If you already use Jupyter, you can open it as usual after registering the kernel and select **Python (Blog5)**.
+Press **Shift+Enter**. Use `income_map` or `comparison` in separate cells to display the static figures. See the Blog 5 README for setup details.
 
-In JupyterLab, create a notebook in the main Blog 5 folder, beside `code`, `data`, and `requirements.txt`. Choose the **Python (Blog5)** kernel. Copy this line into a **code cell** and press **Shift+Enter**:
+### Website files and updating the article
 
-```python
-%run code/analysis.py
-```
-
-This runs the saved script and recreates the same tables and figures. You do not need to copy the full script into the notebook. If you prefer to paste all of `code/analysis.py` into one code cell, that also works when the notebook is in the main project folder. Run the cell from the beginning.
-
-The script saves figures instead of displaying them automatically. To view one inside the notebook, run a new cell:
-
-```python
-from IPython.display import Image, display
-display(Image(filename="results/figures/texas-income-map.png"))
-display(Image(filename="results/figures/selected-county-incomes.png"))
-```
-
-If a package is missing, check that the selected kernel is **Python (Blog5)**. If a file cannot be found, run `%pwd` in a cell and check that the notebook is working from the main Blog 5 folder.
-
-All three methods read the saved Census inputs and generate the processed data, result tables, and two figures. No API key or internet connection is needed after the inputs and packages are available. Open the PNG files in `results/figures/` to see the plots; they do not open automatically in RStudio's Plots panel.
-
-If the original inputs are missing, run `.venv/bin/python code/download.py` in Terminal with an internet connection, then rerun the analysis. The [Blog 5 README](https://github.com/emmazhu-collab/blog5/blob/main/README.md) lists the sources, outputs, and common errors.
-
-### Update the website
-
-In Finder, copy these generated files from the Blog 5 project to the matching website folders. Replace the old copies if prompted. Copy the files themselves, keeping their names unchanged.
-
-| File in Blog 5 | Destination in this website |
+| Location | Contents |
 | --- | --- |
-| `results/figures/texas-income-map.png` | `blog/posts/post5/graph/texas-income-map.png` |
-| `results/figures/selected-county-incomes.png` | `blog/posts/post5/graph/selected-county-incomes.png` |
-| `results/tables/county-estimates.csv` | `blog/posts/post5/data/county-estimates.csv` |
-| `results/tables/summary.csv` | `blog/posts/post5/data/summary.csv` |
+| `blog/posts/post5/index.qmd` | Article |
+| `blog/posts/post5/graph/` | Two PNG figures, Leaflet HTML, and its support folder |
+| `blog/posts/post5/data/county-estimates.csv` | County estimates used in the text |
+| `blog/posts/post5/data/summary.csv` | State median and county counts |
 
-Open the website project, open `blog/posts/post5/index.qmd`, and click **Render**. This reads the saved results and builds the webpage; it does not rerun the Python analysis. The article displays prose and figures without showing code.
+After running the R analysis, use Finder to copy everything in Blog 5's `results/figures/` into this website's `blog/posts/post5/graph/`. Include `texas-income-interactive_files/`; the HTML map needs those support files. Copy `county-estimates.csv` and `summary.csv` from `results/tables/` into `blog/posts/post5/data/`. Keep the names unchanged and replace the old copies.
+
+Open this website project and render `blog/posts/post5/index.qmd`. Render uses the saved results and does not call the Census API or rerun the analysis. The webpage shows prose and figures, without visible code.

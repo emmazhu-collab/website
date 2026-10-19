@@ -4,6 +4,8 @@ date: 2026-10-18
 categories:
   - GIS
   - income
+resources:
+  - graph/**
 execute:
   echo: false
   message: false
@@ -22,9 +24,13 @@ This matters when deciding where to look more closely at local needs. A county b
 
 I use the Census Bureau's [2020–2024 ACS five-year estimates](https://www.census.gov/programs-surveys/acs/data/summary-file.2024.html), table B19013. The measure is median household income: the middle of the household income distribution, not an individual salary or the mean household income. Values are in 2024 dollars. These estimates combine five years of survey data, so they do not describe only households surveyed in 2024.
 
-I downloaded the income table and [2024 county boundaries](https://www2.census.gov/geo/tiger/GENZ2024/shp/cb_2024_us_county_500k.zip) with Python. Using pandas and GeoPandas, I selected Texas and matched income to boundaries with each county's geographic ID. All `r summary$counties` counties matched, with no missing income estimates. The map uses the same dollar scale across the state; darker counties have higher estimated medians.
+I used R to get income estimates from the Census API and read the [2024 county boundaries](https://www2.census.gov/geo/tiger/GENZ2024/shp/cb_2024_us_county_500k.zip). I selected Texas and matched the two datasets by county ID. I used tmap for the saved map and Leaflet for the interactive version below. All `r summary$counties` counties matched, with no missing income estimates. The map uses the same dollar scale across the state; darker counties have higher estimated medians.
 
-![Texas county median household income. Higher estimates form several pockets near major urban areas, while parts of the southern border have lower estimates.](graph/texas-income-map.png)
+Zoom in to explore an area and click a county to see its income estimate and margin of error. County size shows land area, not population.
+
+<iframe src="graph/texas-income-interactive.html" title="Interactive map of Texas county median household income" width="100%" height="600" style="border: 0;" loading="lazy"></iframe>
+
+[Open the interactive map in a new page](graph/texas-income-interactive.html) · [View the static map](graph/texas-income-map.png)
 
 The darker areas are concentrated in several places rather than spread evenly across Texas. Collin and Denton, north of Dallas, both have median household incomes above $100,000. Another high-income area appears around Austin, including Travis and Williamson. Fort Bend, southwest of Houston, also stands out. These examples show where some higher-income counties are located. They do not compare all urban and rural counties or show that living near a city causes higher income.
 
