@@ -2,7 +2,13 @@
 
 ## Question and method
 
-Which fuel became more expensive after inflation, and which had larger monthly price changes? Four figures connect nominal gasoline prices, nominal natural gas prices, real-price indexes, and the distribution of monthly real-price changes. This separates long-term price levels from short-term variability.
+Which fuel became more expensive after inflation, and which had larger monthly price changes? The four figures answer three connected questions:
+
+1. What happened to each fuel's price? Figures 1 and 2 show their separate price histories and different peak years.
+2. Which fuel became more expensive after inflation? Figure 3 uses a common starting index to compare changes over time, rather than compare different dollar units.
+3. Does a lower long-term price mean greater stability? Figure 4 compares monthly percentage changes.
+
+This order connects price history, long-term change, and short-term variability. It helps readers think about the fuel they actually use instead of treating gasoline and natural gas as one energy price.
 
 ## Folder structure
 
@@ -72,7 +78,7 @@ Run `setwd()` only once; skip it if already in `post4`. From a terminal in `post
 
 The code uses identical complete month pairs for both fuels' volatility, correlation, and same-direction comparisons. It also saves the standard deviation of changes as another measure of spread. Same direction means the two changes have the same sign; two zero changes count as the same sign.
 
-The first three figures show the level and inflation-adjusted paths. The fourth uses percentage changes to compare variability across different price units. The box shows the middle 50% of changes, its line is the median, and points beyond the whiskers identify unusually large changes under the boxplot rule.
+The first two figures provide price history in each fuel’s own units. Their dollar values cannot be compared directly. The third adjusts for inflation and sets each January 2000 value to 100, showing long-term change from that starting month. The fourth asks a different question: how large were the month-to-month swings? The box shows the middle 50% of changes, its line is the median, and points beyond the whiskers identify unusually large changes under the boxplot rule.
 
 ## Generated files and checks
 

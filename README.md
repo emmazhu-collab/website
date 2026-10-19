@@ -65,7 +65,7 @@ Blog 2 uses `code/`, `data/`, and `results/` folders. Blog 3 keeps its `analysis
 
 ## Blog 4: U.S. Energy Prices
 
-This post compares gasoline and natural gas prices from January 2000 to August 2026. Four figures show nominal prices, inflation-adjusted paths, and monthly price variability. Data were collected from FRED with R.
+This post compares gasoline and natural gas prices from January 2000 to August 2026 using FRED data collected with R. The first two figures show each fuel’s price history. The third compares inflation-adjusted changes from a common starting index, and the fourth compares monthly price swings. Together they show why a lower long-term price does not necessarily mean greater short-term stability. The takeaway connects these differences to planning costs for the fuel a business actually uses.
 
 The article, `code/`, `data/`, `results/tables/`, `results/figures/`, and replication instructions are in [`blog/posts/post4/`](blog/posts/post4/README.md). Open `blog/posts/post4/index.qmd` and click **Render** to use the saved data. See the post README to download fresh data with your own FRED API key.
 

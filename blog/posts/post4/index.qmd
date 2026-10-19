@@ -18,7 +18,7 @@ A higher price at the gas station is easy to notice. But does it mean natural ga
 
 I wanted to separate two questions: which fuel became more expensive after inflation, and which had larger changes from month to month? The difference matters for planning costs. A price can be low compared with the past but still change sharply next month. A business that uses natural gas needs to understand its own price pattern, rather than assume that lower gasoline prices mean lower energy costs everywhere.
 
-I use U.S. regular gasoline and Henry Hub natural gas prices from January 2000 to August 2026. The data come from the Energy Information Administration through FRED: [gasoline](https://fred.stlouisfed.org/series/GASREGW) and [natural gas](https://fred.stlouisfed.org/series/DHHNGSP). R code downloaded monthly averages through the API. I matched the months and used the [Consumer Price Index](https://fred.stlouisfed.org/series/CPIAUCNS) to adjust for inflation. This lets me compare purchasing-power changes, rather than only look at two price lines.
+I use U.S. regular gasoline and Henry Hub natural gas prices from January 2000 to August 2026. The data come from the Energy Information Administration through FRED: [gasoline](https://fred.stlouisfed.org/series/GASREGW) and [natural gas](https://fred.stlouisfed.org/series/DHHNGSP). R code downloaded monthly averages through the API. I matched the months and used the [Consumer Price Index](https://fred.stlouisfed.org/series/CPIAUCNS) to adjust for inflation. I first look at each fuel's price history. Then I compare their inflation-adjusted changes using a common index. Finally, I compare monthly price swings to see whether a lower long-term price also means more stability.
 
 ![Monthly U.S. regular gasoline prices in dollars per gallon.](results/figures/gasoline.png)
 
@@ -28,7 +28,7 @@ Gasoline's highest monthly dollar price was $`r sprintf("%.2f", gasoline_peak$va
 
 Natural gas reached its highest monthly dollar price earlier: $`r sprintf("%.2f", gas_peak$value[1])` in `r format(gas_peak$date[1], "%B %Y")`. It also rose around 2008 and 2022, but neither increase reached that earlier record. Its August 2026 price was $`r sprintf("%.2f", last_month$natural_gas)` per million BTU. So the largest increases did not happen at the same time for both fuels.
 
-The units matter. Gasoline is a retail pump price including taxes; Henry Hub is a wholesale benchmark. It is not a household heating bill, which also depends on delivery charges and usage. Comparing their dollar values directly would not tell us which fuel is cheaper to use.
+The different peak years show that the two markets did not have the same price history. But gasoline is measured in dollars per gallon and natural gas in dollars per million BTU, so their dollar prices cannot be compared directly. Gasoline is also a retail pump price including taxes, while Henry Hub is a wholesale benchmark, not a household heating bill. To compare how prices changed, I adjust for inflation and set both indexes to 100 in January 2000.
 
 ![Inflation-adjusted price indexes, with January 2000 equal to 100.](results/figures/real-price-comparison.png)
 
@@ -46,4 +46,6 @@ These results describe this sample, not a forecast or a causal relationship. The
 
 ## Takeaway
 
-Gasoline ended higher after inflation, but natural gas had larger monthly swings. Those are different kinds of price pressure. I would look at both the long-term level and recent changes in the specific fuel being used. A falling price in one energy market is not enough to assume that costs in another will fall too.
+From January 2000 to August 2026, gasoline became more expensive after inflation, while natural gas ended lower but had larger monthly price swings. A lower price over the long run did not mean a more stable price from month to month.
+
+For a business planning energy costs, this means checking both the long-term change and short-term swings in the fuel it actually uses. Lower natural gas prices alone are not a reason to expect stable future costs, and gasoline prices are not a reliable guide to natural gas prices in this sample. Actual bills also depend on usage and other charges, so these price patterns are a starting point for planning, not a forecast.
