@@ -77,8 +77,75 @@ The Python code, original data, processed data, and generated results are kept i
 
 ### Replication instructions
 
-To recreate the analysis, open the separate Blog 5 project and follow its README. Install the packages in `requirements.txt`, then run `python code/analysis.py` in the Terminal. This reads the saved Census files and creates the processed data, tables, and two figures. No API key or internet connection is needed for this analysis step once the inputs and packages are available. If the original data are missing, run `python code/download.py` first with an internet connection.
+Download the complete [Blog 5 project](https://github.com/emmazhu-collab/blog5) with **Code > Download ZIP**, unzip it, and open `blog5.Rproj` in RStudio. Keep the code and data folders together. Copying only `analysis.py` is not enough.
 
-To update the article, copy the two PNG files from Blog 5's `results/figures/` to this website's `blog/posts/post5/graph/`. Copy `county-estimates.csv` and `summary.csv` from Blog 5's `results/tables/` to `blog/posts/post5/data/`.
+**First-time setup (macOS or Linux):** install Python 3.13 if needed. In RStudio, select **Terminal**, next to Console. Check that you are in the Blog 5 folder with `pwd` and `ls`; you should see `code`, `data`, and `requirements.txt`. Copy only the commands inside this box into Terminal and press Enter:
 
-Then open `blog/posts/post5/index.qmd` in this website project and click **Render**. This reads the saved results and builds the webpage. It does not rerun the Python analysis. The article displays prose and figures, without showing code.
+```sh
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+```
+
+Wait for installation to finish. Skip setup if the project already has a working `.venv`. Choose one of the following run methods.
+
+**Option 1: Select all and Run in RStudio.** In the Blog 5 project, select **Session > Restart R**. Copy these lines into the **R Console**, where the prompt is `>`:
+
+```r
+library(reticulate)
+use_python(file.path(getwd(), ".venv", "bin", "python"), required = TRUE)
+```
+
+If needed, install `reticulate` once with `install.packages("reticulate")` in the R Console. Open `code/analysis.py`, select all with **Command+A**, and click **Run**. Start from the top. A `>>>` prompt means Python is active; do not paste R functions there. The updated script uses the project folder when run interactively.
+
+**Option 2: Run in Terminal.** From the Blog 5 folder, copy this command into **Terminal**:
+
+```sh
+.venv/bin/python code/analysis.py
+```
+
+**Option 3: Run in JupyterLab.**
+
+Complete the first-time setup above first. Then, in **Terminal**, from the Blog 5 project folder, copy and run:
+
+```sh
+.venv/bin/python -m pip install jupyterlab ipykernel
+.venv/bin/python -m ipykernel install --user --name blog5 --display-name "Python (Blog5)"
+.venv/bin/python -m jupyterlab
+```
+
+Install JupyterLab and register the kernel only once. On later visits, run only the last command from the project folder. If you already use Jupyter, you can open it as usual after registering the kernel and select **Python (Blog5)**.
+
+In JupyterLab, create a notebook in the main Blog 5 folder, beside `code`, `data`, and `requirements.txt`. Choose the **Python (Blog5)** kernel. Copy this line into a **code cell** and press **Shift+Enter**:
+
+```python
+%run code/analysis.py
+```
+
+This runs the saved script and recreates the same tables and figures. You do not need to copy the full script into the notebook. If you prefer to paste all of `code/analysis.py` into one code cell, that also works when the notebook is in the main project folder. Run the cell from the beginning.
+
+The script saves figures instead of displaying them automatically. To view one inside the notebook, run a new cell:
+
+```python
+from IPython.display import Image, display
+display(Image(filename="results/figures/texas-income-map.png"))
+display(Image(filename="results/figures/selected-county-incomes.png"))
+```
+
+If a package is missing, check that the selected kernel is **Python (Blog5)**. If a file cannot be found, run `%pwd` in a cell and check that the notebook is working from the main Blog 5 folder.
+
+All three methods read the saved Census inputs and generate the processed data, result tables, and two figures. No API key or internet connection is needed after the inputs and packages are available. Open the PNG files in `results/figures/` to see the plots; they do not open automatically in RStudio's Plots panel.
+
+If the original inputs are missing, run `.venv/bin/python code/download.py` in Terminal with an internet connection, then rerun the analysis. The [Blog 5 README](https://github.com/emmazhu-collab/blog5/blob/main/README.md) lists the sources, outputs, and common errors.
+
+### Update the website
+
+In Finder, copy these generated files from the Blog 5 project to the matching website folders. Replace the old copies if prompted. Copy the files themselves, keeping their names unchanged.
+
+| File in Blog 5 | Destination in this website |
+| --- | --- |
+| `results/figures/texas-income-map.png` | `blog/posts/post5/graph/texas-income-map.png` |
+| `results/figures/selected-county-incomes.png` | `blog/posts/post5/graph/selected-county-incomes.png` |
+| `results/tables/county-estimates.csv` | `blog/posts/post5/data/county-estimates.csv` |
+| `results/tables/summary.csv` | `blog/posts/post5/data/summary.csv` |
+
+Open the website project, open `blog/posts/post5/index.qmd`, and click **Render**. This reads the saved results and builds the webpage; it does not rerun the Python analysis. The article displays prose and figures without showing code.
