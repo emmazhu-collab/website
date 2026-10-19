@@ -1,0 +1,13 @@
+education,labor_status,sample_n,weighted_people,share
+Less than high school,Employed,1754,7573604.64930001,58.15662463416654
+Less than high school,Not in labor force,1206,4843632.437399999,37.19355928537675
+Less than high school,Unemployed,139,605534.9482,4.649816080456708
+High school,Employed,8380,31842666.150899943,69.92448378751175
+High school,Not in labor force,3204,11865502.955500036,26.055895103465954
+High school,Unemployed,426,1830481.2004999998,4.0196211090222995
+Some college / associate,Employed,8332,31439713.992399942,75.99156956254981
+Some college / associate,Not in labor force,2314,8649299.978999998,20.90584797242191
+Some college / associate,Unemployed,305,1283620.0896999997,3.1025824650282687
+Bachelor's or higher,Employed,15571,59917760.78120005,84.77001421734325
+Bachelor's or higher,Not in labor force,2379,8891690.467800014,12.579721230305402
+Bachelor's or higher,Unemployed,426,1873279.353800002,2.650264552351339

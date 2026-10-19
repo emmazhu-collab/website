@@ -37,19 +37,27 @@ This runs `code/analysis.R` inside post2, rebuilds the result tables and two fig
 
 ## Blog 3: Education and Unemployment
 
-This post compares unemployment by education using IPUMS CPS Basic Monthly data for January 2020–2026. It uses the CPS person weight (WTFINL) and focuses on civilians ages 25–64 in the labor force.
+This post uses IPUMS CPS Basic Monthly January data for 2020–2026 and the person weight `WTFINL`. Three figures show unemployment over time, unemployment within age groups, and employment status by education. The last figure includes people outside the labor force, so it adds information beyond unemployment rates.
+
+The trend and age panels use civilians ages 25–64 in the labor force. The status chart uses all civilian adults ages 25–64. Its unemployed share has a different denominator from an unemployment rate. The age comparison shows that the education gap remains within age groups, rather than being explained only by differences in age composition.
 
 - `blog/posts/post3/index.qmd`: article.
-- `blog/posts/post3/data/`: folder for the CPS data and XML data dictionary.
-- `blog/posts/post3/results/`: two summary tables saved by the code.
+- `blog/posts/post3/analysis.R`: weighted analysis and three figures.
+- `blog/posts/post3/data/`: local CPS microdata and matching XML dictionary.
+- `blog/posts/post3/results/`: rates by year, rates by age, and status shares by education.
+- `blog/posts/post3/graph/`: the three saved figures.
 
-### How to run Blog 3
+### Replication instructions
 
-1. Sign in to [IPUMS CPS](https://cps.ipums.org/cps/) and select January Basic Monthly samples for 2020–2026. Include YEAR, MONTH, AGE, EDUC, EMPSTAT, and WTFINL.
-2. Download the fixed-width data and DDI (XML) dictionary. Put them in `blog/posts/post3/data/` as `cps_00001.dat.gz` and `cps_00001.xml`. If your extract has a different name, change both paths in the first code chunk.
-3. Install `ipumsr` and `tidyverse` if needed. Open `blog/posts/post3/index.qmd` in RStudio and click **Render**.
+Download the January Basic Monthly samples for 2020–2026 from [IPUMS CPS](https://cps.ipums.org/cps/), including `YEAR`, `MONTH`, `AGE`, `EDUC`, `EMPSTAT`, and `WTFINL`. Place the matching data and dictionary in `blog/posts/post3/data/` as `cps_00001.dat.gz` and `cps_00001.xml`. Raw microdata are not included in Git; readers need their own extract.
 
-The raw CPS microdata are not included in this GitHub repository. To reproduce the analysis, users need to download their own IPUMS CPS extract. The summary tables and figures used in the post are saved in the `results/` folder.
+Open the website project in RStudio. Install `ipumsr` and `tidyverse` if missing. Copy this into the R Console to generate the tables and figures without rendering:
+
+```r
+source("blog/posts/post3/analysis.R", chdir = TRUE)
+```
+
+To update the webpage later, open `blog/posts/post3/index.qmd` and click **Render**. See the [Blog 3 README](blog/posts/post3/README.md) for data definitions, file paths, and full instructions.
 
 ## Post files
 

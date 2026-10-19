@@ -154,40 +154,39 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>A degree takes years of work, and often a lot of money. One reason to keep going is the hope of having more job options afterward. But when we look at people who are working or looking for work, how much does unemployment differ by education?</p>
-<p>I looked at four education groups in the U.S. The gap is easy to see in January 2026, but one month can only tell us so much. Looking back across several years, and then comparing people of similar ages, helps show whether that first impression holds up.</p>
-<p>The data come from the <a href="https://cps.ipums.org/cps/">IPUMS Current Population Survey</a>. I use the Basic Monthly January sample from each year between 2020 and 2026. I focus on civilians ages 25–64 who are in the labor force. I chose this age range because many younger people are still in school, while some older people have already retired.</p>
-<p>Being unemployed is different from simply not working. The CPS includes people without a job who are looking for work, as well as people on temporary layoff. People outside the labor force, such as retirees who are not seeking work, are excluded from the rate. The “some college” group includes associate degrees, and the highest education group includes bachelor’s and graduate degrees.</p>
-<p>The CPS surveys a sample of people, and each person represents a different number of people in the population. I use its Basic Monthly person weight, <a href="https://cps.ipums.org/cps-action/variables/WTFINL">WTFINL</a>, so the rates reflect that difference. Each rate is the weighted share of a group’s labor force who are unemployed.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="graph/education-2026.png" class="img-fluid figure-img"></p>
-<figcaption>Unemployment by education in January 2026.</figcaption>
-</figure>
-</div>
-<p>In January 2026, the unemployment rate was 7.4% for people without a high school diploma, compared with 3% for people with a bachelor’s degree or higher. The difference was about 4.4 percentage points. The other two education groups were in between.</p>
-<p>That is a noticeable gap. Still, these groups may differ in more than their years at school. They may work in different jobs or have different levels of experience. The chart alone cannot tell us how much of the gap comes from education itself.</p>
-<p>Was January 2026 unusual? The next graph takes the comparison back to 2020.</p>
+<p>A degree takes years of work, and often a lot of money. One reason to keep going is the hope of having more job options afterward. But how closely is education related to unemployment? And does looking only at people in the labor force leave out part of the story?</p>
+<p>I start with unemployment over time, then compare people of similar ages. Finally, I look beyond unemployment to include people outside the labor force. Each view answers a different question: is the gap persistent, does it remain within age groups, and who is missing from the unemployment rate?</p>
+<p>The data come from <a href="https://cps.ipums.org/cps/">IPUMS CPS</a>, using Basic Monthly January samples for 2020–2026. I focus on civilians ages 25–64, since many younger people are still in school and some older people have retired. “Some college” includes associate degrees; “bachelor’s or higher” includes graduate degrees.</p>
+<p>I use the person weight <a href="https://cps.ipums.org/cps-action/variables/WTFINL">WTFINL</a> because each survey respondent represents a different number of people. The unemployment rate is the weighted share of the labor force who are unemployed, including people looking for work or on temporary layoff. The final chart has a different denominator: all civilians ages 25–64 in each education group.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="graph/education-trend.png" class="img-fluid figure-img"></p>
-<figcaption>Unemployment by education over time.</figcaption>
+<figcaption>January unemployment rates by education from 2020 to 2026. The education gap appears in every year shown.</figcaption>
 </figure>
 </div>
-<p>The lines move up and down, but their order stays the same. All four groups had higher unemployment in January 2021 than in January 2020, and rates fell again in 2022 and 2023. The bachelor’s-or-higher group had the lowest unemployment rate in every year shown.</p>
-<p>There is a catch to this longer view: each point is still just January. These are not annual averages or seasonally adjusted rates. January 2020 was before the major labor market changes caused by the pandemic, so the graph does not show the changes later that year.</p>
-<p>Age adds another part of the story. Someone in their late twenties may still be finding a place in the job market, while someone in their fifties may have decades of experience. Splitting the latest sample into age groups gives us a closer comparison.</p>
+<p>The gap is not just a feature of one month. The bachelor’s-or-higher group has the lowest unemployment rate in every January shown. All four groups had higher rates in January 2021 than in January 2020, followed by declines in 2022 and 2023. In January 2026, the rate was 7.4% for people without a high school diploma and 3% for those with a bachelor’s degree or higher.</p>
+<p>Education seems related to how exposed people are to unemployment, even as the labor market changes. But these are January snapshots, not annual averages or seasonally adjusted rates. January 2020 was before the major pandemic changes, so the graph misses what happened later that year.</p>
+<p>Could the gap simply reflect age? Education groups may contain different shares of younger and older workers, who also have different experience. The next chart compares education groups within the same ten-year age band.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="graph/education-by-age.png" class="img-fluid figure-img"></p>
-<figcaption>Unemployment by education and age.</figcaption>
+<figcaption>January 2026 unemployment by education within four age groups. Bachelor’s-or-higher rates are below high-school and less-than-high-school rates in every panel.</figcaption>
 </figure>
 </div>
-<p>Among ages 25–34, unemployment was about 11.9% for people without a high school diploma and 3.7% for those with a bachelor’s degree or higher. The gap was smaller in the older groups. The ranking was not exact everywhere: among ages 55–64, the some-college and bachelor’s-or-higher rates were very close.</p>
+<p>The main pattern remains within all four age groups: people with a bachelor’s degree or higher have lower unemployment than those with only high school or less. Among ages 25–34, the gap between the lowest and highest education groups is about 8.3 percentage points. It is smaller, but still present, in the older groups.</p>
+<p>This matters for the original question. The overall education gap is not explained only by different age mixes across education groups. The ranking is not perfectly step-by-step: among ages 55–64, some college and bachelor’s-or-higher rates are very close. Comparing age bands also does not hold jobs, experience, or family circumstances constant.</p>
+<p>There is another limit to unemployment rates: people outside the labor force are not counted. The final chart brings them back in.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="graph/education-labor-status.png" class="img-fluid figure-img"></p>
+<figcaption>Weighted shares employed, unemployed, and outside the labor force by education in January 2026. Each bar includes all civilians ages 25-64 in that education group.</figcaption>
+</figure>
+</div>
+<p>About 58.2% of adults without a high school diploma were employed, compared with 84.8% of those with a bachelor’s degree or higher. The shares outside the labor force were 37.2% and 12.6%, respectively. The orange segments are shares of all adults, so they are not the unemployment rates in the first two charts.</p>
+<p>The difference in employment is therefore broader than unemployment alone suggests. People outside the labor force may be studying, caring for family, retired, or unable to work. They should not all be treated as unsuccessful job seekers.</p>
 <section id="takeaway" class="level2">
 <h2 class="anchored" data-anchor-id="takeaway">Takeaway</h2>
-<p>More education went with lower unemployment in every January sample I compared. The difference was especially large among ages 25–34 in 2026. But even the group with a bachelor’s degree or higher had people looking for work: a degree did not make unemployment disappear.</p>
-<p>These numbers give a reason to take education seriously when thinking about job opportunities. They cannot promise what will happen to one person, or prove that another year of school will cause a particular change. Jobs and experience matter too. Small gaps also deserve caution: these are survey estimates, especially for the smaller groups, and I have not tested whether the differences are statistically significant.</p>
+<p>The three views point to a consistent association: higher education goes with lower unemployment over time and within age groups, and with a larger share of adults employed. That makes education relevant to job opportunities, but it does not prove that a degree causes these differences. These are survey estimates, and I have not tested statistical significance. Small gaps deserve caution, especially in smaller age groups.</p>
 <p>Data citation: Sarah Flood et al.&nbsp;(2025). <em>IPUMS CPS: Version 13.0</em> [dataset]. Minneapolis, MN: IPUMS. <a href="https://doi.org/10.18128/D030.V13.0">doi:10.18128/D030.V13.0</a>.</p>
 
 
