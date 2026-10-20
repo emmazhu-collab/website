@@ -121,3 +121,34 @@ Press **Shift+Enter**. Use `income_map` or `comparison` in separate cells to dis
 After running the R analysis, use Finder to copy everything in Blog 5's `results/figures/` into this website's `blog/posts/post5/graph/`. Include `texas-income-interactive_files/`; the HTML map needs those support files. Copy `county-estimates.csv` and `summary.csv` from `results/tables/` into `blog/posts/post5/data/`. Keep the names unchanged and replace the old copies.
 
 Open this website project and render `blog/posts/post5/index.qmd`. Render uses the saved results and does not call the Census API or rerun the analysis. The webpage shows prose and figures, without visible code.
+
+## Blog 6: Does One Year of Income Tell the Whole Story?
+
+Blog 6 uses PSID data to compare single-year and three-year earnings elasticities for birth fathers and adult children. It also checks sensitivity to the chosen income year and the child's career stage. The website copy contains the complete analysis and article. The separate `blog6` project currently holds the original inputs; its final process-repository setup is a later step.
+
+| Location | Contents |
+| --- | --- |
+| `blog/posts/post6/index.qmd` | Complete generated article |
+| `blog/posts/post6/code/` | Python analysis and editable article template |
+| `blog/posts/post6/sql/` | SQL joins and income aggregation |
+| `blog/posts/post6/data/` | Public CPI input |
+| `blog/posts/post6/results/` | Aggregate tables, checks, and three figures |
+| `blog/posts/post6/README.md` | Full replication instructions and variable details |
+
+### Replication instructions
+
+Use Python 3 with `pandas`, `numpy`, and `matplotlib`. Install missing packages with `python3 -m pip install pandas numpy matplotlib` in Terminal. From this website's root folder, run:
+
+```sh
+python3 blog/posts/post6/code/analysis.py
+```
+
+The original PSID inputs must be in the sibling `blog6` folder, or set `PSID_DATA_DIR` to their folder. Required files and their exact layout are listed in the Blog 6 README. The script reads the originals without changing them and recreates the results, figures, and article. Individual PSID records are not included in the website.
+
+For Jupyter, use a Python kernel with the same packages and start the notebook in this website's root folder:
+
+```python
+%run blog/posts/post6/code/analysis.py
+```
+
+Edit `blog/posts/post6/code/article-template.txt` to change article wording; running the script regenerates `index.qmd`. After analysis, open `index.qmd` in RStudio and click **Render**, or run `quarto render blog/posts/post6/index.qmd` in Terminal. Render uses saved outputs and does not repeat the analysis. See the post README for sample restrictions, uncertainty calculations, and limitations.

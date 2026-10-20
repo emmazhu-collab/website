@@ -1,0 +1,107 @@
+---
+title: "Does One Year of Income Tell the Whole Story?"
+subtitle: "What changes when we compare fathers and children at different ages?"
+date: 2026-10-20
+categories:
+  - income mobility
+  - SQL
+resources:
+  - code/analysis.py
+  - code/article-template.txt
+  - sql/build_sample.sql
+  - results/*.csv
+  - results/summary.json
+execute:
+  echo: false
+---
+
+Imagine judging someone's career by the year they lost a job. Or by the year they received an unusually large bonus. Neither number is wrong, but neither tells the whole story. This becomes a bigger problem when we use earnings to ask how much a child's economic position depends on their parents.
+
+As a student preparing to enter the job market, I wonder how much a first salary can really tell us. Some careers start slowly and grow later. Could measuring earnings too early make a difference in career timing look like a difference in economic opportunity?
+
+I ask two questions: does averaging several years change the earnings link between fathers and adult children, and does the child's age matter?
+
+## Following Families Over Time
+
+I use the [Panel Study of Income Dynamics (PSID)](https://psidonline.isr.umich.edu/): its 2023 Parent Identification File, 1968–2023 Individual File, and a family income extract. I study birth fathers because the first two income waves contain only Head earnings, limiting coverage of mothers. The measure is individual labor income, excluding farm and unincorporated business income—not total household income.
+
+## How SQL Connects Fathers and Children
+
+Python reads the needed columns using PSID's supplied file layouts and loads them into SQLite. The [Python code](code/analysis.py) records the full variable mapping; the [SQL file](sql/build_sample.sql) performs the matching and aggregation.
+
+First, permanent individual IDs identify biological father–child links. The Individual File then locates each person's family and role in each wave. SQL uses `SELECT` to choose fields and `JOIN` to connect records using **both interview year and family interview number**. A family number alone cannot identify someone across years. Without these joins, the income records would not tell us which father belongs to which child.
+
+Income belongs to the person in the corresponding role: Reference Person earnings go only to the current Reference Person, and Spouse/Partner earnings only to that person. Other household members do not receive these earnings. Duplicate-key checks guard against counting a person twice.
+
+Next, `WHERE` selects valid ages and positive earnings. `GROUP BY` gathers each person's years, and `AVG` calculates their mean. Finally, another `JOIN` attaches father and child summaries to their biological link.
+
+For a **fictional teaching example, not used in the analysis**, suppose `parent_links` connects father 101 to child 205. Joining father 101 to `father_means` adds $50,000; joining child 205 to `child_means` adds $40,000. The resulting row contains both IDs and their separate average earnings.
+
+<details>
+<summary>See the SQL aggregation and final matching steps</summary>
+
+The first query calculates three-year father averages from the correctly assigned, inflation-adjusted earnings records:
+
+```sql
+SELECT person, AVG(real_income) AS father_mean,
+       COUNT(DISTINCT year) AS income_years
+FROM earnings
+WHERE year IN (2010, 2012, 2014)
+  AND age BETWEEN 35 AND 60 AND real_income > 0
+GROUP BY person
+HAVING COUNT(DISTINCT year) = 3;
+```
+
+`HAVING` requires three distinct years, so one available observation cannot pass as a multi-year average. After building both summaries, the second query links them:
+
+```sql
+SELECT l.child, l.father, f.father_mean, c.child_mean
+FROM parent_links AS l
+JOIN father_means AS f ON l.father = f.person
+JOIN child_means AS c ON l.child = c.person
+WHERE l.child <> l.father;
+```
+
+Here, `l`, `f`, and `c` are short table names. These inner joins exclude pairs missing either income summary. Checking the remaining sample size is therefore essential. Earlier in the saved SQL, the individual-to-family join uses `p.wave = f.wave AND p.family = f.family` before assigning earnings by role.
+
+</details>
+
+## Does Averaging Earnings Change the Result?
+
+I use father income in 2010/2012/2014 and child income in 2018/2020/2022. Fathers must be aged 35–60 and children 30–50 at every corresponding interview, which reports the previous year's income. Requiring all six positive observations leaves **@pairs@ pairs and @fathers@ fathers**. I convert earnings to 2022 dollars using annual averages of [BLS CPI from FRED](https://fred.stlouisfed.org/series/CPIAUCNS), then average before taking logs.
+
+I estimate intergenerational earnings elasticity (IGE):
+
+$$
+\log(Y_{\text{child}})=\alpha+\beta\log(Y_{\text{father}})+u
+$$
+
+Here, $\beta$ measures the earnings association. A larger value means less relative mobility in this sample, not a causal effect or a measure of whether children earn more dollars.
+
+![Single-year and three-year-average IGE for the same @pairs@ pairs. Dots show IGE estimates, and horizontal lines show 95% bootstrap confidence intervals, resampling fathers and keeping siblings together.](results/figures/income-measures.png)
+
+Using father earnings in 2012 and child earnings in 2020 gives **@single@**, versus **@multi@** for three-year averages. Approximately, a 10% difference in fathers' earnings is associated with a 2.3% difference in children's earnings under either measure.
+
+I expected averaging to change more. The difference is **@difference@**, with a 95% interval of **@difference_low@ to @difference_high@**. It is small and not statistically distinguishable from zero. Averaging can reduce temporary fluctuations, but need not increase the estimate in every sample.
+
+## Does the Choice of Year Matter?
+
+![Nine single-year IGE estimates using the same complete pairs. Rows vary father income years; columns vary child income years.](results/figures/year-sensitivity.png)
+
+Changing the income years moves the estimate from **@single_min@ to @single_max@**, even with identical people. Individual earnings changes and calendar-year conditions—including 2020—can affect the comparison. These point estimates show sensitivity; they do not establish that every difference is significant.
+
+## Why Age Matters
+
+A young worker's earnings may poorly represent their later position, especially when education or training delays earnings growth. Measuring children early can therefore understate their later earnings link with parents: a potential life-cycle bias. Averaging several early-career years may still miss long-run status.
+
+![Life-cycle comparison for @life_pairs@ identical pairs, holding father earnings at the same three-year average.](results/figures/life-cycle.png)
+
+I select **@life_pairs@ children** from the main sample with positive 2014 earnings and ages 22–29 at the 2015 interview. These children meet the main sample's age requirements at the 2019, 2021, and 2023 interviews, which report income for 2018, 2020, and 2022. They were younger at the 2015 interview reporting their 2014 earnings. Their mean interview age rises from **@early_age@ to @later_age@** by 2023. IGE rises from **@early_ige@ to @later_ige@**, and median real earnings from **$@early_income@ to $@later_income@**.
+
+This is descriptive evidence consistent with possible life-cycle bias, not statistical confirmation. The change's 95% interval, **@life_low@ to @life_high@**, includes zero. Age and calendar time change together, so I cannot attribute the increase to aging alone. Averaging reduces temporary variation; it does not eliminate life-cycle bias.
+
+These unweighted estimates describe selected positive earners with complete records, not all U.S. families. Attrition, PSID income imputations, changing family roles, and unequal parental and child ages also limit interpretation. They are not causal estimates.
+
+## Takeaway
+
+Averaging barely changes my main estimate, but choosing another year or measuring children later gives a different picture. I would not judge a family's mobility from one convenient income observation. Multiple years help, but I also need to ask how old people were, whose earnings were matched, and who was left out. A more stable measure is not a complete view of someone's working life.

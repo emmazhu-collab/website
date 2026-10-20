@@ -1,0 +1,11 @@
+{
+  "person_wave_rows": 513216,
+  "family_wave_rows": 54946,
+  "person_family_join_rows": 177108,
+  "links_with_both_individual_records": 29218,
+  "eligible_member_rows": 141028,
+  "unavailable_or_unsupported_role_income": 67478,
+  "zero_income_member_rows": 19592,
+  "duplicate_person_year_keys": 0,
+  "duplicate_family_year_keys": 0
+}
