@@ -124,7 +124,7 @@ Open this website project and render `blog/posts/post5/index.qmd`. Render uses t
 
 ## Blog 6: Does One Year of Income Tell the Whole Story?
 
-Blog 6 uses PSID data to compare single-year and three-year earnings elasticities for birth fathers and adult children. It also checks sensitivity to the chosen income year and the child's career stage. The website copy contains the complete analysis and article. The separate `blog6` project currently holds the original inputs; its final process-repository setup is a later step.
+Blog 6 uses PSID data to compare single-year and three-year earnings elasticities for birth fathers and adult children. It also checks sensitivity to the chosen income year and the child's career stage. The website copy contains the complete analysis and article. The separate `blog6` project now contains the analysis process, data instructions, and saved outputs. Its original PSID inputs stay local in `blog6/data/raw`.
 
 | Location | Contents |
 | --- | --- |
@@ -143,7 +143,7 @@ Use Python 3 with `pandas`, `numpy`, and `matplotlib`. Install missing packages 
 python3 blog/posts/post6/code/analysis.py
 ```
 
-The original PSID inputs must be in the sibling `blog6` folder, or set `PSID_DATA_DIR` to their folder. Required files and their exact layout are listed in the Blog 6 README. The script reads the originals without changing them and recreates the results, figures, and article. Individual PSID records are not included in the website.
+The original PSID inputs must be in the sibling `blog6/data/raw` folder, or set `PSID_DATA_DIR` to their folder. Required files and their exact layout are listed in the Blog 6 README. The script reads the originals without changing them and recreates the results, figures, and article. Individual PSID records are not included in the website.
 
 For Jupyter, use a Python kernel with the same packages and start the notebook in this website's root folder:
 

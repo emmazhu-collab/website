@@ -11,7 +11,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 POST = Path(__file__).resolve().parents[1]
-RAW = Path(os.environ.get('PSID_DATA_DIR', str(POST.parents[3] / 'blog6')))
+RAW = Path(os.environ.get('PSID_DATA_DIR', str(POST.parents[3] / 'blog6' / 'data/raw')))
 OUT = POST / 'results'
 FIG = OUT / 'figures'
 FIG.mkdir(parents=True, exist_ok=True)

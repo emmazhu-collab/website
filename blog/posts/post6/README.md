@@ -20,7 +20,7 @@ The SQLite database is created in memory on every run. It contains individual re
 
 ## Data sources and inputs
 
-Get PSID files from https://simba.isr.umich.edu/Zips/ZipMain.aspx using your own registered account. The current local inputs are in `6400 R/blog6`, beside `website-recovered`. Original files are not changed or copied into the website.
+Get PSID files from https://simba.isr.umich.edu/Zips/ZipMain.aspx using your own registered account. The current local inputs are in `6400 R/blog6/data/raw`, beside the website project. Original files are not changed or copied into the website.
 
 Required layout inside that input folder:
 
@@ -54,7 +54,7 @@ Open the website project in RStudio. In **Terminal**, with the website folder as
 python3 blog/posts/post6/code/analysis.py
 ```
 
-This rebuilds the aggregate tables, figures, and `index.qmd`. It reads the original PSID files from the sibling `blog6` folder. For a different input location, use:
+This rebuilds the aggregate tables, figures, and `index.qmd`. It reads the original PSID files from the sibling `blog6/data/raw` folder. For a different input location, use:
 
 ```sh
 PSID_DATA_DIR="/full/path/to/your/PSID/files" python3 blog/posts/post6/code/analysis.py
