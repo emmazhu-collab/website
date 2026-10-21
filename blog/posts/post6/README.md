@@ -2,6 +2,9 @@
 
 This post uses real PSID data to compare single-year and three-year-average earnings elasticities for birth fathers and their adult children. A second comparison follows the same younger children at two career stages. Python reads the files, SQLite matches people and calculates averages, and Python estimates the slopes and saves the figures.
 
+
+The article is a six-step tutorial: obtain the inputs, prepare the data with Python, match IDs with SQL, calculate average income, compare IGE estimates, and check life-cycle bias. Detailed setup and reproduction instructions stay in this README. The short article examples assume the preparation steps have run; use the complete script for reproduction.
+
 ## Files
 
 - `index.qmd`: complete article, generated from the template and calculated results.
@@ -42,7 +45,7 @@ CPI source: https://fred.stlouisfed.org/series/CPIAUCNS. Download URL: https://f
 
 ## Replication instructions
 
-Use Python 3 with `pandas`, `numpy`, and `matplotlib`. SQLite and the file-reading tools are included with Python. If these packages are missing, install them in the Python environment you plan to use:
+Use Python 3 with `pandas`, `numpy`, and `matplotlib`. RStudio’s Python Console, Terminal, and Jupyter may use different Python environments. Install dependencies with the same interpreter you use to run the script. The standalone Blog 6 README includes the author’s tested Anaconda command. SQLite and the file-reading tools are included with Python. If these packages are missing, install them in the Python environment you plan to use:
 
 ```sh
 python3 -m pip install pandas numpy matplotlib
@@ -74,7 +77,7 @@ Once analysis succeeds, open `blog/posts/post6/index.qmd` in RStudio and click *
 quarto render blog/posts/post6/index.qmd
 ```
 
-Render uses the saved article and images; it does not rerun Python or download data. The webpage has prose and figures, plus optional collapsed SQL examples. Output goes to `docs/blog/posts/post6/index.html`. Rendering does not publish or commit anything.
+Render uses the saved article and images; it does not rerun Python or download data. The webpage has prose and figures, with SQL examples displayed directly in the article. Output goes to `docs/blog/posts/post6/index.html`. Rendering does not publish or commit anything.
 
 ## Sample and interpretation
 

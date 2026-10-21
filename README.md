@@ -137,7 +137,7 @@ Blog 6 uses PSID data to compare single-year and three-year earnings elasticitie
 
 ### Replication instructions
 
-Use Python 3 with `pandas`, `numpy`, and `matplotlib`. Install missing packages with `python3 -m pip install pandas numpy matplotlib` in Terminal. From this website's root folder, run:
+Use Python 3 with `pandas`, `numpy`, and `matplotlib`. RStudio’s Python Console, Terminal, and Jupyter may use different Python environments. Install dependencies with the same interpreter you use to run the script. The standalone Blog 6 README includes the author’s tested Anaconda command. Install missing packages with `python3 -m pip install pandas numpy matplotlib` in Terminal. From this website's root folder, run:
 
 ```sh
 python3 blog/posts/post6/code/analysis.py
