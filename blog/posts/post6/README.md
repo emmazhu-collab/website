@@ -7,9 +7,8 @@ The article is a six-step tutorial: obtain the inputs, prepare the data with Pyt
 
 ## Files
 
-- `index.qmd`: complete article, generated from the template and calculated results.
+- `index.qmd`: article text. Edit this file directly.
 - `code/analysis.py`: reads the original files and runs the analysis.
-- `code/article-template.txt`: editable article text. Keep the `@...@` fields; the script fills them with calculated values.
 - `sql/build_sample.sql`: actual matching, role assignment, age restrictions, and income aggregation.
 - `data/cpi_monthly.csv`: saved BLS CPI series from FRED, January 2010–December 2022.
 - `results/elasticities.csv`: slopes, intercepts, intervals, and sample counts.
@@ -57,7 +56,7 @@ Open the website project in RStudio. In **Terminal**, with the website folder as
 python3 blog/posts/post6/code/analysis.py
 ```
 
-This rebuilds the aggregate tables, figures, and `index.qmd`. It reads the original PSID files from the sibling `blog6/data/raw` folder. For a different input location, use:
+This rebuilds the aggregate tables and figures. It does not change the article. It reads the original PSID files from the sibling `blog6/data/raw` folder. For a different input location, use:
 
 ```sh
 PSID_DATA_DIR="/full/path/to/your/PSID/files" python3 blog/posts/post6/code/analysis.py
@@ -69,7 +68,7 @@ Do not paste a Terminal command into the R Console. To use Jupyter, select a Pyt
 %run blog/posts/post6/code/analysis.py
 ```
 
-For another data location, set `os.environ['PSID_DATA_DIR']` before `%run`. Running the whole script is required; do not start with a middle section. To change article wording, edit `code/article-template.txt` first, since the next analysis run replaces `index.qmd`.
+For another data location, set `os.environ['PSID_DATA_DIR']` before `%run`. Running the whole script is required; do not start with a middle section. To change article wording, edit `index.qmd` directly. If you rerun the analysis with different inputs, check the article numbers against the saved results.
 
 Once analysis succeeds, open `blog/posts/post6/index.qmd` in RStudio and click **Render**, or run this in Terminal when Quarto is on PATH:
 

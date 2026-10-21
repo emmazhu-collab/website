@@ -128,8 +128,8 @@ Blog 6 uses PSID data to compare single-year and three-year earnings elasticitie
 
 | Location | Contents |
 | --- | --- |
-| `blog/posts/post6/index.qmd` | Complete generated article |
-| `blog/posts/post6/code/` | Python analysis and editable article template |
+| `blog/posts/post6/index.qmd` | Editable article |
+| `blog/posts/post6/code/` | Python analysis |
 | `blog/posts/post6/sql/` | SQL joins and income aggregation |
 | `blog/posts/post6/data/` | Public CPI input |
 | `blog/posts/post6/results/` | Aggregate tables, checks, and three figures |
@@ -143,7 +143,7 @@ Use Python 3 with `pandas`, `numpy`, and `matplotlib`. RStudio’s Python Consol
 python3 blog/posts/post6/code/analysis.py
 ```
 
-The original PSID inputs must be in the sibling `blog6/data/raw` folder, or set `PSID_DATA_DIR` to their folder. Required files and their exact layout are listed in the Blog 6 README. The script reads the originals without changing them and recreates the results, figures, and article. Individual PSID records are not included in the website.
+The original PSID inputs must be in the sibling `blog6/data/raw` folder, or set `PSID_DATA_DIR` to their folder. Required files and their exact layout are listed in the Blog 6 README. The script reads the originals without changing them and recreates the results and figures. It does not change the article. Individual PSID records are not included in the website.
 
 For Jupyter, use a Python kernel with the same packages and start the notebook in this website's root folder:
 
@@ -151,4 +151,4 @@ For Jupyter, use a Python kernel with the same packages and start the notebook i
 %run blog/posts/post6/code/analysis.py
 ```
 
-Edit `blog/posts/post6/code/article-template.txt` to change article wording; running the script regenerates `index.qmd`. After analysis, open `index.qmd` in RStudio and click **Render**, or run `quarto render blog/posts/post6/index.qmd` in Terminal. Render uses saved outputs and does not repeat the analysis. See the post README for sample restrictions, uncertainty calculations, and limitations.
+Edit `blog/posts/post6/index.qmd` directly to change article wording. If you rerun the analysis with different inputs, check the article numbers against the saved results. After analysis, open `index.qmd` in RStudio and click **Render**, or run `quarto render blog/posts/post6/index.qmd` in Terminal. Render uses saved outputs and does not repeat the analysis. See the post README for sample restrictions, uncertainty calculations, and limitations.

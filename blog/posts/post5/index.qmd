@@ -18,7 +18,7 @@ counties <- read.csv("data/county-estimates.csv")
 summary <- read.csv("data/summary.csv")
 ```
 
-How much does a typical Texas household earn? A single number gives a quick answer, but Texas is a large state. It seems unlikely that the same number describes a household near Dallas and one near the southern border equally well. I wanted to see where higher and lower household incomes are located, and what we miss when we use the state as one unit.
+How much does a typical Texas household earn? A single number gives a quick answer, but Texas is a large state. It seems unlikely that the same number describes a household near Dallas and one near the southern border equally well. I wanted to see where higher and lower household incomes are located, and what we miss when we use the state as one unit. In particular, I look at whether income differences appear across regions and even between counties near the same major city.
 
 This matters when deciding where to look more closely at local needs. A county below the state income level may deserve a different set of questions about jobs, housing, or services than a county far above it. A map cannot decide where funding should go, but it can show differences that a statewide number hides.
 
@@ -40,7 +40,9 @@ The large pale counties in western Texas need careful reading too. They occupy m
 
 ![Income estimates and Census margins of error for ten selected counties, with the Texas median shown for reference.](graph/selected-county-incomes.png)
 
-The second figure makes nearby differences easier to see. Collin's median is $`r format(counties$income[counties$NAME == "Collin"], big.mark = ",", scientific = FALSE, trim = TRUE)`, while Dallas County's is $`r format(counties$income[counties$NAME == "Dallas"], big.mark = ",", scientific = FALSE, trim = TRUE)`. Fort Bend is also above Harris County, which contains much of Houston. A broad label such as “the Dallas area” or “the Houston area” would hide these contrasts. The ten counties are selected examples, not a random sample or a ranking of every county.
+The second figure makes nearby differences easier to see. Collin's median is $`r format(counties$income[counties$NAME == "Collin"], big.mark = ",", scientific = FALSE, trim = TRUE)`, while Dallas County's is $`r format(counties$income[counties$NAME == "Dallas"], big.mark = ",", scientific = FALSE, trim = TRUE)`. Fort Bend is also above Harris County, which contains much of Houston. A broad label such as “the Dallas area” or “the Houston area” would hide these contrasts.
+
+This matters because counties in the same metropolitan area may have different income levels and local needs. Using only one regional number could hide these differences when studying housing affordability or access to services. However, income alone cannot tell us which county has greater needs. The ten counties are selected examples, not a random sample or a ranking of every county.
 
 The bars extend one published margin of error on each side of the estimate, showing the Census Bureau's [90% confidence intervals](https://www.census.gov/programs-surveys/acs/methodology/sample-size-and-data-quality/sample-size-definitions.html). Estimates are not exact, so small color differences should not become firm rankings. Glasscock is a useful warning: its estimated median exceeds $100,000, but its margin of error is about $`r format(round(counties$moe[counties$NAME == "Glasscock"] / 1000) * 1000, big.mark = ",", scientific = FALSE, trim = TRUE)`. A dark county is not always a precisely measured high-income county.
 
@@ -48,4 +50,6 @@ Income also does not measure living standards by itself. These estimates do not 
 
 ## Takeaway
 
-The map shows several high-income pockets near major cities and a lower-income group along part of the southern border. The selected counties also show that incomes can differ widely within the same urban area. I would use this map to choose where to investigate further, then check smaller areas, living costs, and uncertainty before making a decision. The state median is a starting point, not a description of every community.
+A single statewide income number hides important differences across Texas. The map shows higher-income areas around several major cities and a lower-income group along part of the southern border. The county comparison also shows that incomes can differ widely even within the same metropolitan area.
+
+These findings matter because local economic conditions cannot always be understood from state or regional averages. However, income alone does not tell us why these differences exist or which communities need more support. I would use this map as a starting point, then look at smaller areas, housing costs, and the uncertainty in the estimates before making decisions.

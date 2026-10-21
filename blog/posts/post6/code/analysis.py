@@ -205,19 +205,3 @@ ax.set_title('The same children at two career stages')
 fig.text(.02,.02,f'{len(life)} identical pairs | 95% father-cluster bootstrap intervals | Age and calendar time both change',fontsize=9)
 fig.tight_layout(rect=(0,.06,1,1));fig.savefig(FIG/'life-cycle.png',dpi=180);plt.close(fig)
 print(ld.to_string(index=False));print(json.dumps(summary,indent=2))
-
-# Insert calculated results into the article; no hand-copied numerical results.
-values={**summary,'single':est.estimate.iloc[0],'multi':est.estimate.iloc[1],
- 'early_age':ld.mean_interview_age.iloc[0],'later_age':ld.mean_interview_age.iloc[1],
- 'early_ige':ld.estimate.iloc[0],'later_ige':ld.estimate.iloc[1],
- 'early_income':ld.median_real_earnings.iloc[0],'later_income':ld.median_real_earnings.iloc[1],
- 'life_low':summary['life_difference_low'],'life_high':summary['life_difference_high']}
-article=(POST/'code/article-template.txt').read_text()
-for key,value in values.items():
- if key in ['pairs','fathers','life_pairs']: value=f'{value:,}'
- elif key in ['early_income','later_income']: value=f'{value:,.0f}'
- elif key in ['early_age','later_age']: value=f'{value:.1f}'
- elif isinstance(value,(float,np.floating)):value=f'{value:.3f}'
- article=article.replace('@'+key+'@',str(value))
-assert not re.search(r'@[a-z_]+@',article)
-(POST/'index.qmd').write_text(article)
