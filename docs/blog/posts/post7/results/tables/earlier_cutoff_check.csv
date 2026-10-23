@@ -1,0 +1,9 @@
+state,benchmark,cutoff,first_return_observed_by_cutoff,sustained_return_observed_by_cutoff
+California,2019_average,2021-12-01,FALSE,FALSE
+California,2019_average,2022-12-01,TRUE,TRUE
+California,February_2020,2021-12-01,FALSE,FALSE
+California,February_2020,2022-12-01,TRUE,TRUE
+Texas,2019_average,2021-12-01,FALSE,FALSE
+Texas,2019_average,2022-12-01,FALSE,FALSE
+Texas,February_2020,2021-12-01,FALSE,FALSE
+Texas,February_2020,2022-12-01,FALSE,FALSE

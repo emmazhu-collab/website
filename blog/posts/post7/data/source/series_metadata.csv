@@ -1,0 +1,3 @@
+state,series_id,title,frequency,units,seasonal_adjustment,source,accessed_on
+Texas,TXUR,Unemployment Rate in Texas,Monthly,Percent,Seasonally Adjusted,U.S. Bureau of Labor Statistics via FRED,2026-10-23
+California,CAUR,Unemployment Rate in California,Monthly,Percent,Seasonally Adjusted,U.S. Bureau of Labor Statistics via FRED,2026-10-23

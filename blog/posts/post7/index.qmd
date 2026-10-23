@@ -1,0 +1,78 @@
+---
+title: "When Did Texas and California Return to Their Pre-Pandemic Unemployment Rates?"
+subtitle: "Comparing two states using different definitions of recovery"
+date: 2026-10-23
+categories:
+  - unemployment
+  - labor markets
+resources:
+  - code/analysis.R
+  - code/download_data.R
+  - code/run_analysis.R
+  - data/source/unemployment_tx_ca.csv
+  - data/source/series_metadata.csv
+  - results/tables/recovery_summary.csv
+  - results/tables/earlier_cutoff_check.csv
+  - results/tables/recovery_gaps.csv
+  - README.md
+  - README.html
+format:
+  html:
+    toc: false
+    code-fold: false
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r}
+post_dir <- if (dir.exists("blog/posts/post7/data/source")) "blog/posts/post7" else "."
+source(file.path(post_dir, "code", "analysis.R"))
+unemployment <- readr::read_csv(file.path(post_dir, "data", "source", "unemployment_tx_ca.csv"),
+                                show_col_types = FALSE)
+series_metadata <- readr::read_csv(file.path(post_dir, "data", "source", "series_metadata.csv"),
+                                   show_col_types = FALSE)
+recovery <- calculate_recovery(unemployment)
+cutoff_results <- calculate_cutoffs(recovery)
+rankings <- benchmark_rankings(recovery)
+
+tx_2019 <- dplyr::filter(recovery, state == "Texas", benchmark == "2019_average")
+tx_feb <- dplyr::filter(recovery, state == "Texas", benchmark == "February_2020")
+ca_2019 <- dplyr::filter(recovery, state == "California", benchmark == "2019_average")
+ca_feb <- dplyr::filter(recovery, state == "California", benchmark == "February_2020")
+recovery_plot <- make_recovery_plot(unemployment, recovery)
+
+show_month <- function(x) if (is.na(x)) "not reached by December 2023" else format(x, "%B %Y")
+show_number <- function(x, digits = 2) sprintf(paste0("%.", digits, "f"), x)
+```
+
+COVID-19 pushed unemployment rates sharply higher in Texas and California. Rates later fell, but falling from the peak is not the same as returning to pre-pandemic levels. Texas and California are two large labor markets, but they entered the pandemic with different unemployment rates. Raw rates alone may therefore be misleading. I ask when each state returned to its own pre-pandemic level.
+
+I use monthly, seasonally adjusted unemployment rates from the U.S. Bureau of Labor Statistics through FRED: [TXUR for Texas](https://fred.stlouisfed.org/series/TXUR) and [CAUR for California](https://fred.stlouisfed.org/series/CAUR). The study period is January 2019 through December 2023, with 60 observations for each state. The saved data were accessed on `r unique(series_metadata$accessed_on)`; historical values may later be revised.
+
+I compare each state with its 2019 average and its February 2020 rate. The first is a full-year baseline; the second is the last month before the pandemic shock. For each state, I define the pandemic peak as its highest rate from March through December 2020. A first return is the first month after that peak when the rate is at or below the selected benchmark. I also check whether that return begins a run of three consecutive months at or below the benchmark.
+
+The interactive chart combines two views with two benchmarks. Rate shows each state's unemployment rate; Gap subtracts the selected benchmark from that rate. The gap view puts both states around zero, making it easier to see how far each is from its own selected benchmark.
+
+```{r}
+recovery_plot
+```
+
+::: {.figure-caption}
+Circles mark the first observed return to the selected benchmark. In the Gap view, zero means the rate equals that benchmark. Source: BLS via FRED.
+:::
+
+Both states peaked in April 2020: 12.8% in Texas and 16.1% in California. California first reached its 2019 average of `r show_number(ca_2019$benchmark_rate)`% in June 2022, and its February 2020 rate of `r show_number(ca_feb$benchmark_rate)`% in April 2022. Texas did not reach either benchmark by December 2023. The benchmark choice moves California's first-return date by two months.
+
+The gap view adds a comparison that the raw rates alone do not show. In April 2022, Texas's unemployment rate was lower than California's: 3.9% compared with 4.3%. But against their February 2020 baselines, Texas was still 0.3 percentage points above its benchmark, while California was 0.1 points below hers. So a lower raw rate did not mean Texas was closer to its own pre-pandemic level at that point. Under the 2019-average baseline, California first reached its benchmark in June 2022, while Texas remained above its own baseline through the end of the study.
+
+The three-month check does not change California's return dates: both returns begin a run of at least three consecutive months at or below the selected benchmark. This check shows the return was not limited to one month, but it does not mean rates stayed below the benchmark afterward.
+
+The study window also matters. By December 2021, neither state had returned under either benchmark. By December 2022, California had returned under both, while Texas had not. A shorter window can miss a later return; no return observed by the end of 2023 does not mean Texas will never return.
+
+Unemployment rates are not counts of jobs. A rate can fall when people stop looking for work, even if all lost jobs have not returned. Texas and California also differ in industries, population, and other conditions. This comparison cannot identify the effects of state policies, and it describes only the chosen unemployment measure, benchmarks, and period.
+
+California was the only state to reach both selected benchmarks by December 2023, although its measured return date depends on the benchmark. The interactive comparison also shows why the definition matters: a lower unemployment rate does not always mean a state is closer to its own pre-pandemic level. Looking at both the original rate and the gap gives a clearer picture of the recovery path. These results describe unemployment rates, not overall economic recovery or policy effects.
+
+Source: U.S. Bureau of Labor Statistics via FRED, [TXUR](https://fred.stlouisfed.org/series/TXUR) and [CAUR](https://fred.stlouisfed.org/series/CAUR). See the [README](README.html) for saved data, code, and replication instructions.
