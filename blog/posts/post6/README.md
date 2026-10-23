@@ -1,89 +1,35 @@
 # Blog 6: Does One Year of Income Tell the Whole Story?
 
-This post uses real PSID data to compare single-year and three-year-average earnings elasticities for birth fathers and their adult children. A second comparison follows the same younger children at two career stages. Python reads the files, SQLite matches people and calculates averages, and Python estimates the slopes and saves the figures.
-
-
-The article is a six-step tutorial: obtain the inputs, prepare the data with Python, match IDs with SQL, calculate average income, compare IGE estimates, and check life-cycle bias. Detailed setup and reproduction instructions stay in this README. The short article examples assume the preparation steps have run; use the complete script for reproduction.
+This tutorial uses Python and SQLite to match PSID fathers and children, construct earnings near age 40, and compare single-year with three-year-average IGE estimates.
 
 ## Files
 
-- `index.qmd`: article text. Edit this file directly.
-- `code/analysis.py`: reads the original files and runs the analysis.
-- `sql/build_sample.sql`: actual matching, role assignment, age restrictions, and income aggregation.
-- `data/cpi_monthly.csv`: saved BLS CPI series from FRED, January 2010–December 2022.
-- `results/elasticities.csv`: slopes, intercepts, intervals, and sample counts.
-- `results/year_sensitivity.csv`: nine income-year combinations for identical pairs.
-- `results/life_cycle.csv`: the younger group's early and later estimates and median earnings.
-- `results/sample_counts.csv` and `matching_checks.json`: sample and matching checks.
-- `results/summary.json`: numbers used in the article.
-- `results/figures/`: the three PNG figures used in the article.
+- `index.qmd`: article, teaching examples, and interpretation.
+- `code/same_age_analysis.py`: analysis script.
+- `sql/same_age_sample.sql`: SQL summaries and father-child matching.
+- `data/cpi_same_age.csv`: public monthly CPI data for 1993–2022.
+- `results/life_cycle.csv`: saved aggregate results for the separate 2014/2022 comparison in the article.
+- `figures/same-age-ige.png`: main IGE comparison for the 321-pair sample.
+- `results/figures/life-cycle.png`: supplementary comparison using a separate 140-pair sample.
 
-The SQLite database is created in memory on every run. It contains individual records temporarily, but the script does not save or publish those records. Saved outputs are aggregate results only.
+PSID microdata are not included. Download the needed files from the [PSID Data Center](https://simba.isr.umich.edu/Zips/ZipMain.aspx) using your own registered account. Follow the PSID Conditions of Use, keep the original files in the local sibling `blog6/data/raw/` folder, and do not upload individual records to GitHub or an AI service. See the standalone Blog 6 README for required filenames and variables.
 
-## Data sources and inputs
+## Reproduce the analysis
 
-Get PSID files from https://simba.isr.umich.edu/Zips/ZipMain.aspx using your own registered account. The current local inputs are in `6400 R/blog6/data/raw`, beside the website project. Original files are not changed or copied into the website.
-
-Required layout inside that input folder:
-
-```text
-pid23/PID23.txt
-pid23/PID23.do
-ind2023er/IND2023ER.txt
-ind2023er/IND2023ER.do
-J366467.xlsx
-```
-
-Keep the supplied codebooks and labels with your originals. The script reads only the needed fixed-width columns, using positions from the `.do` files. It reads numeric Excel cells directly because the PSID workbook has a nonstandard worksheet attribute that some Excel libraries reject.
-
-Child identifiers are `PID2` and `PID3`; birth-father identifiers are `PID23` and `PID24`. They match Individual File `ER30001` and `ER30002`. The combined numeric key is family ID times 1,000 plus person number. Missing or unknown father IDs are excluded, and both people must have records supporting the required income observations.
-
-Income columns are documented in `J366467_labels.txt`. The main comparison uses father income in 2010/2012/2014 and child income in 2018/2020/2022. The 2016 income fields are available but not used. The 2014 child observation is used for the career-stage check. Only Reference Person earnings are available for 2010 and 2012; later waves also have Spouse/Partner earnings.
-
-CPI source: https://fred.stlouisfed.org/series/CPIAUCNS. Download URL: https://fred.stlouisfed.org/graph/fredgraph.csv?id=CPIAUCNS&cosd=2010-01-01&coed=2022-12-31. Retrieved October 20, 2026. The script checks that every annual CPI average contains 12 months and converts all earnings to 2022 dollars. Normal reproduction uses the saved CSV and needs no internet connection.
-
-## Replication instructions
-
-Use Python 3 with `pandas`, `numpy`, and `matplotlib`. RStudio’s Python Console, Terminal, and Jupyter may use different Python environments. Install dependencies with the same interpreter you use to run the script. The standalone Blog 6 README includes the author’s tested Anaconda command. SQLite and the file-reading tools are included with Python. If these packages are missing, install them in the Python environment you plan to use:
+From the `website-recovered` project folder, run this command in Terminal:
 
 ```sh
-python3 -m pip install pandas numpy matplotlib
+/opt/anaconda3/bin/python blog/posts/post6/code/same_age_analysis.py
 ```
 
-Open the website project in RStudio. In **Terminal**, with the website folder as the working directory, copy only this command (not the backticks):
+The script reads the local PSID files, applies the documented age, role, and income rules, and saves results to a new timestamped folder under `blog/posts/post6/results_same_age/`. Outputs include aggregate checks, IGE estimates, bootstrap intervals, and figures. The script does not write personal IDs or individual earnings records, change the article, or render the website.
 
-```sh
-python3 blog/posts/post6/code/analysis.py
-```
+For each person's three selected records, SQL uses `AVG(age)` as the mean of their three interview ages. The father-child age-gap rule compares these mean ages, as well as the ages of the single-year observations. This mean summarizes three measurement ages; it is not one specific interview age.
 
-This rebuilds the aggregate tables and figures. It does not change the article. It reads the original PSID files from the sibling `blog6/data/raw` folder. For a different input location, use:
+The article's supplementary figure uses the saved 140-pair comparison of children's 2014 and 2022 earnings in `results/life_cycle.csv`. The current script also creates an age-stage check, but it selects observations by age from the main sample and does not recreate that exact 2014/2022 comparison. The saved CSV and PNG are therefore needed to reproduce the supplementary figure as shown.
 
-```sh
-PSID_DATA_DIR="/full/path/to/your/PSID/files" python3 blog/posts/post6/code/analysis.py
-```
+## Results and interpretation
 
-Do not paste a Terminal command into the R Console. To use Jupyter, select a Python kernel with the same packages, open the notebook in the website folder, and run this in one cell:
+The main analysis covers available earnings years from 1993 through 2022. It uses the same 321 father-child pairs and 249 fathers for both income measures. The single-year IGE is 0.170 (95% father-cluster bootstrap interval: 0.030–0.354); the three-year-average IGE is 0.291 (0.151–0.444). The paired difference is 0.121 (-0.037–0.268), so the estimates are numerically different but the interval does not establish a clear difference. The separate life-stage check uses 140 pairs and compares child earnings in 2014 and 2022 while holding the father's three-year average fixed. Its difference interval includes zero, and age and calendar year change together, so it is exploratory rather than causal.
 
-```python
-%run blog/posts/post6/code/analysis.py
-```
-
-For another data location, set `os.environ['PSID_DATA_DIR']` before `%run`. Running the whole script is required; do not start with a middle section. To change article wording, edit `index.qmd` directly. If you rerun the analysis with different inputs, check the article numbers against the saved results.
-
-Once analysis succeeds, open `blog/posts/post6/index.qmd` in RStudio and click **Render**, or run this in Terminal when Quarto is on PATH:
-
-```sh
-quarto render blog/posts/post6/index.qmd
-```
-
-Render uses the saved article and images; it does not rerun Python or download data. The webpage has prose and figures, with SQL examples displayed directly in the article. Output goes to `docs/blog/posts/post6/index.html`. Rendering does not publish or commit anything.
-
-## Sample and interpretation
-
-Both main estimates use 336 complete pairs and 238 fathers. Every father must have positive earnings and interview age 35–60 in all three father waves; every child must have positive earnings and interview age 30–50 in all three child waves. The life-cycle check uses 140 of these pairs with positive child earnings in 2014 and interview age 22–29 in 2015. Ages refer to interviews, one year after the income year.
-
-The income measure excludes farm and unincorporated business income; PSID imputes missing components. Role 10 and sequence 1 receive Reference Person earnings. Current members with role 20 or 22 receive Spouse/Partner earnings when available. Other roles are never assigned the Reference Person's income. Unsupported roles, missing income, and zero income do not enter the log regressions. Special income codes outside 0–9,999,997 are excluded before inflation adjustment.
-
-The slope is OLS of log child earnings on log father earnings with an intercept. Multi-year income is the arithmetic average of real earnings, followed by its logarithm. All estimates are unweighted descriptions of this selected sample, not national estimates or causal effects. Intervals use 1,000 bootstrap samples of fathers, keeping their sampled children together; the random seed is 6400. Differences use paired bootstrap draws. This extra uncertainty calculation does not change the SQL matching or OLS estimate.
-
-Averaging may reduce temporary income variation. It does not remove life-cycle bias. In the age comparison, calendar time changes too, so the difference cannot be attributed only to aging. Neither difference interval rules out zero. The article also discusses positive-income selection, attrition, role changes, and unequal ages across generations.
+Interview age approximates age when earnings were received, since income refers to the prior year. A three-year average is not lifetime earnings. Requiring positive repeated earnings also selects the sample, so results should not be treated as representative of all families or as a causal effect.

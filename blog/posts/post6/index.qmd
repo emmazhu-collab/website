@@ -1,144 +1,128 @@
 ---
 title: "Does One Year of Income Tell the Whole Story?"
-subtitle: "What changes when we compare fathers and children at different ages?"
+subtitle: "Matching fathers and children near age 40 with SQL and Python"
 date: 2026-10-20
 categories:
   - income mobility
   - SQL
 resources:
-  - code/analysis.py
-  - sql/build_sample.sql
-  - results/*.csv
-  - results/summary.json
+  - code/same_age_analysis.py
+  - sql/same_age_sample.sql
+  - data/cpi_same_age.csv
+  - figures/same-age-ige.png
+  - results/figures/life-cycle.png
 execute:
   echo: false
 ---
 
-Imagine judging someone's career by the year they lost a job. Or by the year they received an unusually large bonus. Neither number is wrong, but neither tells the whole story.
+As I get ready to look for a job, I wonder what a first salary can tell me. One year may be unusual because of unemployment or a bonus. This matters for intergenerational mobility: how closely children's economic outcomes are connected to their parents'. If one unusual year stands in for usual earnings, we may misread that connection. Does using three years instead of one change the estimated link between fathers' and children's earnings?
 
-As a student preparing to enter the job market, I wonder how much a first salary can tell us. In this tutorial, I match fathers and adult children using SQL in Python, then compare their earnings using one year and several years. I also check whether measuring children earlier in their careers changes the result.
+## PSID data and the parent-child match
 
-## Step 1. Download the Data
+The [Panel Study of Income Dynamics (PSID)](https://psidonline.isr.umich.edu/) follows families and links generations. Its Parent Identification File links children to birth fathers. The Cross-Year Individual File gives ages, roles, and family links over time. Family earnings extracts from the [PSID Data Center](https://simba.isr.umich.edu/Zips/ZipMain.aspx) provide labor earnings. Earnings years run from 1993 to 2022, with gaps.
 
-I use the [Panel Study of Income Dynamics (PSID)](https://simba.isr.umich.edu/Zips/ZipMain.aspx), which follows people and families over time. After registering, download the 2023 Parent Identification File and the 1968–2023 Cross-Year Individual File. In the [Data Center](https://simba.isr.umich.edu/DC/i.aspx), select family labor-income variables for the 2011, 2013, 2015, 2017, 2019, 2021, and 2023 survey waves. These interviews report earnings from the previous year. Save the files in your project folder and follow PSID's data-use conditions. The [data README](https://github.com/emmazhu-collab/blog6/blob/main/data/raw/README.md) lists the exact variables; the downloaded 2017 wave is not used in this analysis.
+The IDs have different jobs. A person ID follows someone over time; a family ID identifies a household in one wave and may appear again later. I first match people to that wave's income record by family ID:
 
-These files tell us who belongs to whom, where each person lived in each survey year, and how much they earned. I focus on birth fathers because my earliest income extracts include only Head earnings. The income measure excludes farm and unincorporated business income.
+```python
+p = p.merge(fam, on="family", how="left", validate="many_to_one")
+```
 
-## Step 2. Prepare the Data with Python
+This joins each person to the household record. Household role tells Python whether the earnings belong to the Head or spouse; I do not assign the Head's pay to everyone. SQL then uses person IDs to connect children to their fathers' earnings.
 
-I use Python to organize the data. For each person, I need a permanent ID, an interview year, a family ID, age, family role, and earnings. I also need a table linking children to their fathers. The supplied `.do` files give the column positions Python needs to read the TXT files.
+The codebooks define these labor-income measures without farm or unincorporated-business income, which PSID records separately. I exclude retrospective measures with different definitions and adjust earnings to 2022 dollars using CPI. PSID earnings generally refer to the previous calendar year, so 1993 earnings come from the 1994 interview. See the [1993](https://psidonline.isr.umich.edu/documents/psid/codebook/fam1993_codebook.pdf) and [1994](https://psidonline.isr.umich.edu/documents/psid/codebook/fam1994er_codebook.pdf) codebooks.
 
-After preparing the tables, I load them into SQLite. Here is a short example using the father–child links:
+## Use SQL to connect and summarize earnings
+
+Python keeps positive earnings observations at ages 35–45 and selects each person's three distinct years closest to age 40. The closest record gets rank 1. Years need not be consecutive because PSID does not interview everyone every year. Python loads the selected records and father-child links into SQLite:
 
 ```python
 import sqlite3
 import pandas as pd
+from pathlib import Path
 
-con = sqlite3.connect(":memory:")
-links.to_sql("parent_links", con, index=False)
-linked_ids = pd.read_sql_query(
-    "SELECT child, father FROM parent_links", con
+query = Path("blog/posts/post6/sql/same_age_sample.sql").read_text()
+with sqlite3.connect(":memory:") as con:
+    chosen.to_sql("selected_earnings", con, index=False)
+    sample[["child", "father"]].to_sql("eligible_links", con, index=False)
+    pairs = pd.read_sql_query(query, con)
+```
+
+This example runs from the website project's root directory. The `chosen` and `sample` tables are prepared earlier in Python, with the full code available in the repository.
+
+Here is an excerpt from the [complete SQL query](sql/same_age_sample.sql). It shows how the earnings summaries are made and attached to each family link:
+
+```sql
+WITH summaries AS (
+  SELECT person,
+         AVG(real_income) AS mean_income,
+         MAX(CASE WHEN rank = 1 THEN real_income END) AS single_income
+  FROM selected_earnings
+  WHERE age BETWEEN 35 AND 45 AND real_income > 0
+  GROUP BY person
+  HAVING COUNT(*) = 3 AND COUNT(DISTINCT year) = 3
 )
-```
-
-Here, `links` is the father–child table prepared from PSID. `SELECT` chooses the columns to return. The full analysis loads the other tables too: SQL does the matching and averaging, and Python calculates the IGE. The full [Python and SQL code](https://github.com/emmazhu-collab/blog6) includes the preparation steps.
-
-## Step 3. Match Fathers and Children with SQL
-
-Now I need to connect each child's earnings to their father's earnings. Permanent person IDs identify the biological relationship. To find each person's income, I also match interview year and family interview number. A family number alone cannot track a person across years.
-
-This short query shows the individual-to-family matching keys:
-
-```sql
-SELECT p.person, p.wave, p.family
-FROM people AS p
-JOIN family_income AS f
-  ON p.wave = f.wave
- AND p.family = f.family;
-```
-
-I match both the interview year and family ID because the same family number may appear in different survey years. This query shows the connection only; assigning earnings also requires each person's family role.
-
-The family role matters: Reference Person earnings belong only to the current Reference Person, and Spouse/Partner earnings only to that person. I do not give everyone in a household the same earnings.
-
-Once Step 4 creates the income summaries, this query connects them:
-
-```sql
-SELECT l.child, l.father, f.father_mean, c.child_mean
-FROM parent_links AS l
-JOIN father_means AS f ON l.father = f.person
-JOIN child_means AS c ON l.child = c.person
+SELECT l.child, l.father,
+       f.mean_income AS father_mean_income,
+       c.mean_income AS child_mean_income,
+       f.single_income AS father_single_income,
+       c.single_income AS child_single_income
+FROM eligible_links AS l
+JOIN summaries AS f ON l.father = f.person
+JOIN summaries AS c ON l.child = c.person
 WHERE l.child <> l.father;
 ```
 
-For a fictional teaching example, suppose father 101 belongs to child 205. The first `JOIN` adds father 101's average earnings of $50,000; the second adds child 205's $40,000. These are made-up values, not observations used in the analysis. Without the joins, the income records would not tell us which father belongs to which child.
+`SELECT` picks IDs and earnings. `GROUP BY` gathers each person's records, and `AVG()` calculates the mean. `HAVING` requires three records from three distinct years. One `JOIN` adds the father's earnings; the next adds the child's. The full query also requires father and child ages to be within two years for both the single-year and average measures. The average age summarizes three interviews; it is not one exact age.
 
-I check the matches and keep pairs with enough income information for both people. These inner joins leave out pairs missing either summary.
+## Measure earnings near age 40
 
-## Step 4. Calculate Average Income
+The single-year measure uses the record closest to age 40; the average uses all three. Both use the same 321 pairs and 249 fathers. Keeping the sample fixed means the comparison focuses on the income measure, not different families. Interview age is an approximation because earnings usually refer to the previous calendar year.
 
-To compare years fairly, I first convert earnings to 2022 dollars using [BLS CPI from FRED](https://fred.stlouisfed.org/series/CPIAUCNS). Then I calculate each father's average:
+Requiring repeated positive earnings leaves out people with zero or missing earnings. The matched families may have more stable work, so they do not represent everyone in the PSID or U.S. population.
 
-```sql
-SELECT person, AVG(real_income) AS father_mean
-FROM earnings
-WHERE year IN (2010, 2012, 2014)
-  AND age BETWEEN 35 AND 60 AND real_income > 0
-GROUP BY person
-HAVING COUNT(DISTINCT year) = 3;
-```
+## Compare the IGE estimates
 
-`WHERE` selects the years, ages, and positive earnings. `GROUP BY` collects each person's observations, and `AVG` averages them. `HAVING` requires three distinct years, so one available year cannot count as a three-year average.
-
-I use child earnings in 2018/2020/2022 and ages 30–50. Ages refer to the interviews reporting the previous year's earnings. Requiring all six positive observations leaves 336 pairs and 238 fathers. Both comparisons use these same people.
-
-## Step 5. Compare the IGE Estimates
-
-IGE measures how strongly children's earnings are associated with their fathers' earnings:
-
-$$
-\log(Y_{\text{child}})=\alpha+\beta\log(Y_{\text{father}})+u
-$$
-
-The coefficient $\beta$ is the IGE. A larger value means a stronger earnings link and less relative mobility in this sample. This is an association, not a causal effect.
-
-This Python function calculates the ordinary least-squares slope with an intercept. I average real earnings before taking logs:
+I estimate intergenerational earnings elasticity (IGE) with a log-log regression:
 
 ```python
 import numpy as np
 
-def slope(x, y):
-    x = np.log(np.asarray(x))
-    y = np.log(np.asarray(y))
-    return float(np.sum((x-x.mean()) * (y-y.mean()))
-                 / np.sum((x-x.mean())**2))
+def estimate_ige(parent_col, child_col):
+    x = np.log(pairs[parent_col].to_numpy())
+    y = np.log(pairs[child_col].to_numpy())
+    X = np.column_stack([np.ones(len(x)), x])
+    return np.linalg.lstsq(X, y, rcond=None)[0][1]
 
-single = slope(sample["f2012"], sample["c2020"])
-averaged = slope(sample["father_mean"], sample["child_mean"])
+single_ige = estimate_ige("father_single_income", "child_single_income")
+average_ige = estimate_ige("father_mean_income", "child_mean_income")
 ```
 
-![Dots show IGE estimates; horizontal lines show 95% confidence intervals. Both estimates use the same 336 pairs.](results/figures/income-measures.png)
+The slope measures how closely children's earnings are associated with their fathers'. A higher IGE usually means less relative mobility. It is an association, not cause and effect.
 
-The single-year IGE, using father 2012 and child 2020 earnings, is 0.234, while the three-year average IGE is 0.226. Roughly, a 10% difference in fathers' earnings is associated with a 2.3% difference in children's earnings. The difference between estimates is small (-0.008), and its 95% bootstrap confidence interval (-0.084 to 0.050) includes zero. So, in this sample, averaging income does not clearly change the estimated relationship between fathers' and children's earnings.
+$$
+\log(Y_{child}) = \alpha + \beta\log(Y_{father}) + \varepsilon
+$$
 
-However, this does not mean averaging is unnecessary. Income in one year may be affected by temporary changes, such as unemployment or a bonus. Averaging several years can reduce some of this variation and provide a better measure of long-run earnings. The next figure shows why the choice of year can matter.
+![Single-year and three-year-average IGE estimates for the same 321 pairs, with 95% father-cluster bootstrap confidence intervals.](figures/same-age-ige.png)
 
-![Single-year IGE estimates using different father and child income years for the same pairs.](results/figures/year-sensitivity.png)
+The single-year IGE is 0.170 (95% confidence interval: 0.030 to 0.354), while the three-year estimate is 0.291 (0.151 to 0.444). For example, with the three-year measure, a 1% difference in fathers' earnings is associated with about a 0.291% difference in children's earnings.
 
-Choosing other years gives estimates from 0.150 to 0.240. Individual earnings changes and conditions in a particular year can affect the comparison. This shows why relying on a single year may give an incomplete picture of the earnings relationship. These differences are not all necessarily statistically significant.
+The higher three-year estimate suggests a stronger father-child earnings link and lower relative mobility. Both estimates use the same 321 father-child pairs, so the comparison reflects how earnings are measured rather than sample differences or a change in mobility over time.
 
-## Step 6. Check Life-Cycle Bias
+One possible explanation is that temporary changes, such as unemployment or bonuses, make a single year's earnings less representative of someone's usual income. Averaging several years may reduce some of this noise. However, I cannot tell from this analysis whether temporary shocks explain the higher estimate.
 
-A young worker may earn little while training but earn much more later. Measuring children's earnings early in their careers could therefore give a different estimate of their earnings link with parents. Averaging several early-career years may still miss their long-run position.
+The difference between the two IGEs is 0.121, with a 95% confidence interval from -0.037 to 0.268. Because the interval includes zero, I cannot confidently conclude that the two IGE estimates differ. This does not mean the two estimates are identical. Three years also cannot capture a whole career.
 
-I compare 140 main-sample children who also had positive 2014 earnings and were aged 22–29 at the 2015 interview. They meet the main age requirements at the later 2019/2021/2023 interviews. I keep the same father-income average in both comparisons.
+## Life-cycle bias: a useful but limited check
 
-![IGE for the same 140 pairs at two career stages. Horizontal lines show 95% confidence intervals.](results/figures/life-cycle.png)
+Life-cycle bias is different from a temporary income shock. It happens because earnings at one age may not reflect someone's long-term economic position. For example, someone studying or starting a job at 27 may earn much more later in life. Comparing fathers and children near age 40 helps make their career stages more similar, but people still follow different earnings paths. This is why matching ages cannot fully remove life-cycle bias.
 
-The IGE is 0.186 when children's earnings are measured at a younger age and 0.244 when they are measured later. Mean interview age rises from 27.5 to 35.5. This suggests that measuring earnings early in a career may give a different picture of the relationship between fathers' and children's earnings.
+For a separate group of 140 pairs, I hold fathers' three-year average fixed and compare children's earnings in 2014 and 2022. The IGE rises from 0.186 to 0.244 as the children's mean interview age rises from 27.5 to 35.5. The difference is uncertain (95% confidence interval: -0.111 to 0.232).
 
-However, the confidence interval for the difference (-0.111 to 0.232) includes zero, so the change is not statistically clear. Age and calendar time also change together in this comparison. The results illustrate possible life-cycle bias, but they do not prove that age caused the difference.
+![Exploratory IGE comparison using 2014 and 2022 child earnings for a separate sample of 140 pairs. Mean interview ages are 27.5 and 35.5; age and calendar year both change.](results/figures/life-cycle.png)
 
-These unweighted results describe complete, positive-earner records, not all families. Missing follow-up, imputed income, and changing family roles also matter. We do not observe lifetime earnings.
+The comparison raises the possibility that measurement age matters. But the children are older in 2022 and economic conditions have also changed since 2014. I cannot separate these explanations, so the result does not prove that age caused the IGE to rise. These 140 pairs are also separate from the main sample.
 
-Overall, the single-year and averaged IGE estimates are similar in this sample, but choosing different income years gives different estimates. The comparison across career stages also suggests that the age at which earnings are measured may matter, although the difference is not statistically clear. Averaging several years can reduce temporary income changes, but it cannot fully address life-cycle bias. I would not judge a family's mobility from one convenient year.
+## Takeaway
+
+I began by wondering what my first salary would say about my future. In this sample, the father-child earnings link looks stronger with a three-year average than with one year, although the evidence for a difference is uncertain. Measuring both generations at similar ages and averaging several years can each help with a different problem, but neither captures a whole career. I learned that before using IGE to describe mobility, we need to ask whose earnings we measure and when.

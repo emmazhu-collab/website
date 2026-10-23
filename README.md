@@ -124,31 +124,24 @@ Open this website project and render `blog/posts/post5/index.qmd`. Render uses t
 
 ## Blog 6: Does One Year of Income Tell the Whole Story?
 
-Blog 6 uses PSID data to compare single-year and three-year earnings elasticities for birth fathers and adult children. It also checks sensitivity to the chosen income year and the child's career stage. The website copy contains the complete analysis and article. The separate `blog6` project now contains the analysis process, data instructions, and saved outputs. Its original PSID inputs stay local in `blog6/data/raw`.
+This tutorial uses SQL in Python to connect PSID fathers and children, construct earnings near age 40, and compare intergenerational earnings elasticity (IGE) from one year and a three-year average. It uses available earnings years from 1993 through 2022, although not every year is observed. The main analysis includes 321 father-child pairs and 249 fathers.
+
+The single-year IGE is 0.170 (95% father-cluster bootstrap interval: 0.030 to 0.354). The three-year-average IGE is 0.291 (0.151 to 0.444); the paired difference is 0.121 (-0.037 to 0.268), whose interval includes zero. The article also presents a separate exploratory age-stage check using 140 pairs; its estimate is uncertain and cannot isolate age from calendar time.
 
 | Location | Contents |
 | --- | --- |
-| `blog/posts/post6/index.qmd` | Editable article |
-| `blog/posts/post6/code/` | Python analysis |
-| `blog/posts/post6/sql/` | SQL joins and income aggregation |
-| `blog/posts/post6/data/` | Public CPI input |
-| `blog/posts/post6/results/` | Aggregate tables, checks, and three figures |
-| `blog/posts/post6/README.md` | Full replication instructions and variable details |
+| `blog/posts/post6/index.qmd` | SQL-in-Python tutorial, results, and interpretation |
+| `blog/posts/post6/code/same_age_analysis.py` | Local analysis script |
+| `blog/posts/post6/sql/same_age_sample.sql` | Earnings summaries and father-child matching |
+| `blog/posts/post6/data/cpi_same_age.csv` | Public CPI input for 1993–2022 |
+| `blog/posts/post6/figures/same-age-ige.png` | Main IGE comparison |
+| `blog/posts/post6/results/figures/life-cycle.png` | Separate exploratory age-stage comparison |
+| `blog/posts/post6/README.md` | Data, results, and replication instructions |
 
-### Replication instructions
-
-Use Python 3 with `pandas`, `numpy`, and `matplotlib`. RStudio’s Python Console, Terminal, and Jupyter may use different Python environments. Install dependencies with the same interpreter you use to run the script. The standalone Blog 6 README includes the author’s tested Anaconda command. Install missing packages with `python3 -m pip install pandas numpy matplotlib` in Terminal. From this website's root folder, run:
+PSID microdata are not included. Run the analysis locally under your registered PSID account and current data-use conditions. From the website project folder, use Terminal:
 
 ```sh
-python3 blog/posts/post6/code/analysis.py
+/opt/anaconda3/bin/python blog/posts/post6/code/same_age_analysis.py
 ```
 
-The original PSID inputs must be in the sibling `blog6/data/raw` folder, or set `PSID_DATA_DIR` to their folder. Required files and their exact layout are listed in the Blog 6 README. The script reads the originals without changing them and recreates the results and figures. It does not change the article. Individual PSID records are not included in the website.
-
-For Jupyter, use a Python kernel with the same packages and start the notebook in this website's root folder:
-
-```python
-%run blog/posts/post6/code/analysis.py
-```
-
-Edit `blog/posts/post6/index.qmd` directly to change article wording. If you rerun the analysis with different inputs, check the article numbers against the saved results. After analysis, open `index.qmd` in RStudio and click **Render**, or run `quarto render blog/posts/post6/index.qmd` in Terminal. Render uses saved outputs and does not repeat the analysis. See the post README for sample restrictions, uncertainty calculations, and limitations.
+The script reads PSID files from the sibling `blog6/data/raw` folder and writes aggregate results and figures to a new timestamped folder under `blog/posts/post6/results_same_age/`. It does not save personal IDs or individual earnings records and does not render the website. See the [Blog 6 README](blog/posts/post6/README.md) for details.
