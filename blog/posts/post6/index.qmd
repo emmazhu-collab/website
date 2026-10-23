@@ -19,7 +19,7 @@ As I get ready to look for a job, I wonder what a first salary can tell me. One 
 
 ## PSID data and the parent-child match
 
-The [Panel Study of Income Dynamics (PSID)](https://psidonline.isr.umich.edu/) follows families and links generations. Its Parent Identification File links children to birth fathers. The Cross-Year Individual File gives ages, roles, and family links over time. Family earnings extracts from the [PSID Data Center](https://simba.isr.umich.edu/Zips/ZipMain.aspx) provide labor earnings. Earnings years run from 1993 to 2022, with gaps.
+The [Panel Study of Income Dynamics (PSID)](https://psidonline.isr.umich.edu/) follows families and links generations. Its Parent Identification File links children to birth fathers. The Cross-Year Individual File gives ages, roles, and family links over time. Family earnings extracts from the [PSID Data Center](https://simba.isr.umich.edu/Zips/ZipMain.aspx) provide labor earnings. Earnings years run from 1993 to 2022, with gaps. This analysis focuses on birth fathers and children. Mothers are not included, so the results should not be interpreted as describing all parent-child relationships.
 
 The IDs have different jobs. A person ID follows someone over time; a family ID identifies a household in one wave and may appear again later. I first match people to that wave's income record by family ID:
 

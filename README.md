@@ -124,24 +124,24 @@ Open this website project and render `blog/posts/post5/index.qmd`. Render uses t
 
 ## Blog 6: Does One Year of Income Tell the Whole Story?
 
-This tutorial uses SQL in Python to connect PSID fathers and children, construct earnings near age 40, and compare intergenerational earnings elasticity (IGE) from one year and a three-year average. It uses available earnings years from 1993 through 2022, although not every year is observed. The main analysis includes 321 father-child pairs and 249 fathers.
+This tutorial uses SQL in Python to connect PSID fathers and children, construct earnings measures near age 40, and compare IGE estimates from one year and a three-year average. The available earnings years run from 1993 through 2022, with gaps. The main sample has 321 father-child pairs and 249 unique fathers.
 
-The single-year IGE is 0.170 (95% father-cluster bootstrap interval: 0.030 to 0.354). The three-year-average IGE is 0.291 (0.151 to 0.444); the paired difference is 0.121 (-0.037 to 0.268), whose interval includes zero. The article also presents a separate exploratory age-stage check using 140 pairs; its estimate is uncertain and cannot isolate age from calendar time.
+The single-year IGE is 0.170 (95% father-cluster bootstrap interval: 0.030–0.354). The three-year-average IGE is 0.291 (0.151–0.444); the paired difference is 0.121 (-0.037–0.268), with an interval that includes zero. A separate exploratory figure compares 2014 and 2022 child earnings for 140 pairs. Age and calendar year change together, so that comparison cannot isolate an age effect.
 
 | Location | Contents |
 | --- | --- |
-| `blog/posts/post6/index.qmd` | SQL-in-Python tutorial, results, and interpretation |
-| `blog/posts/post6/code/same_age_analysis.py` | Local analysis script |
-| `blog/posts/post6/sql/same_age_sample.sql` | Earnings summaries and father-child matching |
+| `blog/posts/post6/index.qmd` | Tutorial, results, and interpretation |
+| `blog/posts/post6/code/same_age_analysis.py` | Main local analysis script |
+| `blog/posts/post6/sql/same_age_sample.sql` | SQL aggregation and father-child matching |
 | `blog/posts/post6/data/cpi_same_age.csv` | Public CPI input for 1993–2022 |
 | `blog/posts/post6/figures/same-age-ige.png` | Main IGE comparison |
-| `blog/posts/post6/results/figures/life-cycle.png` | Separate exploratory age-stage comparison |
-| `blog/posts/post6/README.md` | Data, results, and replication instructions |
+| `blog/posts/post6/results/life_cycle.csv` and `blog/posts/post6/results/figures/life-cycle.png` | Saved aggregate results and separate life-cycle figure |
+| `blog/posts/post6/README.md` | File guide, data-use notes, and run instructions |
 
-PSID microdata are not included. Run the analysis locally under your registered PSID account and current data-use conditions. From the website project folder, use Terminal:
+PSID microdata are not included in this website project. Download your own data under a registered PSID account and follow the current Conditions of Use. In this local setup, from the `website-recovered` folder, run the main analysis with:
 
 ```sh
-/opt/anaconda3/bin/python blog/posts/post6/code/same_age_analysis.py
+python3 blog/posts/post6/code/same_age_analysis.py
 ```
 
-The script reads PSID files from the sibling `blog6/data/raw` folder and writes aggregate results and figures to a new timestamped folder under `blog/posts/post6/results_same_age/`. It does not save personal IDs or individual earnings records and does not render the website. See the [Blog 6 README](blog/posts/post6/README.md) for details.
+The script reads the local `blog6/data/raw/` folder beside the website project and writes aggregate outputs to a timestamped folder under `blog/posts/post6/results_same_age/`. For a different data location, pass `--raw-dir PATH`. The saved life-cycle figure uses a separate earlier analysis; its source and SQL are retained in the standalone [Blog 6 analysis repository](https://github.com/emmazhu-collab/blog6). See the [Blog 6 README](blog/posts/post6/README.md) for details. The script does not render the website.
