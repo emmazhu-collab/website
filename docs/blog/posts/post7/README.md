@@ -27,9 +27,11 @@ post7/
 
 The data are the U.S. Bureau of Labor Statistics monthly unemployment-rate series available through FRED: [Texas, TXUR](https://fred.stlouisfed.org/series/TXUR) and [California, CAUR](https://fred.stlouisfed.org/series/CAUR). Both series are seasonally adjusted and measured in percent. The saved data contain 60 months per state. FRED can revise historical observations; `series_metadata.csv` records when this snapshot was retrieved.
 
-The article uses two definitions of a pre-pandemic rate: the average for 2019 and the February 2020 rate. It identifies each state's highest rate from March through December 2020, then finds the first month after the peak at or below each benchmark. The analysis checks whether the first return begins a run of three consecutive months at or below the benchmark. The earlier-cutoff table checks whether a return would have been observed by December 2021 or December 2022. A return not observed before a cutoff is right-censored; it is not evidence that the rate later moved in the opposite direction.
+The article uses two definitions of a pre-pandemic rate: the average for 2019 and the February 2020 rate. It identifies each state's highest rate from March through December 2020, then finds the first month after the peak at or below each benchmark. The code also identifies the first month of a run of three consecutive months at or below the benchmark. This is the start of the run, not its third month. The earlier-cutoff table checks whether a return would have been observed by December 2021 or December 2022. A return not observed before a cutoff is right-censored; it is not evidence that the rate later moved in the opposite direction.
 
 ## Replication instructions
+
+These instructions use the `website-recovered` project root. If you are using the separate `blog7` project, follow [its README](https://github.com/emmazhu-collab/blog7#replication-instructions), which uses paths starting from that project root. Both projects use the same saved data and analysis.
 
 Open the website project in RStudio, or run the commands below from the `website-recovered` project root. Use R 4.5 or newer and install any missing packages once:
 

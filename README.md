@@ -145,3 +145,22 @@ python3 blog/posts/post6/code/same_age_analysis.py
 ```
 
 The script reads the local `blog6/data/raw/` folder beside the website project and writes aggregate outputs to a timestamped folder under `blog/posts/post6/results_same_age/`. For a different data location, pass `--raw-dir PATH`. The saved life-cycle figure uses a separate earlier analysis; its source and SQL are retained in the standalone [Blog 6 analysis repository](https://github.com/emmazhu-collab/blog6). See the [Blog 6 README](blog/posts/post6/README.md) for details. The script does not render the website.
+
+
+## Blog 7: Texas and California unemployment recovery
+
+This post compares monthly unemployment rates from January 2019 through December 2023. The interactive chart switches between the original rates and gaps from two benchmarks: each state's 2019 average and February 2020 rate.
+
+The complete analysis project is in the [Blog 7 repository](https://github.com/emmazhu-collab/blog7). Its [README](https://github.com/emmazhu-collab/blog7#replication-instructions) explains how to recreate four result tables and the interactive chart from the saved FRED data, without a new download or API key.
+
+| Location | Contents |
+| --- | --- |
+| `blog/posts/post7/index.qmd` | Article and interactive chart |
+| `blog/posts/post7/README.md` | Instructions for running the website copy |
+| `blog/posts/post7/code/` | R calculations and chart functions |
+| `blog/posts/post7/data/source/` | Saved monthly rates and source information |
+| `blog/posts/post7/results/` | Result tables, chart HTML, and its support files |
+
+From this website project's root, run `source("blog/posts/post7/code/run_analysis.R")` in the R Console to rebuild the saved results. In the separate `blog7` project, use `source("code/run_analysis.R")` instead.
+
+The website copy keeps the inputs and code needed to build its article. The interactive HTML needs its support folder, so keep those files together. A three-month return is dated at the first month of the qualifying run, not the third month.
