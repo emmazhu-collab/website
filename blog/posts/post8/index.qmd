@@ -65,7 +65,7 @@ Figure 1. One sample, 2,000 bootstrap resamples. Black marks the sample mean; or
 
 The 95% interval is [`r f(ci_one[[2]][1])`, `r f(ci_one[[2]][2])`] mm. Switch to 99% in Figure 1. The interval widens to include more values. It describes uncertainty about the mean, not individual errors. More resamples make it steadier, but add no new population data.
 
-Figure 1 gives one interval. Does this method work over many samples? If we repeat the experiment, should every 95% interval contain the true mean? No. About 95% should. We can check because we know the true mean, 0.4 mm: each time, draw a new sample, then bootstrap within it.
+Figure 1 gives one interval. Does this method work over many samples? If we repeat the experiment, should every 95% interval contain the true mean? No; about 95% should contain it. We can check because we know the true mean, 0.4 mm: each time, draw a new sample, then bootstrap within it.
 
 ## What does 95% confidence really mean?
 
@@ -104,7 +104,7 @@ The interval shows which average errors are plausible. Now suppose the manufactu
 
 Assume the manufacturer's claim is true. We test H₀: μ = 0 against H₁: μ ≠ 0, using the sample from Figure 1. H₀ says the average error is zero; H₁ says it is not. The t-statistic measures how far the sample mean is from zero, in standard-error units:
 
-$$t = \frac{\bar{x}-0}{s/\sqrt{100}},$$
+$$t = \frac{\bar{x}-0}{s/\sqrt{100}}$$
 
 Here, $s$ is the sample standard deviation. Our statistic is `r f(observed_t)`. Could it happen if H₀ were true? We simulate 20,000 samples with a mean of zero and calculate the same statistic.
 
@@ -132,7 +132,7 @@ fig_test
 Figure 3. The histogram shows 20,000 null t-statistics. Purple shading marks rejection regions; orange bars mark statistics at least as extreme as observed. Solid and dotted black lines mark the observed t and its opposite.
 :::
 
-At α = 0.05, reject when |t| > `r f(critical[2])`. The p-value is `r sprintf("%.4f",p_value)`: about `r sprintf("%.1f",100*p_value)`% of results are this extreme under H₀. It is not the chance that H₀ is true. The “+1” adjustment keeps the estimate above zero. Since p < 0.05, we reject H₀.
+At α = 0.05, we reject when |t| > `r f(critical[2])`. The p-value is `r sprintf("%.4f",p_value)`: about `r sprintf("%.1f",100*p_value)`% of results are this extreme under H₀. It is not the chance that H₀ is true. The “+1” adjustment keeps the estimate above zero. Since p < 0.05, we reject H₀.
 
 At α = 0.01, the purple regions move farther into the tails, but the p-value stays `r sprintf("%.4f",p_value)`. The new cutoff is `r f(critical[3])`, so we do not reject H₀. This does not prove zero bias.
 
