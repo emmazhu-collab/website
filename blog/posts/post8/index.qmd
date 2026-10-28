@@ -6,6 +6,7 @@ categories:
   - statistical inference
 resources:
   - code/simulation.R
+  - code/simulation_config.R
 format:
   html:
     toc: false
@@ -24,15 +25,15 @@ f <- function(z) sprintf("%.3f", z)
 pct <- function(z) sprintf("%.2f%%", 100*z)
 ```
 
-How can one sample tell us about a whole population? Imagine checking a measuring instrument. Its error is the reported length minus the actual length, in millimeters. A sample average estimates the instrument's error, but another sample could give a different answer.
+How can one sample tell us about a population? Imagine checking a measuring instrument. Its error is the reported length minus the actual length. The sample mean estimates its average error, but another sample may give a different value.
 
 ## Can we learn from just one sample?
 
-Suppose the instrument's errors follow a normal population with a mean of 0.4 mm and a standard deviation of 2 mm. Readings are independent. Because this is a simulation, we know the true mean; with real data, we would not. Our sample of 100 readings has a mean of `r f(mean(x))` mm. But how much might that number change if we collected another sample of 100 measurements?
+Suppose independent errors come from a normal population with a mean of 0.4 mm and a standard deviation of 2 mm. In this simulation, we know the true mean; with real data, we would not. Our 100 readings have a mean of `r f(mean(x))` mm. How much might it change in another sample?
 
-We only have one sample, so we cannot see what a second sample would look like. Instead, we can draw from the observations we already have, allowing values to appear more than once. For example, from `2, 4, 5, 7, 8`, one resample might be `2, 2, 5, 7, 8`: it still has five observations, but 2 appears twice and 4 is left out. This is sampling with replacement, the basic idea behind the bootstrap.
+With one sample, we cannot see how the mean would change. Instead, draw from the sample with replacement, so a value can appear more than once. A resample of `2, 4, 5, 7, 8` might be `2, 2, 5, 7, 8`: 2 repeats and 4 is left out. This is the bootstrap.
 
-What might these repeated resamples tell us about our sample mean? The code below draws 100 observations from the original sample with replacement, calculates their mean, and repeats that 2,000 times. If we sampled without replacement, drawing all 100 would only rearrange the same observations and the mean would never change. In R, `sample.int()` draws with replacement and `colMeans()` calculates each resample's mean.
+The code below draws 100 values with replacement, finds their mean, and repeats this 2,000 times. Without replacement, drawing all 100 would only rearrange the same values, so the mean would not change.
 
 ```{r}
 #| echo: true
@@ -52,7 +53,7 @@ boot <- bootstrap_means(x)
 ci_from(boot)
 ```
 
-The resulting bootstrap distribution contains 2,000 means calculated from resamples of our original data. It helps us approximate how the mean might vary across new samples, even though we have only one original sample. A 95% percentile interval keeps the middle 95% of bootstrap means, from the 2.5th to the 97.5th percentile. Figure 1 marks those endpoints. Before switching the control, predict: why should a 99% interval be wider than a 95% interval?
+The bootstrap distribution contains 2,000 means from our resamples. It helps estimate how the mean might vary across new samples. A 95% interval keeps the middle 95% of these means. Before changing the control, predict: why is a 99% interval wider?
 
 ```{r}
 fig_boot
@@ -62,13 +63,13 @@ fig_boot
 Figure 1. One sample, 2,000 bootstrap resamples. Black marks the sample mean; orange dashed lines mark the selected interval endpoints.
 :::
 
-The 95% interval is [`r f(ci_one[[2]][1])`, `r f(ci_one[[2]][2])`] mm. Switch from 95% to 99% confidence in Figure 1 and compare the orange endpoints with your prediction. The interval widens because it must include more of the bootstrap distribution. It describes uncertainty about the mean, not individual errors. More bootstrap resamples can make the estimated distribution more stable, but they do not add new observations from the population.
+The 95% interval is [`r f(ci_one[[2]][1])`, `r f(ci_one[[2]][2])`] mm. Switch to 99% in Figure 1. The interval widens to include more values. It describes uncertainty about the mean, not individual errors. More resamples make it steadier, but add no new population data.
 
-Figure 1 gives us one interval, but how can we tell whether the method works well? Imagine repeating the entire experiment 100 times: would every interval contain the true mean? Probably not. A 95% confidence procedure is designed to capture the fixed true mean in about 95% of repeated samples, not every time. We can test this idea because the simulation gives us the true mean, 0.4 mm. Each repetition has two layers: draw a fresh original sample from the population, then bootstrap within that sample to make its interval.
+Figure 1 gives one interval. Does this method work over many samples? If we repeat the experiment, should every 95% interval contain the true mean? No. About 95% should. We can check because we know the true mean, 0.4 mm: each time, draw a new sample, then bootstrap within it.
 
 ## What does 95% confidence really mean?
 
-The code repeats those two steps 2,000 times and records whether each interval contains 0.4 mm. The fraction of intervals that hit the true mean estimates the procedure's long-run coverage. This example focuses on 95% confidence; the complete script also calculates 90% and 99% coverage for Figure 2.
+The code repeats these steps 2,000 times and checks whether each interval contains 0.4 mm. The share that includes the true mean estimates coverage. This example shows 95%; the full script also calculates 90% and 99%.
 
 ```{r}
 #| echo: true
@@ -83,7 +84,7 @@ for (i in seq_along(covered)) {
 mean(covered)
 ```
 
-Figure 2 displays the first 50 intervals; the coverage percentage uses all 2,000 simulations. Find the black line, which marks the true mean. Why do some 95% intervals miss it?
+Figure 2 shows the first 50 intervals, while coverage uses all 2,000 simulations. The black line marks the true mean. Why do some 95% intervals miss it?
 
 ```{r}
 fig_coverage
@@ -93,19 +94,19 @@ fig_coverage
 Figure 2. Blue solid lines contain the true mean; orange dashed lines miss it. Black marks 0.4 mm.
 :::
 
-Most intervals cross the black line, while a few orange intervals miss it. Across all 2,000 repetitions, `r format(sum(covered[,2]), big.mark=",")` intervals contain the true mean, for `r pct(coverage[2])` coverage. Switch between 90%, 95%, and 99% in Figure 2: as confidence increases, the intervals widen and capture the true mean more often.
+Most intervals cross the black line, but a few orange ones miss. Of 2,000 intervals, `r format(sum(covered[,2]), big.mark=",")` contain the true mean: coverage is `r pct(coverage[2])`. Higher confidence gives wider intervals that capture the mean more often.
 
-A 95% confidence interval either contains the true mean or it does not. The 95% refers to how the procedure performs over many repeated samples; it is not the probability that this particular, already-calculated interval contains the mean. The observed coverage will not be exactly 95% every time because simulations vary and bootstrap intervals are an approximation.[^precision]
+A 95% confidence interval either contains the true mean or it does not. The 95% refers to how the procedure performs over many repeated samples; it is not the probability that this particular, already-calculated interval contains the mean. Simulated coverage may differ from 95%, and bootstrap intervals are estimates.[^precision]
 
-The interval helps us judge which values of the instrument's average error are plausible. Now suppose the manufacturer claims the instrument is perfectly calibrated, so its average error is zero. Our sample mean is 0.477 mm. Is that far enough from zero to question the claim, or could a difference this large happen by chance?
+The interval shows which average errors are plausible. Now suppose the manufacturer says the average error is zero. Our sample mean is 0.477 mm. Could this difference happen by chance?
 
 ## Is the instrument actually biased?
 
-To answer, imagine a world where the manufacturer's claim is true. In statistical notation, we test H₀: μ = 0 against H₁: μ ≠ 0, using the same sample as Figure 1. The null hypothesis says the average error is zero; the alternative says it is not. The t-statistic measures how far our sample mean is from zero in estimated standard-error units:
+Assume the manufacturer's claim is true. We test H₀: μ = 0 against H₁: μ ≠ 0, using the sample from Figure 1. H₀ says the average error is zero; H₁ says it is not. The t-statistic measures how far the sample mean is from zero, in standard-error units:
 
 $$t = \frac{\bar{x}-0}{s/\sqrt{100}},$$
 
-where $s$ is the sample standard deviation. Our observed statistic is `r f(observed_t)`. Could a statistic this far from zero arise by chance if H₀ were true? To find out, we simulate 20,000 samples with a mean of zero and calculate the same statistic. The earlier population mean of 0.4 mm described the simulated instrument; zero is used here because it is the claim being tested.
+Here, $s$ is the sample standard deviation. Our statistic is `r f(observed_t)`. Could it happen if H₀ were true? We simulate 20,000 samples with a mean of zero and calculate the same statistic.
 
 In R, I use the simulated t-statistics to build the null distribution and calculate a two-sided p-value:
 
@@ -121,7 +122,7 @@ p_value <- (sum(abs(null_t) >= abs(observed_t)) + 1) / (length(null_t) + 1)
 p_value
 ```
 
-These simulated t-statistics show what we might see if H₀ were true. The p-value estimates the probability of a result at least as extreme as ours under that assumption. Figure 3 shows the simulated null distribution: orange marks the statistics at least as extreme as observed, while purple marks the rejection regions for the chosen α. Change α from 0.05 to 0.01. Why does the decision change even though the p-value does not?
+These t-statistics show what we might see if H₀ were true. The p-value estimates the chance of getting a result this far from zero or farther if H₀ is true. Orange marks these results; purple marks rejection regions. Change α from 0.05 to 0.01. Why does the decision change while the p-value stays the same?
 
 ```{r}
 fig_test
@@ -131,12 +132,12 @@ fig_test
 Figure 3. The histogram shows 20,000 null t-statistics. Purple shading marks rejection regions; orange bars mark statistics at least as extreme as observed. Solid and dotted black lines mark the observed t and its opposite.
 :::
 
-At α = 0.05, the rejection rule is |t| > `r f(critical[2])`. The p-value is `r sprintf("%.4f",p_value)`: if H₀ were true, about `r sprintf("%.1f",100*p_value)`% of simulated statistics would be at least this extreme. It is not the probability that H₀ is true. The “+1” correction prevents a finite simulation from reporting zero. Since the p-value is below 0.05, we reject H₀ at the 5% level.
+At α = 0.05, reject when |t| > `r f(critical[2])`. The p-value is `r sprintf("%.4f",p_value)`: about `r sprintf("%.1f",100*p_value)`% of results are this extreme under H₀. It is not the chance that H₀ is true. The “+1” adjustment keeps the estimate above zero. Since p < 0.05, we reject H₀.
 
-At α = 0.01, the purple rejection regions move farther into the tails, but the p-value remains `r sprintf("%.4f",p_value)` because the data and null distribution have not changed. The stricter threshold is now `r f(critical[3])`, so we do not reject H₀. Failing to reject is not proof that the instrument has zero bias.
+At α = 0.01, the purple regions move farther into the tails, but the p-value stays `r sprintf("%.4f",p_value)`. The new cutoff is `r f(critical[3])`, so we do not reject H₀. This does not prove zero bias.
 
-So, what can one sample tell us about a population? More than just its sample mean. Bootstrap resampling helps us understand uncertainty, repeated simulation shows how confidence intervals perform over time, and hypothesis testing helps us evaluate a specific claim. In our example, the 95% bootstrap interval excludes zero, and the simulated test rejects a zero mean at the 5% level. Both suggest a positive average error, although the two methods do not always have to agree. The key lesson is that statistical inference is not just about calculating one number, but understanding how that number could change across samples.
+Taken together, the three simulations show what we can learn from one sample and where its limits are. Bootstrap resampling helps us measure uncertainty, repeated samples show how often confidence intervals capture the true mean, and the null simulation helps us test the zero-mean claim. Here, the 95% bootstrap interval excludes zero, and the simulated test rejects a zero mean at the 5% level. Both point to a positive average error, though the methods may not always agree. A single estimate is more useful when we also ask how it might change across samples.
 
-[^precision]: The coverage estimate's Monte Carlo standard error is `r sprintf("%.2f",100*mcse[2])` percentage points. Percentile intervals also have finite-sample approximation error; nominal coverage is not guaranteed for every population.
+[^precision]: The coverage estimate's Monte Carlo standard error is `r sprintf("%.2f",100*mcse[2])` percentage points. Bootstrap intervals are approximate, so their coverage may differ from the target.
 
-All controls select precomputed R results, so no running R server is needed. [Download the complete R code](code/simulation.R).
+The controls use results calculated in R, so no R server is needed. To run the simulation, download [simulation.R](code/simulation.R) and [simulation_config.R](code/simulation_config.R). Keep both files in a `code/` folder.

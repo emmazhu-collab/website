@@ -1,10 +1,11 @@
 # Blog 8: all statistical computations are performed in R.
-# Run from this post directory, or source from the website root.
+# Run from either the Blog 8 project root or the course website root.
 library(plotly)
-set.seed(6408)
-mu <- 0.4; sigma <- 2; n <- 100L; B <- 2000L; M <- 2000L; S <- 20000L
+post_dir <- if (dir.exists("blog/posts/post8/code")) "blog/posts/post8" else "."
+config_path <- file.path(post_dir, "code", "simulation_config.R")
+if (!file.exists(config_path)) stop("Could not find code/simulation_config.R. Run this script from the Blog 8 project or course website folder.")
+source(config_path)
 levels_ci <- c(.90, .95, .99)
-x <- rnorm(n, mu, sigma)
 bootstrap_means <- function(x, B) {
   n <- length(x)
   draws <- matrix(x[sample.int(n, n * B, replace = TRUE)], nrow = n)
@@ -14,7 +15,7 @@ ci_from <- function(z, level) unname(quantile(z, c((1-level)/2, (1+level)/2)))
 boot <- bootstrap_means(x, B)
 ci_one <- lapply(levels_ci, function(level) ci_from(boot, level))
 # Every outer iteration starts with a NEW independent original sample.
-set.seed(6409)
+set.seed(seed_coverage)
 coverage_intervals <- array(NA_real_, dim = c(M, 2, length(levels_ci)))
 for (i in seq_len(M)) {
   fresh <- rnorm(n, mu, sigma)
@@ -28,7 +29,7 @@ mcse <- sqrt(coverage * (1-coverage) / M)
 # Studentized statistic: use the sample SD, not the known simulation sigma.
 t_stat <- function(y, mu0 = 0) (mean(y)-mu0)/(sd(y)/sqrt(length(y)))
 observed_t <- t_stat(x)
-set.seed(6410)
+set.seed(seed_null)
 null_t <- replicate(S, t_stat(rnorm(n, 0, sigma)))
 extreme <- sum(abs(null_t) >= abs(observed_t))
 p_value <- (extreme+1)/(S+1)
@@ -43,7 +44,7 @@ stopifnot(length(x)==n, length(boot)==B, all(is.finite(boot)),
           max(abs(critical-qt(1-alphas/2,n-1)))<.12,
           abs(p_value-2*pt(-abs(observed_t),n-1))<.015)
 # Ensure replacement and sample size: resamples contain only original values.
-set.seed(6411)
+set.seed(seed_resample_check)
 check_sample <- sample(x, n, replace=TRUE)
 stopifnot(length(check_sample)==n, all(check_sample %in% x), anyDuplicated(check_sample)>0)
 results <- data.frame(confidence=levels_ci, lower=sapply(ci_one,`[`,1),
@@ -84,12 +85,15 @@ fig_coverage <- layout(fig_coverage,xaxis=list(range=range(coverage_intervals[1:
  updatemenus=menu(lapply(1:3,function(j) list(label=paste0(100*levels_ci[j],'% confidence'),method='update',args=list(list(visible=rep(1:3==j,each=2)),list(annotations=coverage_note(j)))))))
 
 # Histogram counts partition the SAME null simulations into p-value tails and center.
-breaks <- seq(floor(min(null_t)*10)/10,ceiling(max(null_t)*10)/10,by=.1)
+regular_breaks <- seq(floor(min(null_t)*10)/10,ceiling(max(null_t)*10)/10,by=.1)
+# Place bin edges at the observed-statistic cutoffs so no bin mixes tail and center values.
+breaks <- sort(unique(c(regular_breaks, -abs(observed_t), abs(observed_t))))
+bin_widths <- diff(breaks)
 fig_test <- plot_ly(height=560)
 for (tail in c(FALSE,TRUE)) {
  z <- null_t[(abs(null_t)>=abs(observed_t))==tail]
  h <- hist(z,breaks=breaks,plot=FALSE)
- fig_test <- add_bars(fig_test,x=h$mids,y=h$counts,
+ fig_test <- add_bars(fig_test,x=h$mids,y=h$counts,width=bin_widths,
   name=if(tail)'At least as extreme as observed' else 'Less extreme',
   marker=list(color=if(tail)orange else '#A8B7C4'),
   hovertemplate='Null t bin: %{x:.2f}<br>Count: %{y}<extra>%{fullData.name}</extra>')
@@ -106,3 +110,10 @@ fig_test <- layout(fig_test,barmode='stack',bargap=0,shapes=test_shapes(2),annot
 fig_boot <- config(fig_boot,displayModeBar=FALSE,responsive=TRUE)
 fig_coverage <- config(fig_coverage,displayModeBar=FALSE,responsive=TRUE)
 fig_test <- config(fig_test,displayModeBar=FALSE,responsive=TRUE)
+
+# Save each interactive figure as a standalone HTML output for the project.
+results_dir <- file.path(post_dir, "results")
+dir.create(results_dir, showWarnings = FALSE)
+htmlwidgets::saveWidget(fig_boot, file.path(results_dir, "bootstrap_distribution.html"), selfcontained = FALSE)
+htmlwidgets::saveWidget(fig_coverage, file.path(results_dir, "coverage_simulation.html"), selfcontained = FALSE)
+htmlwidgets::saveWidget(fig_test, file.path(results_dir, "null_distribution_test.html"), selfcontained = FALSE)
