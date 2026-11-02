@@ -1,0 +1,4 @@
+Source: Yahoo Finance via tidyquant::tq_get
+Downloaded UTC: 2026-11-02 19:35:56 UTC
+Requested from 2022-01-01 through exclusive end 2026-11-01.
+Saved vintage is reused. Adjusted prices are vendor-adjusted historical data, not a point-in-time archive.

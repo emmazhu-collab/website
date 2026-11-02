@@ -1,0 +1,40 @@
+R version 4.5.3 (2026-03-11)
+Platform: aarch64-apple-darwin20
+Running under: macOS Sequoia 15.7.3
+
+Matrix products: default
+BLAS:   /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRblas.0.dylib 
+LAPACK: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1
+
+locale:
+[1] C.UTF-8/C.UTF-8/C.UTF-8/C/C.UTF-8/C.UTF-8
+
+time zone: America/New_York
+tzcode source: internal
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] xgboost_3.2.1.1            slider_0.3.3              
+ [3] PerformanceAnalytics_2.1.0 quantmod_0.4.29           
+ [5] TTR_0.24.4                 xts_0.14.2                
+ [7] zoo_1.8-15                 tidyquant_1.0.12          
+ [9] lubridate_1.9.4            forcats_1.0.1             
+[11] stringr_1.6.0              dplyr_1.2.1               
+[13] purrr_1.2.1                readr_2.1.6               
+[15] tidyr_1.3.2                tibble_3.3.1              
+[17] ggplot2_4.0.3              tidyverse_2.0.0           
+
+loaded via a namespace (and not attached):
+ [1] RobStatTM_1.0.11   generics_0.1.4     stringi_1.8.7      lattice_0.22-9    
+ [5] hms_1.1.4          magrittr_2.0.4     grid_4.5.3         timechange_0.3.0  
+ [9] RColorBrewer_1.1-3 jsonlite_2.0.0     Matrix_1.7-4       scales_1.4.0      
+[13] textshaping_1.0.4  cli_3.6.5          crayon_1.5.3       rlang_1.3.0       
+[17] bit64_4.6.0-1      withr_3.0.2        parallel_4.5.3     tools_4.5.3       
+[21] tzdb_0.5.0         curl_7.0.0         vctrs_0.7.3        R6_2.6.1          
+[25] lifecycle_1.0.5    bit_4.6.0          vroom_1.6.7        ragg_1.5.0        
+[29] pkgconfig_2.0.3    warp_0.2.2         pillar_1.11.1      gtable_0.3.6      
+[33] glue_1.8.0         data.table_1.18.0  systemfonts_1.3.1  tidyselect_1.2.1  
+[37] farver_2.1.2       labeling_0.4.3     compiler_4.5.3     S7_0.2.1          
+[41] quadprog_1.5-8    
