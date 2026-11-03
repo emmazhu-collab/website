@@ -50,7 +50,7 @@ Rendering reads saved tables and PNGs only. It does not fit models or download p
 
 ## Model and timing choices
 
-The stock list is copied from the professor's script. Prices begin in January 2022; the fixed exclusive download end is November 1, 2026. Dates actually returned are recorded in `study_window.csv`.
+The analysis uses a 95-company stock universe based on the classroom experiment; its ticker list is not identical to the professor's reference script. Prices begin in January 2022; the fixed exclusive download end is November 1, 2026. Dates actually returned are recorded in `study_window.csv`.
 
 The original specification uses 300 trees, depth 5, learning rate 0.05, gamma 0, and `min_child_weight = 10`. This last parameter matches `min_n = 10` in the classroom parsnip engine. Both models use the same 14 predictors: open, high, low, close, volume, adjusted price, daily stock return, SPY return, three momentum ratios, lagged volatility, a short-term ratio, and excess daily return. The classroom formula included price levels and volume as well as the named engineered features. Date and ticker are identifiers, not predictors.
 
